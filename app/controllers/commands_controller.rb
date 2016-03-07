@@ -4,8 +4,8 @@ class CommandsController < ApplicationController
   def create
     if slack_token_valid?
       if current_user
-        command = current_user.create_command_for(params)
-        render json: command.default_response.to_json
+        current_user.create_command_for(params)
+        render json: { response_type: "in_channel" }.to_json
       else
         render json: authenticate_payload.to_json
       end

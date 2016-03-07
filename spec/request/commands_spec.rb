@@ -20,8 +20,7 @@ RSpec.describe "SlashHeroku /commands", type: :request do
     expect(status).to eql(200)
     response_body = JSON.parse(body)
     expect(response_body["response_type"]).to eql("in_channel")
-    expect(response_body["text"])
-      .to match(/Running\([^)]+\): 'help:default'\.\.\./)
+    expect(response_body["text"]).to eql(nil)
   end
 
   it "links to login + origin if you need to authenticate with Heroku" do

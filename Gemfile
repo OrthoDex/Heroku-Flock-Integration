@@ -22,6 +22,7 @@ gem "turbolinks"
 gem "uglifier", ">= 1.3.0"
 
 group :development, :test do
+  gem "brakeman"
   gem "byebug"
   gem "dotenv-rails"
   gem "pry"
@@ -37,7 +38,6 @@ group :test do
 end
 
 group :development do
-  gem "brakeman"
   gem "foreman"
   gem "spring"
   gem "web-console", "~> 3.0"
