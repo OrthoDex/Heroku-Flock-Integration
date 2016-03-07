@@ -13,19 +13,25 @@ module HerokuCommands
       ]
     end
 
-    def recent_releases
-      Rails.logger.info "Fetching releases for #{application}"
-      response = client.recent_releases_for(application)
-      Rails.logger.info response.to_json
-      attachments = response.map do |release|
-        { text: "v#{release['version']} - #{release['description']} - " \
-                  "#{release['user']['email']} - #{release['created_at']}" }
-      end
+    def recent_releases_for(attachments)
       {
         response_type: "in_channel",
         text: "Recent releases for #{application}",
         attachments: attachments
       }
+    end
+
+    def attachments_for(application)
+      response = client.recent_releases_for(application)
+      response.map do |release|
+        { text: "v#{release['version']} - #{release['description']} - " \
+          "#{release['user']['email']} - #{release['created_at']}" }
+      end
+    end
+
+    def recent_releases
+      Rails.logger.info "Fetching releases for #{application}"
+      recent_releases_for(attachments_for(application))
     rescue StandardError
       response_for("Unable to fetch recent releases for #{application}.")
     end
