@@ -1,0 +1,7 @@
+#!/bin/sh
+
+bundle install --local --path vendor/gems
+
+if [ ! -f .env ]; then
+  cp .env.sample .env
+fi
