@@ -1,7 +1,6 @@
 # SlashHeroku <a href="https://slash-heroku.herokuapp.com/auth/slack"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
 
-[SlashHeroku](https://github.com/atmos/slash-heroku) is a web app for working with the [Heroku Platform API](https://devcenter.heroku.com/articles/platform-api-reference) via a `/heroku` command in Slack.
-
+[SlashHeroku](https://github.com/atmos/slash-heroku) is a web app for working with the [Heroku Platform API](https://devcenter.heroku.com/articles/platform-api-reference) via a `/heroku` command in Slack. This is done with Heroku and Slack OAuth. Each set of credentials are scope to the team you're chatting in, so you can key personal and work credentials separated.
 
 ## Usage
 
