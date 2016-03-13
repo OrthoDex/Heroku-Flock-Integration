@@ -33,6 +33,8 @@ RSpec.describe HerokuCommands::Releases, type: :model do
         .to eql("Heroku release for atmos-dot-org - v9")
       expect(attachment[:text])
         .to eql("Release v9 of atmos-dot-org")
+      expect(attachment[:pretext])
+        .to eql("Deploy 774377e")
       expect(attachment[:title])
         .to eql("https://atmos-dot-org.herokuapp.com")
       expect(attachment[:title_link])

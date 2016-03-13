@@ -36,6 +36,7 @@ module HerokuCommands
           {
             fallback: "Heroku release for #{application} - v#{version}",
             text: "Release v#{version} of #{application}",
+            pretext: release[:description],
             title: "https://#{application}.herokuapp.com",
             title_link: "https://#{application}.herokuapp.com",
             fields: [
