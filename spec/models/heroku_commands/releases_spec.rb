@@ -23,36 +23,60 @@ RSpec.describe HerokuCommands::Releases, type: :model do
     expect(command.response[:attachments].size).to eql(9)
   end
 
-  it "has a release:info -a command" do
-    command = heroku_handler_for("releases:info 9 -a atmos-dot-org")
+  describe "release:info" do
+    # rubocop:disable Metrics/AbcSize
+    def verify_release(response)
+      expect(response[:attachments].size).to eql(1)
 
-    response_info = fixture_data("releases/atmos-dot-org/info")
-    stub_request(:get, "https://api.heroku.com/apps/atmos-dot-org/releases/9")
-      .with(headers: default_headers(command.user.heroku_token))
-      .to_return(status: 200, body: response_info, headers: {})
+      attachment = response[:attachments].first
+      expect(attachment[:fallback])
+        .to eql("Heroku release for atmos-dot-org - v9")
+      expect(attachment[:text])
+        .to eql("Release v9 of atmos-dot-org")
+      expect(attachment[:title])
+        .to eql("https://atmos-dot-org.herokuapp.com")
+      expect(attachment[:title_link])
+        .to eql("https://atmos-dot-org.herokuapp.com")
+      expect(attachment[:fields].size).to eql(2)
 
-    expect(command.task).to eql("releases")
-    expect(command.subtask).to eql("info")
-    expect(command.application).to eql("atmos-dot-org")
-    expect { command.run }.to_not raise_error
-    expect(command.response[:attachments].size).to eql(1)
+      fields = attachment[:fields]
+      expect(fields.first[:title]).to eql("By")
+      expect(fields.first[:value]).to eql("atmos@atmos.org")
+      expect(fields.last[:title]).to eql("When")
+      expect(fields.last[:value]).to eql("2015-12-07T00:42:33Z")
+    end
 
-    attachment = command.response[:attachments].first
-    expect(attachment[:fallback])
-      .to eql("Heroku release for atmos-dot-org - v9")
-    expect(attachment[:text])
-      .to eql("Release v9 of atmos-dot-org")
-    expect(attachment[:title])
-      .to eql("https://atmos-dot-org.herokuapp.com")
-    expect(attachment[:title_link])
-      .to eql("https://atmos-dot-org.herokuapp.com")
-    expect(attachment[:fields].size).to eql(2)
+    it "supports numbered releases" do
+      command = heroku_handler_for("releases:info 9 -a atmos-dot-org")
 
-    fields = attachment[:fields]
-    expect(fields.first[:title]).to eql("By")
-    expect(fields.first[:value]).to eql("atmos@atmos.org")
-    expect(fields.last[:title]).to eql("When")
-    expect(fields.last[:value]).to eql("2015-12-07T00:42:33Z")
+      response_info = fixture_data("releases/atmos-dot-org/info")
+      stub_request(:get, "https://api.heroku.com/apps/atmos-dot-org/releases/9")
+        .with(headers: default_headers(command.user.heroku_token))
+        .to_return(status: 200, body: response_info, headers: {})
+
+      expect(command.task).to eql("releases")
+      expect(command.subtask).to eql("info")
+      expect(command.application).to eql("atmos-dot-org")
+      expect { command.run }.to_not raise_error
+
+      verify_release(command.response)
+    end
+
+    it "supports numbered releases with v prefix" do
+      command = heroku_handler_for("releases:info v9 -a atmos-dot-org")
+
+      response_info = fixture_data("releases/atmos-dot-org/info")
+      stub_request(:get, "https://api.heroku.com/apps/atmos-dot-org/releases/9")
+        .with(headers: default_headers(command.user.heroku_token))
+        .to_return(status: 200, body: response_info, headers: {})
+
+      expect(command.task).to eql("releases")
+      expect(command.subtask).to eql("info")
+      expect(command.application).to eql("atmos-dot-org")
+      expect { command.run }.to_not raise_error
+
+      verify_release(command.response)
+    end
   end
 
   it "has a release:rollback -a command" do

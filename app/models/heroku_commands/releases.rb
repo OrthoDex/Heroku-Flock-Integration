@@ -64,7 +64,7 @@ module HerokuCommands
     end
 
     def version_from_args
-      matches = command.command_text.match(/releases:\w+\s+([^\s]+)\s-a/)
+      matches = command.command_text.match(/releases:\w+\s+(?:v)?([^\s]+)\s-a/)
       matches && matches[1]
     end
 
