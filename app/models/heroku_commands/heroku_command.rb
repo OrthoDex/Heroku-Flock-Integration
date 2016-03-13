@@ -2,7 +2,10 @@
 module HerokuCommands
   # Top-level class for implementing Heroku commands
   class HerokuCommand
-    attr_reader :client, :description, :response
+    COLOR = "#9EAEB3"
+    UUID_REGEX = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/
+
+    attr_reader :client, :command, :description, :response
     delegate :application, :subtask, :task, :user, to: :@command
 
     def initialize(command)

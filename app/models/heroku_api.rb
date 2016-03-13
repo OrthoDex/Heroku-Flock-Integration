@@ -8,8 +8,12 @@ class HerokuApi
     get("/account")
   end
 
-  def recent_releases_for(application)
+  def releases_for(application)
     get_range("/apps/#{application}/releases", "version; order=desc,max=10;")
+  end
+
+  def release_info_for(application, version)
+    get("/apps/#{application}/releases/#{version}")
   end
 
   def token_refresh(refresh_token)
@@ -37,7 +41,7 @@ class HerokuApi
       request.headers["Authorization"]   = "Bearer #{token}"
     end
 
-    JSON.parse(response.body)
+    JSON.parse(response.body).with_indifferent_access
   rescue StandardError
     nil
   end
