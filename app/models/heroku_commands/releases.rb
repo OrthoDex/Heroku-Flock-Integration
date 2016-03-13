@@ -13,21 +13,56 @@ module HerokuCommands
       ]
     end
 
-    def recent_releases_for(attachments)
-      {
-        response_type: "in_channel",
-        text: "Recent releases for #{application}",
-        attachments: attachments
-      }
+    def run
+      @response = run_on_subtask
     end
 
-    def attachments_for(application)
-      response = client.releases_for(application)
-      response.map do |release|
-        { text: "v#{release['version']} - #{release['description']} - " \
-          "#{release['user']['email']} - " \
-          "#{time_ago_in_words(release['created_at'])}" }
+    def release_info
+      matches = command.command_text.match(/releases:\w+\s+(?:v)?([^\s]+)\s-a/)
+      version = matches && matches[1]
+      if version
+        response = client.release_info_for(application, version)
+        response_for_release(response)
+      else
+        response_for("release:info missing version, should be a number.")
       end
+    end
+
+    def releases_info
+      if application
+        response = client.releases_for(application)
+        response_for_releases(response)
+      else
+        help_for_task
+      end
+    end
+
+    def run_on_subtask
+      case subtask
+      when "info"
+        release_info
+      when "rollback"
+        response_for("release:rollback is currently unimplemented.")
+      else
+        releases_info
+      end
+    rescue StandardError
+      response_for("Unable to fetch recent releases for #{application}.")
+    end
+
+    def response_markdown_for(releases)
+      "```" + releases.map do |release|
+        "v#{release[:version]} - #{release[:description]} - " \
+        "#{release[:user][:email]} - " \
+          "#{time_ago_in_words(release[:created_at])}"
+      end.join("\n") + "```"
+    end
+
+    def response_for_releases(releases)
+      {
+        text: response_markdown_for(releases),
+        mrkdwn: true
+      }
     end
 
     def response_for_release(release)
@@ -48,7 +83,7 @@ module HerokuCommands
               },
               {
                 title: "When",
-                value: time_ago_in_words(Time.parse(release[:created_at])),
+                value: time_ago_in_words(release[:created_at]),
                 short: true
               }
             ],
@@ -56,43 +91,6 @@ module HerokuCommands
           }
         ]
       }
-    end
-
-    def recent_releases
-      Rails.logger.info "Fetching releases for #{application}"
-      recent_releases_for(attachments_for(application))
-    rescue StandardError
-      response_for("Unable to fetch recent releases for #{application}.")
-    end
-
-    def version_from_args
-      matches = command.command_text.match(/releases:\w+\s+(?:v)?([^\s]+)\s-a/)
-      matches && matches[1]
-    end
-
-    def run_on_subtask
-      case subtask
-      when "info"
-        version = version_from_args
-        if version
-          response = client.release_info_for(application, version)
-          response_for_release(response)
-        else
-          response_for("release:info missing version, should be a number.")
-        end
-      when "rollback"
-        response_for("release:rollback is currently unimplemented.")
-      else
-        if application
-          recent_releases
-        else
-          help_for_task
-        end
-      end
-    end
-
-    def run
-      @response = run_on_subtask
     end
   end
 end

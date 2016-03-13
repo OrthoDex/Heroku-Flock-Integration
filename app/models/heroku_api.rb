@@ -56,7 +56,7 @@ class HerokuApi
       request.headers["Range"]           = range
     end
 
-    JSON.parse(response.body)
+    JSON.parse(response.body).map(&:with_indifferent_access)
   rescue StandardError
     nil
   end

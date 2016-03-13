@@ -29,8 +29,15 @@ module HerokuCommands
     def help_for_task
       {
         response_type: "in_channel",
-        text: "Available heroku #{task} commands:",
-        attachments: self.class.help_documentation.map { |cmd| { text: cmd } }
+        attachments: [
+          {
+            text: self.class.help_documentation.join("\n"),
+            pretext: "Run /h help releases for task specific help",
+            fallback: "Help commands from the heroku integration",
+            title: "Available heroku #{task} commands:",
+            title_link: "https://github.com/atmos/slash-heroku#slashheroku-"
+          }
+        ]
       }
     end
 

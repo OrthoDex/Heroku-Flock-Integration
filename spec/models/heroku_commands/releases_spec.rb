@@ -4,7 +4,7 @@ RSpec.describe HerokuCommands::Releases, type: :model do
   include SlashHeroku::Support::Helpers::Api
 
   before do
-    Timecop.freeze(Time.local(2016, 03, 13))
+    Timecop.freeze(Time.zone.local(2016, 03, 13))
   end
 
   after do
@@ -28,7 +28,9 @@ RSpec.describe HerokuCommands::Releases, type: :model do
     expect(command.subtask).to eql("default")
     expect(command.application).to eql("atmos-dot-org")
     expect { command.run }.to_not raise_error
-    expect(command.response[:attachments].size).to eql(9)
+
+    expect(command.response[:text].split("\n").size).to eql(9)
+    expect(command.response[:mrkdwn]).to eql(true)
   end
 
   describe "release:info" do
