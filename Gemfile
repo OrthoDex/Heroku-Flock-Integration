@@ -32,9 +32,10 @@ group :development, :test do
 end
 
 group :test do
-  gem "webmock", require: false
   gem "capybara"
   gem "codeclimate-test-reporter", require: nil
+  gem "timecop"
+  gem "webmock", require: false
 end
 
 group :development do
