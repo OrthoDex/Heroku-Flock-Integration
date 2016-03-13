@@ -1,6 +1,8 @@
 ENV["SLACK_SLASH_COMMAND_TOKEN"] = "secret-slack-token"
 ENV["SLACK_APP_URL"] = "https://slack.com/apps/manage/A0Q0PNS14-slash-heroku"
 
+require "webmock/rspec"
+
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -9,6 +11,12 @@ RSpec.configure do |config|
 
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
+  end
+
+  config.include(WebMock::API)
+
+  config.before do
+    WebMock.disable_net_connect!
   end
 
   # rubocop:disable Metrics/LineLength
@@ -90,6 +98,19 @@ RSpec.configure do |config|
 
   def command_for(text)
     user = create_atmos
+    user.heroku_token         = SecureRandom.hex(24)
+    user.heroku_refresh_token = SecureRandom.hex(24)
+    user.heroku_expires_at    = 6.hours.from_now
+    user.save
     user.create_command_for(command_params_for(text))
+  end
+
+  def fixture_data(name)
+    path = File.join(fixture_path, "#{name}.json")
+    File.read(path)
+  end
+
+  def decoded_fixture_data(name)
+    JSON.parse(fixture_data(name))
   end
 end

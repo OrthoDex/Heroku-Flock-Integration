@@ -18,7 +18,9 @@ module HerokuCommands
                     user.destroy
                     response_for("Successfuly removed your SlashHeroku user.")
                   when "whoami"
-                    email = user.heroku_user_information["email"]
+                    email = user.heroku_user_information &&
+                            user.heroku_user_information["email"]
+
                     response_for("You're authenticated as #{email} on Heroku.")
                   else
                     help_for_task
