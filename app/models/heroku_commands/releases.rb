@@ -25,7 +25,8 @@ module HerokuCommands
       response = client.releases_for(application)
       response.map do |release|
         { text: "v#{release['version']} - #{release['description']} - " \
-          "#{release['user']['email']} - #{release['created_at']}" }
+          "#{release['user']['email']} - " \
+          "#{time_ago_in_words(release['created_at'])}" }
       end
     end
 
