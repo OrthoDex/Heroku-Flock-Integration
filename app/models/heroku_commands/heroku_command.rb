@@ -2,7 +2,7 @@
 module HerokuCommands
   # Top-level class for implementing Heroku commands
   class HerokuCommand
-    COLOR = "#9EAEB3"
+    COLOR = "#6567a5".freeze
     UUID_REGEX = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/
 
     attr_reader :client, :command, :description, :response

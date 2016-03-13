@@ -30,26 +30,27 @@ module HerokuCommands
     end
 
     def response_for_release(release)
+      version = release[:version]
       {
-        "attachments": [
+        attachments: [
           {
-            "fallback": "Heroku release for #{application} - v#{release[:version]}",
-            "text": "Release v#{release[:version]} of #{application}",
-            "title": "https://#{application}.herokuapp.com",
-            "title_link": "https://#{application}.herokuapp.com",
-            "fields": [
+            fallback: "Heroku release for #{application} - v#{version}",
+            text: "Release v#{version} of #{application}",
+            title: "https://#{application}.herokuapp.com",
+            title_link: "https://#{application}.herokuapp.com",
+            fields: [
               {
-                "title": "By",
-                "value": release[:user][:email],
-                "short": true
+                title: "By",
+                value: release[:user][:email],
+                short: true
               },
               {
-                "title": "When",
-                "value": release[:created_at],
-                "short": true
+                title: "When",
+                value: release[:created_at],
+                short: true
               }
             ],
-            "color": COLOR
+            color: COLOR
           }
         ]
       }
@@ -67,25 +68,29 @@ module HerokuCommands
       matches && matches[1]
     end
 
+    def run_on_subtask
+      case subtask
+      when "info"
+        version = version_from_args
+        if version
+          response = client.release_info_for(application, version)
+          response_for_release(response)
+        else
+          response_for("release:info missing version, should be a number.")
+        end
+      when "rollback"
+        response_for("release:rollback is currently unimplemented.")
+      else
+        if application
+          recent_releases
+        else
+          help_for_task
+        end
+      end
+    end
+
     def run
-      @response = case subtask
-                  when "info"
-                    version = version_from_args
-                    if version
-                      response = client.release_info_for(application, version)
-                      response_for_release(response)
-                    else
-                      response_for("release:info missing version, should be a number or uuid")
-                    end
-                  when "rollback"
-                    response_for("release:rollback is currently unimplemented.")
-                  else
-                    if application
-                      recent_releases
-                    else
-                      help_for_task
-                    end
-                  end
+      @response = run_on_subtask
     end
   end
 end

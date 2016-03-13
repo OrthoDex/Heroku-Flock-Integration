@@ -3,17 +3,8 @@ require "rails_helper"
 RSpec.describe HerokuCommands::Releases, type: :model do
   include SlashHeroku::Support::Helpers::Api
 
-  before do
-    #WebMock.allow_net_connect!
-  end
-
   def heroku_handler_for(text)
     command = command_for(text)
-
-    #command.user.heroku_token = ENV["HEROKU_TOKEN"]
-    command.user.save
-    command.reload
-
     command.handler
   end
 
@@ -47,10 +38,14 @@ RSpec.describe HerokuCommands::Releases, type: :model do
     expect(command.response[:attachments].size).to eql(1)
 
     attachment = command.response[:attachments].first
-    expect(attachment[:fallback]).to eql("Heroku release for atmos-dot-org - v9")
-    expect(attachment[:text]).to eql("Release v9 of atmos-dot-org")
-    expect(attachment[:title]).to eql("https://atmos-dot-org.herokuapp.com")
-    expect(attachment[:title_link]).to eql("https://atmos-dot-org.herokuapp.com")
+    expect(attachment[:fallback])
+      .to eql("Heroku release for atmos-dot-org - v9")
+    expect(attachment[:text])
+      .to eql("Release v9 of atmos-dot-org")
+    expect(attachment[:title])
+      .to eql("https://atmos-dot-org.herokuapp.com")
+    expect(attachment[:title_link])
+      .to eql("https://atmos-dot-org.herokuapp.com")
     expect(attachment[:fields].size).to eql(2)
 
     fields = attachment[:fields]
@@ -61,10 +56,11 @@ RSpec.describe HerokuCommands::Releases, type: :model do
   end
 
   it "has a release:rollback -a command" do
-    command = heroku_handler_for("releases:rollback 49d3122d-f273-4e34-afec-337a8b107e48 -a atmos-dot-org")
+    id = "49d3122d-f273-4e34-afec-337a8b107e48"
+    heroku_handler_for("releases:rollback #{id} -a atmos-dot-org")
 
     pending "releases:rollback is unimplemented"
 
-    fail ArgumentError, "releases:rollback is unimplemented"
+    raise ArgumentError, "releases:rollback is unimplemented"
   end
 end
