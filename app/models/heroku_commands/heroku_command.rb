@@ -2,6 +2,8 @@
 module HerokuCommands
   # Top-level class for implementing Heroku commands
   class HerokuCommand
+    include ActionView::Helpers::DateHelper
+
     COLOR = "#6567a5".freeze
     UUID_REGEX = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/
 

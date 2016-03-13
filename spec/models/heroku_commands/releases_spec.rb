@@ -3,6 +3,14 @@ require "rails_helper"
 RSpec.describe HerokuCommands::Releases, type: :model do
   include SlashHeroku::Support::Helpers::Api
 
+  before do
+    Timecop.freeze(Time.local(2016, 03, 13))
+  end
+
+  after do
+    Timecop.return
+  end
+
   def heroku_handler_for(text)
     command = command_for(text)
     command.handler
@@ -31,9 +39,9 @@ RSpec.describe HerokuCommands::Releases, type: :model do
       attachment = response[:attachments].first
       expect(attachment[:fallback])
         .to eql("Heroku release for atmos-dot-org - v9")
-      expect(attachment[:text])
-        .to eql("Release v9 of atmos-dot-org")
       expect(attachment[:pretext])
+        .to eql("atmos-dot-org - v9")
+      expect(attachment[:text])
         .to eql("Deploy 774377e")
       expect(attachment[:title])
         .to eql("https://atmos-dot-org.herokuapp.com")
@@ -45,8 +53,9 @@ RSpec.describe HerokuCommands::Releases, type: :model do
       expect(fields.first[:title]).to eql("By")
       expect(fields.first[:value]).to eql("atmos@atmos.org")
       expect(fields.last[:title]).to eql("When")
-      expect(fields.last[:value]).to eql("2015-12-07T00:42:33Z")
+      expect(fields.last[:value]).to eql("3 months")
     end
+    # rubocop:enable Metrics/AbcSize
 
     it "supports numbered releases" do
       command = heroku_handler_for("releases:info 9 -a atmos-dot-org")

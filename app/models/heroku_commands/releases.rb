@@ -34,9 +34,9 @@ module HerokuCommands
       {
         attachments: [
           {
+            text: release[:description],
+            pretext: "#{application} - v#{version}",
             fallback: "Heroku release for #{application} - v#{version}",
-            text: "Release v#{version} of #{application}",
-            pretext: release[:description],
             title: "https://#{application}.herokuapp.com",
             title_link: "https://#{application}.herokuapp.com",
             fields: [
@@ -47,7 +47,7 @@ module HerokuCommands
               },
               {
                 title: "When",
-                value: release[:created_at],
+                value: time_ago_in_words(Time.parse(release[:created_at])),
                 short: true
               }
             ],
