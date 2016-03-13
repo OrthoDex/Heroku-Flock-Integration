@@ -30,7 +30,7 @@ RSpec.describe HerokuCommands::Releases, type: :model do
     expect { command.run }.to_not raise_error
 
     expect(command.response[:text].split("\n").size).to eql(9)
-    expect(command.response[:mrkdwn]).to eql(true)
+    expect(command.response[:response_type]).to eql("in_channel")
   end
 
   describe "release:info" do

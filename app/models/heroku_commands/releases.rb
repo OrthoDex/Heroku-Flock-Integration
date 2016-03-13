@@ -61,7 +61,7 @@ module HerokuCommands
     def response_for_releases(releases)
       {
         text: response_markdown_for(releases),
-        mrkdwn: true
+        response_type: "in_channel"
       }
     end
 
