@@ -66,33 +66,16 @@ module HerokuCommands
       "https://dashboard.heroku.com/apps/#{application}"
     end
 
-    def response_for_releases(releases)
-      {
-        mrkdwn: true,
-        response_type: "in_channel",
-        attachments: [
-          {
-            color: COLOR,
-            text: response_markdown_for(releases),
-            title: "Recent releases for #{dashboard_markup(application)}",
-            fallback: "Latest releases for Heroku application #{application}"
-          }
-        ]
-      }
-    end
-
-    # rubocop:disable Metrics/MethodLength
     def response_for_release(release)
-      version = release[:version]
+      version     = release[:version]
+      dashboard   = dashboard_markup(application)
+      description = release[:description]
       {
         response_type: "in_channel",
         attachments: [
           {
-            text: release[:description],
-            pretext: "#{application} - v#{version}",
-            fallback: "Heroku release for #{application} - v#{version}",
-            title: application,
-            title_link: dashboard_link(application),
+            title: "#{dashboard} - v#{version} - #{description}",
+            fallback: "Heroku release for #{application}:v#{version}",
             fields: [
               {
                 title: "By",
@@ -110,6 +93,20 @@ module HerokuCommands
         ]
       }
     end
-    # rubocop:enable Metrics/MethodLength
+
+    def response_for_releases(releases)
+      {
+        mrkdwn: true,
+        response_type: "in_channel",
+        attachments: [
+          {
+            color: COLOR,
+            text: response_markdown_for(releases),
+            title: "#{dashboard_markup(application)} - Recent releases",
+            fallback: "Latest releases for Heroku application #{application}"
+          }
+        ]
+      }
+    end
   end
 end

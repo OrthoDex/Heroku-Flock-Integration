@@ -38,7 +38,7 @@ RSpec.describe HerokuCommands::Releases, type: :model do
     expect(attachment[:pretext]).to eql(nil)
     expect(attachment[:text].split("\n").size).to eql(9)
     expect(attachment[:title])
-      .to eql("Recent releases for <https://dashboard.heroku.com/apps/atmos-dot-org|atmos-dot-org>")
+      .to eql("<https://dashboard.heroku.com/apps/atmos-dot-org|atmos-dot-org> - Recent releases")
     expect(attachment[:title_link]).to eql(nil)
     expect(attachment[:fields]).to eql(nil)
   end
@@ -46,20 +46,18 @@ RSpec.describe HerokuCommands::Releases, type: :model do
 
   describe "release:info" do
     # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/LineLength
     def verify_release(response)
+      expect(response[:text]).to eql(nil)
       expect(response[:attachments].size).to eql(1)
 
       attachment = response[:attachments].first
       expect(attachment[:fallback])
-        .to eql("Heroku release for atmos-dot-org - v9")
-      expect(attachment[:pretext])
-        .to eql("atmos-dot-org - v9")
-      expect(attachment[:text])
-        .to eql("Deploy 774377e")
+        .to eql("Heroku release for atmos-dot-org:v9")
+      expect(attachment[:text]).to eql(nil)
       expect(attachment[:title])
-        .to eql("atmos-dot-org")
-      expect(attachment[:title_link])
-        .to eql("https://dashboard.heroku.com/apps/atmos-dot-org")
+        .to eql("<https://dashboard.heroku.com/apps/atmos-dot-org|atmos-dot-org> - v9 - Deploy 774377e")
+      expect(attachment[:title_link]).to eql(nil)
       expect(attachment[:fields].size).to eql(2)
 
       fields = attachment[:fields]
@@ -69,6 +67,7 @@ RSpec.describe HerokuCommands::Releases, type: :model do
       expect(fields.last[:value]).to eql("3 months")
     end
     # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/LineLength
 
     it "supports numbered releases" do
       command = heroku_handler_for("releases:info 9 -a atmos-dot-org")
