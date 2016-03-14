@@ -11,7 +11,7 @@ RSpec.describe "Authentication", type: :request do
   end
 
   def application_url
-    "https://slack.com/apps/manage/A0Q0PNS14-slash-heroku"
+    "https://slack.com/apps/manage/A0SFS6WSD-heroku"
   end
 
   it "requires a valid rails session" do

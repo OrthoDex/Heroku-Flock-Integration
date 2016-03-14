@@ -1,5 +1,5 @@
 ENV["SLACK_SLASH_COMMAND_TOKEN"] = "secret-slack-token"
-ENV["SLACK_APP_URL"] = "https://slack.com/apps/manage/A0Q0PNS14-slash-heroku"
+ENV["SLACK_APP_URL"] = "https://slack.com/apps/manage/A0SFS6WSD-heroku"
 
 require "webmock/rspec"
 

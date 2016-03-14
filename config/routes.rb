@@ -8,9 +8,12 @@ Rails.application.routes.draw do
   get  "/auth/slack/callback"  => "sessions#create_slack"
   get  "/auth/heroku/callback" => "sessions#create_heroku"
 
-  get  "/boomtown"             => "application#boomtown"
-  post "/commands"             => "commands#create"
-  post "/signout"              => "sessions#destroy"
+  get  "/install"  => "pages#install"
+  get  "/support"  => "pages#support"
+  get  "/boomtown" => "application#boomtown"
+
+  post "/commands" => "commands#create"
+  post "/signout"  => "sessions#destroy"
 
   root to: redirect(applcation_url, status: 302)
 end
