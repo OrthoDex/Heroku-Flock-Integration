@@ -5,9 +5,6 @@ RSpec.describe HerokuCommands::Logs, type: :model do
 
   def heroku_handler_for(text)
     command = command_for(text)
-    command.user.heroku_token = ENV["HEROKU_TOKEN"]
-    command.user.save
-    command.reload
     command.handler
   end
 
