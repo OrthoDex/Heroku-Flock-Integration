@@ -8,6 +8,7 @@ module HerokuCommands
     def self.help_documentation
       [
         HerokuCommands::Auth.help_documentation,
+        HerokuCommands::Logs.help_documentation,
         HerokuCommands::Releases.help_documentation
       ].flatten
     end
