@@ -26,8 +26,7 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "pry"
-  gem "rspec-rails"
-  gem "rspec-activemodel-mocks"
+  gem "rspec-rails", "3.5.0.beta1"
   gem "rubocop"
 end
 
