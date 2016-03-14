@@ -48,6 +48,10 @@ Rails.application.configure do
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
   config.log_level = :info
+  config.lograge.enabled = true
+  config.lograge.custom_options = lambda do |event|
+    { request_id: event.payload[:request_id] }
+  end
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -55,6 +59,9 @@ Rails.application.configure do
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+  end
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -79,9 +86,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  config.lograge.enabled = true
-  config.lograge.custom_options = lambda do |event|
-    { request_id: event.payload[:request_id] }
-  end
 end
