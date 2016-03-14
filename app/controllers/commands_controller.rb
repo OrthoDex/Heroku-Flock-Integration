@@ -37,7 +37,7 @@ class CommandsController < ApplicationController
   def authenticate_payload
     {
       response_type: "in_channel",
-      text: "Please <#{slack_login_uri}|sign in to Heroku> to use this feature."
+      text: "Please <#{slack_login_uri}|sign in to Heroku>."
     }
   end
 

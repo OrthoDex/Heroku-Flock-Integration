@@ -33,7 +33,7 @@ RSpec.describe "SlashHeroku /commands", type: :request do
     response_body = JSON.parse(body)
     expect(response_body["response_type"]).to eql("in_channel")
     link = "Please <http://www.example.com/auth/slack?origin=" \
-           "#{encoded_origin}|sign in to Heroku> to use this feature."
+           "#{encoded_origin}|sign in to Heroku>."
     expect(response_body["text"]).to eql(link)
   end
 
