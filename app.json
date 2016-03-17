@@ -18,6 +18,12 @@
     "FERNET_SECRET": {
       "description": "The secret used for writing encrypted values to the database. Generate with 'dd if=/dev/urandom bs=32 count=1 2>/dev/null | openssl base64'."
     },
+    "GITHUB_OAUTH_ID": {
+      "description": "The GitHub OAuth client id for being an OAuth consumer"
+    },
+    "GITHUB_OAUTH_SECRET": {
+      "description": "The GitHub OAuth client secret for being an OAuth consumer"
+    },
     "HEROKU_OAUTH_ID": {
       "description": "The Heroku OAuth client id for being an OAuth consumer"
     },

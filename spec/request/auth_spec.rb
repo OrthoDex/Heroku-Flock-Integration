@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe "Authentication", type: :request do
   before do
     OmniAuth.config.mock_auth[:slack]  = slack_omniauth_hash_for_atmos
+    OmniAuth.config.mock_auth[:github] = github_omniauth_hash_for_atmos
     OmniAuth.config.mock_auth[:heroku] = heroku_omniauth_hash_for_atmos
   end
 
@@ -62,5 +63,18 @@ RSpec.describe "Authentication", type: :request do
     # Redirect to slack://channel
     expect(status).to eql(302)
     expect(headers["Location"]).to eql(origin)
+  end
+
+  it "authenticates GitHub after the initial setup" do
+    get "/auth/slack"
+    follow_redirect!
+
+    get "/auth/github"
+    follow_redirect!
+
+    # Redirect to Application in Slack App Store
+    expect(status).to eql(302)
+    follow_redirect!
+    expect(headers["Location"]).to eql(application_url)
   end
 end
