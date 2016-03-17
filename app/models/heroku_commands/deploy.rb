@@ -47,30 +47,34 @@ module HerokuCommands
       "https://dashboard.heroku.com/pipelines/#{id}"
     end
 
-    def response_for_deploy(deploy)
-      dashboard    = pipeline_markup(application, deploy)
-      environments = deploy.environments.map do |name, apps|
+    def environment_output_for_deploy(deploy)
+      deploy.environments.map do |name, apps|
         names = apps.map { |app| app.app.name }
         "#{name}: #{names.join(',')}"
       end.join("\n")
+    end
+
+    def response_for_deploy(deploy)
+      github_dashboard = repository_markup(deploy)
+      heroku_dashboard = pipeline_markup(application, deploy)
       {
         response_type: "in_channel",
         attachments: [
           {
             title: "Application: #{application}",
             fallback: "Heroku app #{application} (#{deploy.github_repository})",
-            text: environments,
+            text: environment_output_for_deploy(deploy),
             color: COLOR,
             fields: [
               {
-                "title": "Heroku",
-                "value": dashboard,
-                "short": true
+                title: "Heroku",
+                value: heroku_dashboard,
+                short: true
               },
               {
-                "title": "GitHub",
-                "value": repository_markup(deploy),
-                "short": true
+                title: "GitHub",
+                value: github_dashboard,
+                short: true
               }
             ]
           }
