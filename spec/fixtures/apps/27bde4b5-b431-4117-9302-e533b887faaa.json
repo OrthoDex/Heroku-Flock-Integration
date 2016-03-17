@@ -1,0 +1,31 @@
+{
+  "archived_at": null,
+  "buildpack_provided_description": "Node.js",
+  "build_stack": {
+    "id": "f9f9cbd7-2970-41ef-8db5-3df7123b041f",
+    "name": "cedar-14"
+  },
+  "created_at": "2014-02-08T18:23:43Z",
+  "id": "27bde4b5-b431-4117-9302-e533b887faaa",
+  "git_url": "https://git.heroku.com/zero-fucks-hubot.git",
+  "maintenance": false,
+  "name": "zero-fucks-hubot",
+  "owner": {
+    "email": "atmos@atmos.org",
+    "id": "49221696-76e4-43ab-8f21-a3e9dcbca777"
+  },
+  "region": {
+    "id": "59accabd-516d-4f0e-83e6-6e3757701145",
+    "name": "us"
+  },
+  "space": null,
+  "released_at": "2016-03-12T05:20:00Z",
+  "repo_size": 487683,
+  "slug_size": 18047543,
+  "stack": {
+    "id": "f9f9cbd7-2970-41ef-8db5-3df7123b041f",
+    "name": "cedar-14"
+  },
+  "updated_at": "2016-03-12T05:21:00Z",
+  "web_url": "https://hubot.herokuapp.com/"
+}

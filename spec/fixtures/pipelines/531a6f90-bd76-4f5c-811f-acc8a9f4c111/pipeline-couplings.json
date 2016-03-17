@@ -1,0 +1,15 @@
+[
+  {
+    "created_at": "2016-03-14T12:24:59+00:00",
+    "app": {
+      "id": "27bde4b5-b431-4117-9302-e533b887faaa"
+    },
+    "id": "fabe5e2d-065f-49fe-9f85-0c39f83bdec9",
+    "pipeline": {
+      "id": "531a6f90-bd76-4f5c-811f-acc8a9f4c111",
+      "name": "hubot"
+    },
+    "stage": "production",
+    "updated_at": "2016-03-14T12:24:59+00:00"
+  }
+]
