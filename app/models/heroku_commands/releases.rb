@@ -1,5 +1,5 @@
 module HerokuCommands
-  # Class for handling logout and identity information
+  # Class for handling release info
   class Releases < HerokuCommand
     def initialize(command)
       super(command)

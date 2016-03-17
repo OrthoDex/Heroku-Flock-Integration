@@ -13,6 +13,8 @@ class Command < ApplicationRecord
     @handler ||= case task
                  when "auth"
                    HerokuCommands::Auth.new(self)
+                 when "deploy"
+                   HerokuCommands::Deploy.new(self)
                  when "logs"
                    HerokuCommands::Logs.new(self)
                  when "releases"
