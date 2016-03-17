@@ -35,8 +35,12 @@ module HerokuCommands
     end
 
     def pipeline_markup(application, deploy)
-      "<#{pipeline_link(deploy.id)}|#{application}" \
-       " (#{deploy.github_repository})>"
+      "<#{pipeline_link(deploy.id)}|#{application}>"
+    end
+
+    def repository_markup(deploy)
+      name_with_owner = deploy.github_repository
+      "<https://github.com/#{name_with_owner}|#{name_with_owner}>"
     end
 
     def pipeline_link(id)
@@ -53,10 +57,22 @@ module HerokuCommands
         response_type: "in_channel",
         attachments: [
           {
-            title: dashboard,
+            title: "Application: #{application}",
             fallback: "Heroku app #{application} (#{deploy.github_repository})",
             text: environments,
-            color: COLOR
+            color: COLOR,
+            fields: [
+              {
+                "title": "Heroku",
+                "value": dashboard,
+                "short": true
+              },
+              {
+                "title": "GitHub",
+                "value": repository_markup(deploy),
+                "short": true
+              }
+            ]
           }
         ]
       }

@@ -50,9 +50,14 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
       .to eql("Heroku app hubot (atmos/hubot)")
     expect(attachment[:pretext]).to eql(nil)
     expect(attachment[:text].split("\n").size).to eql(1)
-    expect(attachment[:title])
-      .to eql("<https://dashboard.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111|hubot (atmos/hubot)>")
+    expect(attachment[:title]).to eql("Application: hubot")
     expect(attachment[:title_link]).to eql(nil)
-    expect(attachment[:fields]).to eql(nil)
+    expect(attachment[:fields].size).to eql(2)
+
+    fields = attachment[:fields]
+    expect(fields.first[:title]).to eql("Heroku")
+    expect(fields.first[:value]).to eql("<https://dashboard.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111|hubot>")
+    expect(fields.last[:title]).to eql("GitHub")
+    expect(fields.last[:value]).to eql("<https://github.com/atmos/hubot|atmos/hubot>")
   end
 end
