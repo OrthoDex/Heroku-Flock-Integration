@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe HerokuCommands::Deploy, type: :model do
+RSpec.describe HerokuCommands::Pipelines, type: :model do
   include SlashHeroku::Support::Helpers::Api
 
   before do
@@ -12,8 +12,8 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
   end
 
   # rubocop:disable Metrics/LineLength
-  it "has a deploy command" do
-    command = heroku_handler_for("deploy hubot")
+  it "has a pipeline:info command" do
+    command = heroku_handler_for("pipelines:info -a hubot")
 
     response_info = fixture_data("api.heroku.com/account/info")
     stub_request(:get, "https://api.heroku.com/account")
@@ -39,14 +39,27 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
     stub_request(:get, "https://kolkrabbi.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/repository")
       .to_return(status: 200, body: response_info)
 
-    expect(command.task).to eql("deploy")
-    expect(command.subtask).to eql("default")
+    expect(command.task).to eql("pipelines")
+    expect(command.subtask).to eql("info")
     expect(command.application).to eql("hubot")
 
     command.run
 
     expect(command.response[:response_type]).to eql("in_channel")
-    expect(command.response[:text]).to eql("Should've deployed hubot to staging.")
-    expect(command.response[:attachments]).to be_nil
+    expect(command.response[:attachments].size).to eql(1)
+    attachment = command.response[:attachments].first
+    expect(attachment[:fallback])
+      .to eql("Heroku app hubot (atmos/hubot)")
+    expect(attachment[:pretext]).to eql(nil)
+    expect(attachment[:text].split("\n").size).to eql(1)
+    expect(attachment[:title]).to eql("Application: hubot")
+    expect(attachment[:title_link]).to eql(nil)
+    expect(attachment[:fields].size).to eql(2)
+
+    fields = attachment[:fields]
+    expect(fields.first[:title]).to eql("Heroku")
+    expect(fields.first[:value]).to eql("<https://dashboard.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111|hubot>")
+    expect(fields.last[:title]).to eql("GitHub")
+    expect(fields.last[:value]).to eql("<https://github.com/atmos/hubot|atmos/hubot>")
   end
 end
