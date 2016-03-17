@@ -1,0 +1,18 @@
+{
+  "created_at": "2016-03-14T12:24:37+00:00",
+  "creator": {
+    "id": "49221696-76e4-43ab-8f21-a3e9dcbca777"
+  },
+  "id": "56bbbf65-3537-4993-9d17-290d3e9b3222",
+  "pipeline": {
+    "id": "531a6f90-bd76-4f5c-811f-acc8a9f4c111"
+  },
+  "repository": {
+    "created_at": "2016-03-01T07:26:11+00:00",
+    "id": 16650088,
+    "name": "atmos/hubot",
+    "type": "github",
+    "updated_at": "2016-03-14T12:24:37+00:00"
+  },
+  "updated_at": null
+}
