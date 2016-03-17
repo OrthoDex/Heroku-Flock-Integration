@@ -20,7 +20,7 @@ RSpec.describe HerokuCommands::Releases, type: :model do
   it "has a releases -a command" do
     command = heroku_handler_for("releases -a atmos-dot-org")
 
-    response_info = fixture_data("releases/atmos-dot-org/list")
+    response_info = fixture_data("api.heroku.com/releases/atmos-dot-org/list")
     stub_request(:get, "https://api.heroku.com/apps/atmos-dot-org/releases")
       .with(headers: default_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
@@ -72,7 +72,7 @@ RSpec.describe HerokuCommands::Releases, type: :model do
     it "supports numbered releases" do
       command = heroku_handler_for("releases:info 9 -a atmos-dot-org")
 
-      response_info = fixture_data("releases/atmos-dot-org/info")
+      response_info = fixture_data("api.heroku.com/releases/atmos-dot-org/info")
       stub_request(:get, "https://api.heroku.com/apps/atmos-dot-org/releases/9")
         .with(headers: default_headers(command.user.heroku_token))
         .to_return(status: 200, body: response_info, headers: {})
@@ -88,7 +88,7 @@ RSpec.describe HerokuCommands::Releases, type: :model do
     it "supports numbered releases with v prefix" do
       command = heroku_handler_for("releases:info v9 -a atmos-dot-org")
 
-      response_info = fixture_data("releases/atmos-dot-org/info")
+      response_info = fixture_data("api.heroku.com/releases/atmos-dot-org/info")
       stub_request(:get, "https://api.heroku.com/apps/atmos-dot-org/releases/9")
         .with(headers: default_headers(command.user.heroku_token))
         .to_return(status: 200, body: response_info, headers: {})
