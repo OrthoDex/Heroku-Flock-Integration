@@ -1,27 +1,64 @@
 module HerokuCommands
   # Class for handling Deployment requests
   class Deploy < HerokuCommand
+    # Class for encapsulating a chat deployment request
+    class Deployment
+      include ChatOpsPatterns
+      attr_reader :application, :branch, :environment, :forced,
+        :hosts, :second_factor
+      def initialize(command, string)
+        @string  = string
+        @command = command
+
+        matches = deploy_pattern.match(string)
+        if matches
+          @forced        = matches[2] == "!"
+          @application   = matches[3]
+          @branch        = matches[4] || "master"
+          @environment   = matches[5] || "staging"
+          @hosts         = matches[6]
+          @second_factor = matches[7]
+        end
+      end
+    end
+
+    attr_reader :info, :pipelines
+    delegate :application, :branch, :environment, :forced, :hosts,
+      :second_factor, to: :@info
+
     def initialize(command)
       super(command)
 
+      @info = Deployment.new(self, command.command_text)
       @pipelines = Escobar::Client.new(nil, client.token)
     end
 
+    # rubocop:disable Metrics/LineLength
     def self.help_documentation
       [
-        "deploy -a APP - Display the last 10 releases for APP.",
-        "deploy:info APP - View detailed information for a deployment."
+        "deploy <app>/<branch> to <env>/<roles> - deploy pipeline <app>'s <branch> to the <env> environment's <roles>"
       ]
     end
+    # rubocop:enable Metrics/LineLength
 
     def run
       @response = run_on_subtask
+    end
+
+    def deploy_application
+      if application && !pipelines[application]
+        response_for("Unable to find a pipeline called #{application}")
+      else
+        response_for("Should've deployed #{application} to #{environment}.")
+      end
     end
 
     def run_on_subtask
       case subtask
       when "info"
         deploy_info
+      when "default"
+        deploy_application
       else
         response_for("deploy:#{subtask} is currently unimplemented.")
       end
@@ -48,7 +85,8 @@ module HerokuCommands
     end
 
     def environment_output_for_deploy(deploy)
-      deploy.environments.map do |name, apps|
+      deploy.sorted_environments.map do |name|
+        apps  = deploy.environments[name]
         names = apps.map { |app| app.app.name }
         "#{name}: #{names.join(',')}"
       end.join("\n")
