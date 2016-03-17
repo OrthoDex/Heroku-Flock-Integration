@@ -46,7 +46,7 @@ module HerokuCommands
       dashboard    = pipeline_markup(application, deploy.id)
       environments = deploy.environments.map do |name, apps|
         names = apps.map { |app| app.app.name }
-        "  #{name}: #{names.join(',')}"
+        "#{name}: #{names.join(',')}"
       end.join("\n")
 
       {
