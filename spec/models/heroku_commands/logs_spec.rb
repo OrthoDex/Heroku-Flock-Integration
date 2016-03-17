@@ -17,7 +17,7 @@ RSpec.describe HerokuCommands::Logs, type: :model do
       .with(headers: default_headers(command.user.heroku_token, 2))
       .to_return(status: 200, body: "#{logs_api_url}?src=1457925552", headers: {})
 
-    response_info = fixture_data("logs/atmos-dot-org/logs")
+    response_info = fixture_data("api.heroku.com/logs/atmos-dot-org/logs")
     stub_request(:get, logs_api_url)
       .to_return(status: 200, body: response_info, headers: {})
 

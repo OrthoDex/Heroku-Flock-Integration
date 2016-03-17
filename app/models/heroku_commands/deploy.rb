@@ -34,29 +34,49 @@ module HerokuCommands
       response_for_deploy(response)
     end
 
-    def pipeline_markup(application, id)
-      "<#{pipeline_link(id)}|#{application}>"
+    def pipeline_markup(application, deploy)
+      "<#{pipeline_link(deploy.id)}|#{application}>"
+    end
+
+    def repository_markup(deploy)
+      name_with_owner = deploy.github_repository
+      "<https://github.com/#{name_with_owner}|#{name_with_owner}>"
     end
 
     def pipeline_link(id)
       "https://dashboard.heroku.com/pipelines/#{id}"
     end
 
-    def response_for_deploy(deploy)
-      dashboard    = pipeline_markup(application, deploy.id)
-      environments = deploy.environments.map do |name, apps|
+    def environment_output_for_deploy(deploy)
+      deploy.environments.map do |name, apps|
         names = apps.map { |app| app.app.name }
         "#{name}: #{names.join(',')}"
       end.join("\n")
+    end
 
+    def response_for_deploy(deploy)
+      github_dashboard = repository_markup(deploy)
+      heroku_dashboard = pipeline_markup(application, deploy)
       {
         response_type: "in_channel",
         attachments: [
           {
-            title: dashboard,
-            fallback: "Heroku deploy for #{application}",
-            text: environments,
-            color: COLOR
+            title: "Application: #{application}",
+            fallback: "Heroku app #{application} (#{deploy.github_repository})",
+            text: environment_output_for_deploy(deploy),
+            color: COLOR,
+            fields: [
+              {
+                title: "Heroku",
+                value: heroku_dashboard,
+                short: true
+              },
+              {
+                title: "GitHub",
+                value: github_dashboard,
+                short: true
+              }
+            ]
           }
         ]
       }
