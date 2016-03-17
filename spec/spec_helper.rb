@@ -21,6 +21,23 @@ RSpec.configure do |config|
     WebMock.disable_net_connect!
   end
 
+  def github_omniauth_hash_for_atmos
+    user_info = {
+      name: "Corey Donohoe",
+      nickname: "atmos",
+      avatar_url: "https://avatars.githubusercontent.com/u/38?v=3"
+    }
+
+    credentials = {
+      token: SecureRandom.hex(24)
+    }
+
+    OmniAuth::AuthHash.new(provider: "github",
+                           uid: "38",
+                           info: user_info,
+                           credentials: credentials)
+  end
+
   # rubocop:disable Metrics/LineLength
   def heroku_omniauth_hash_for_atmos
     info = {

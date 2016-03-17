@@ -23,6 +23,14 @@ module TokenManagement
     Fernet.generate(self.class.fernet_secret, value)
   end
 
+  def github_token
+    decrypt_value(self[:enc_github_token])
+  end
+
+  def github_token=(token)
+    self[:enc_github_token] = encrypt_value(token)
+  end
+
   def reset_creds
     reset_heroku
     self.save

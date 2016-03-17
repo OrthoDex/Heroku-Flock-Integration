@@ -1,16 +1,16 @@
 # Session controller for authenticating users with GitHub/Heroku/Hipchat
 class SessionsController < ApplicationController
-  # rubocop:disable Metrics/AbcSize
-  def create_slack
-    user = User.find_or_initialize_by(slack_user_id: omniauth_info_user_id)
-    user.slack_user_name   = omniauth_info["info"]["user"]
-    user.slack_team_id     = omniauth_info["info"]["team_id"]
-
+  def create_github
+    user = User.find(session[:user_id])
+    user.github_login = omniauth_info["info"]["login"]
+    user.github_token = omniauth_info["credentials"]["token"]
     user.save
-    session[:user_id] = user.id
-    redirect_to after_successful_slack_user_setup_path
+    redirect_to after_successful_heroku_user_setup_path
+  rescue ActiveRecord::RecordNotFound
+    redirect_to "/auth/slack"
   end
 
+  # rubocop:disable Metrics/AbcSize
   def create_heroku
     user = User.find(session[:user_id])
     user.heroku_uuid  = omniauth_info["uid"]
@@ -22,6 +22,17 @@ class SessionsController < ApplicationController
     redirect_to after_successful_heroku_user_setup_path
   rescue ActiveRecord::RecordNotFound
     redirect_to "/auth/slack"
+  end
+  # rubocop:enable Metrics/AbcSize
+
+  def create_slack
+    user = User.find_or_initialize_by(slack_user_id: omniauth_info_user_id)
+    user.slack_user_name   = omniauth_info["info"]["user"]
+    user.slack_team_id     = omniauth_info["info"]["team_id"]
+
+    user.save
+    session[:user_id] = user.id
+    redirect_to after_successful_slack_user_setup_path
   end
 
   def destroy
