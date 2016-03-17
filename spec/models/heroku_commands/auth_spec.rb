@@ -14,7 +14,7 @@ RSpec.describe HerokuCommands::Auth, type: :model do
   it "has a auth:whoami command" do
     command = heroku_handler_for("auth:whoami")
 
-    response_info = fixture_data("account/info")
+    response_info = fixture_data("api.heroku.com/account/info")
     stub_request(:get, "https://api.heroku.com/account")
       .with(headers: default_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})

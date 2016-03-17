@@ -35,6 +35,10 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
       .with(headers: default_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
+    response_info = fixture_data("kolkrabbi.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/repository")
+    stub_request(:get, "https://kolkrabbi.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/repository")
+      .to_return(status: 200, body: response_info)
+
     expect(command.task).to eql("deploy")
     expect(command.subtask).to eql("info")
     expect(command.application).to eql("hubot")
@@ -43,11 +47,11 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
     expect(command.response[:attachments].size).to eql(1)
     attachment = command.response[:attachments].first
     expect(attachment[:fallback])
-      .to eql("Heroku deploy for hubot")
+      .to eql("Heroku app hubot (atmos/hubot)")
     expect(attachment[:pretext]).to eql(nil)
     expect(attachment[:text].split("\n").size).to eql(1)
     expect(attachment[:title])
-      .to eql("<https://dashboard.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111|hubot>")
+      .to eql("<https://dashboard.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111|hubot (atmos/hubot)>")
     expect(attachment[:title_link]).to eql(nil)
     expect(attachment[:fields]).to eql(nil)
   end
