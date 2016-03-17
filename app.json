@@ -12,7 +12,7 @@
 
   "website": "http://github.com/atmos/slash-heroku",
   "repository": "https://github.com/atmos/slash-heroku",
-  "success_url": "/docs",
+  "success_url": "/install",
   "addons": ["heroku-postgresql", "heroku-redis"],
   "env": {
     "FERNET_SECRET": {
