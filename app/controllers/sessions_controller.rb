@@ -4,6 +4,9 @@ class SessionsController < ApplicationController
     user = User.find(session[:user_id])
     user.github_login = omniauth_info["info"]["login"]
     user.github_token = omniauth_info["credentials"]["token"]
+
+    Librato.increment "auth.create.github"
+
     user.save
     redirect_to after_successful_heroku_user_setup_path
   rescue ActiveRecord::RecordNotFound
@@ -18,6 +21,9 @@ class SessionsController < ApplicationController
     user.heroku_token = omniauth_info["credentials"]["token"]
     user.heroku_refresh_token = omniauth_refresh_token
     user.heroku_expires_at    = omniauth_expiration
+
+    Librato.increment "auth.create.heroku"
+
     user.save
     redirect_to after_successful_heroku_user_setup_path
   rescue ActiveRecord::RecordNotFound
@@ -29,6 +35,8 @@ class SessionsController < ApplicationController
     user = User.find_or_initialize_by(slack_user_id: omniauth_info_user_id)
     user.slack_user_name   = omniauth_info["info"]["user"]
     user.slack_team_id     = omniauth_info["info"]["team_id"]
+
+    Librato.increment "auth.create.slack"
 
     user.save
     session[:user_id] = user.id
