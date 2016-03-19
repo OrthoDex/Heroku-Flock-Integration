@@ -1,3 +1,4 @@
+ENV["HOSTNAME"] = "example.com"
 ENV["SLACK_APP_URL"] = "https://slack.com/apps/manage/A0SFS6WSD-heroku"
 ENV["KOLKRABBI_HOSTNAME"] = "kolkrabbi.com"
 ENV["SLACK_SLASH_COMMAND_TOKEN"] = "secret-slack-token"
