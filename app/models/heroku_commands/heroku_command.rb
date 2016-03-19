@@ -41,6 +41,11 @@ module HerokuCommands
       }
     end
 
+    def error_response_for(text)
+      { response_type: "in_channel",
+        attachments: [{ text: text, color: "#f00" }] }
+    end
+
     def response_for(text)
       { text: text, response_type: "in_channel" }
     end

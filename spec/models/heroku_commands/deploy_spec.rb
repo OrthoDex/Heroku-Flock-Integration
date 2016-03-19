@@ -39,6 +39,14 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
     stub_request(:get, "https://kolkrabbi.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/repository")
       .to_return(status: 200, body: response_info)
 
+    response_info = fixture_data("api.github.com/repos/atmos/hubot/tarball/master")
+    stub_request(:head, "https://api.github.com/repos/atmos/hubot/tarball/master")
+      .to_return(status: 200, body: response_info, headers: { "Location" => "https://codeload.github.com/atmos/hubot/legacy.tar.gz/master" })
+
+    deployment_response = { sha: "27bd10a885d27ba4db2c82dd34a199b6a0a8149c" }.to_json
+    stub_request(:post, "https://api.github.com/repos/atmos/hubot/deployments")
+      .to_return(status: 200, body: deployment_response, headers: {})
+
     expect(command.task).to eql("deploy")
     expect(command.subtask).to eql("default")
     expect(command.application).to eql("hubot")

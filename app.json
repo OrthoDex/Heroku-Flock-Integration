@@ -30,6 +30,9 @@
     "HEROKU_OAUTH_SECRET": {
       "description": "The Heroku OAuth client secret for being an OAuth consumer"
     },
+    "HOSTNAME": {
+      "description": "The full hostname that the application is running at."
+    },
     "RAILS_ENV": {
       "description": "This is what the RAILS_ENV unix environmental variable is set to.",
       "value": "production"
