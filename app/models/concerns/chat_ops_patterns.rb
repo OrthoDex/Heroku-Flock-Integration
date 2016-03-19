@@ -4,8 +4,7 @@ module ChatOpsPatterns
 
   # Class for encapsulating a chat deployment request
   class Deployment
-    attr_reader :application, :branch, :environment, :forced,
-      :hosts, :second_factor
+    attr_reader :application, :branch, :forced, :hosts, :second_factor
     def initialize(string)
       @string = string
       if matches
@@ -15,6 +14,17 @@ module ChatOpsPatterns
         @environment   = matches[5] || "staging"
         @hosts         = matches[6]
         @second_factor = matches[7]
+      end
+    end
+
+    def environment
+      case @environment
+      when "prod", "prd"
+        "production"
+      when "stg"
+        "staging"
+      else
+        @environment
       end
     end
 
