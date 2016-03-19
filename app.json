@@ -33,6 +33,18 @@
     "HOSTNAME": {
       "description": "The full hostname that the application is running at."
     },
+    "LIBRATO_PASSWORD": {
+      "description": "The password for your librato integration."
+    },
+    "LIBRATO_SOURCE": {
+      "description": "The source prefix for your librato integration."
+    },
+    "LIBRATO_TOKEN": {
+      "description": "The token for your librato integration."
+    },
+    "LIBRATO_USER": {
+      "description": "The user email for your librato integration."
+    },
     "RAILS_ENV": {
       "description": "This is what the RAILS_ENV unix environmental variable is set to.",
       "value": "production"
@@ -45,6 +57,9 @@
       "description": "The URL for the Heroku Redis install that sidekiq uses. Leave this alone.",
       "value": "redis://"
 
+    },
+    "ROLLBAR_ACCESS_TOKEN": {
+      "description": "The token for your rollbar project."
     },
     "SLACK_APP_URL": {
       "description": "The direct link to your app in the Slack App Store"

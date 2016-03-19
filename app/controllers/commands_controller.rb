@@ -1,5 +1,6 @@
 # Endpoint for handling slack postings
 class CommandsController < ApplicationController
+  instrument_action :create
   protect_from_forgery with: :null_session
   def create
     if slack_token_valid?
