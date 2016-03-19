@@ -24,6 +24,7 @@ class User < ApplicationRecord
       team_domain: params[:team_domain]
     )
     CommandExecutorJob.perform_later(command_id: command.id)
+    YubikeyExpireJob.set(wait: 10.seconds).perform_later(command_id: command.id)
     command
   end
 end
