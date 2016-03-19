@@ -4,11 +4,12 @@ class ChatOpsFakeModel
   include ChatOpsPatterns
 
   def initialize(string)
+    @info   = chat_deployment_request(string)
     @string = string
   end
 
   def matches
-    @matches ||= deploy_pattern.match(@string)
+    @matches ||= @info.deploy_pattern.match(@string)
   end
 
   def valid?

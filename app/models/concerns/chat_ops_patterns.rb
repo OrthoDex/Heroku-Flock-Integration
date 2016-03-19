@@ -8,7 +8,6 @@ module ChatOpsPatterns
       :hosts, :second_factor
     def initialize(string)
       @string = string
-      matches = deploy_pattern.match(string)
       if matches
         @forced        = matches[2] == "!"
         @application   = matches[3]
@@ -17,6 +16,14 @@ module ChatOpsPatterns
         @hosts         = matches[6]
         @second_factor = matches[7]
       end
+    end
+
+    def valid?
+      !matches.nil?
+    end
+
+    def matches
+      @matches ||= deploy_pattern.match(@string)
     end
 
     def deploy_pattern
@@ -30,14 +37,14 @@ module ChatOpsPatterns
     # rubocop:disable Metrics/LineLength
     def pattern_parts
       [
-        "(deploy(?:\:[^\s]+)?)",                       # / prefix
-        "(!)?\s+",                                     # Whether or not it was a forced deployment
-        valid_slug.to_s,                               # application name, from apps.json
-        "(?:\/([^\s]+))?",                             # Branch or sha to deploy
-        "(?:\s+(?:to|in|on)\s+",                       # http://i.imgur.com/3KqMoRi.gif
-        valid_slug.to_s,                               # Environment to release to
-        "(?:\/([^\s]+))?)?\s*",                        # Host filter to try
-        "(?:([cbdefghijklnrtuv]{32,64}|\d{6})?\s*)?$"  # Optional Yubikey
+        "(deploy(?:\:[^\s]+)?)",                        # / prefix
+        "(!)?\s+",                                      # Whether or not it was a forced deployment
+        valid_slug.to_s,                                # application name, from apps.json
+        "(?:\/([^\s]+))?",                              # Branch or sha to deploy
+        "(?:\s+(?:to|in|on)\s+",                        # http://i.imgur.com/3KqMoRi.gif
+        valid_slug.to_s,                                # Environment to release to
+        "(?:\/([^\s]+))?)?\s*",                         # Host filter to try
+        "(?:([cbdefghijklnrtuv]{32,64}|\d{6})?\s*)?$"   # Optional Yubikey
       ]
     end
     # rubocop:enable Metrics/LineLength

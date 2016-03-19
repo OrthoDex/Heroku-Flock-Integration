@@ -2,9 +2,12 @@
 class DeploymentReaperJob < ApplicationJob
   queue_as :default
 
+  def build_url(app_id, build_id)
+    "https://dashboard.heroku.com/apps/#{app_id}/activity/builds/#{build_id}"
+  end
+
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/LineLength
   def perform(*args_list)
     args = args_list.first
 
@@ -16,21 +19,21 @@ class DeploymentReaperJob < ApplicationJob
     command_id     = args.fetch(:command_id)
     deployment_url = args.fetch(:deployment_url)
 
-    command = Command.find(command_id)
-    handler = command.handler
+    command  = Command.find(command_id)
+    pipeline = command.handler.pipelines[name]
 
-    pipeline = handler.pipelines[name]
     info = pipeline.reap_build(app_id, build_id)
     if info
-      Rails.logger.info "Build Complete: #{info.to_json}"
+      artifact = { sha: sha, slug: info["slug"]["id"], repo: repo }
+      Rails.logger.info "Build Complete: #{artifact.to_json}"
 
-      state = "failure"
-      state = "success" if info["status"] == "succeeded"
       payload = {
-        state: state,
-        target_url:  "https://dashboard.heroku.com/apps/#{app_id}/activity/builds/#{build_id}",
+        state: "failure",
+        target_url:  build_url(app_id, build_id),
         description: "Chat deployment complete. slash-heroku"
       }
+      payload[:state] = "success" if info["status"] == "succeeded"
+
       pipeline.create_deployment_status(deployment_url, payload)
     elsif command.created_at > 2.minutes.ago
       DeploymentReaperJob.set(wait: 10.seconds).perform_later(args)
@@ -38,7 +41,7 @@ class DeploymentReaperJob < ApplicationJob
       Rails.logger.info "Build expired for command: #{command.id}"
       payload = {
         state: "failure",
-        target_url:  "https://dashboard.heroku.com/apps/#{app_id}/activity/builds/#{build_id}",
+        target_url:  build_url(app_id, build_id),
         description: "Heroku build took longer than 5 minutes."
       }
       pipeline.create_deployment_status(deployment_url, payload)
@@ -49,5 +52,4 @@ class DeploymentReaperJob < ApplicationJob
   end
   # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
-  # rubocop:enable Metrics/LineLength
 end

@@ -38,10 +38,10 @@ module HerokuCommands
     def custom_payload
       {
         notify: {
+          room: command.channel_name,
+          user: command.user.slack_user_id,
           team_id: command.team_id,
-          user_id: command.user.slack_user_id,
-          user_name: command.user.slack_user_name,
-          channel_id: command.channel_id
+          user_name: command.user.slack_user_name
         }
       }
     end
@@ -61,6 +61,7 @@ module HerokuCommands
         else
           deployment[:command_id] = command.id
           DeploymentReaperJob.set(wait: 10.seconds).perform_later(deployment)
+          nil
         end
       end
     end
@@ -72,8 +73,8 @@ module HerokuCommands
         if pipelines
           deploy_application
         else
-          response_for("You're authenticated with GitHub yet. " \
-                       "<#{ENV["HOSTNAME"]}/auth/github|Fix that>.")
+          response_for("You're not authenticated with GitHub yet. " \
+                       "<https://#{ENV['HOSTNAME']}/auth/github|Fix that>.")
         end
       else
         response_for("deploy:#{subtask} is currently unimplemented.")
