@@ -51,7 +51,7 @@ module HerokuCommands
       if application && !pipelines[application]
         response_for("Unable to find a pipeline called #{application}")
       else
-
+        user_id    = command.user.slack_user_id
         pipeline   = pipelines[application]
         deployment = pipeline.create_deployment(branch, environment,
                                                 forced, custom_payload)
@@ -61,7 +61,11 @@ module HerokuCommands
         else
           deployment[:command_id] = command.id
           DeploymentReaperJob.set(wait: 10.seconds).perform_later(deployment)
-          nil
+          url = "https://dashboard.heroku.com/apps/#{deployment[:app_id]}" \
+                  "/activity/builds/#{deployment[:build_id]}"
+          response_for("<@#{user_id}> is <#{url}|deploying> " \
+                       "#{pipeline.github_repository}@#{branch}" \
+                       "(#{deployment[:sha][0..7]}) to #{environment}.")
         end
       end
     end
@@ -80,7 +84,7 @@ module HerokuCommands
         response_for("deploy:#{subtask} is currently unimplemented.")
       end
     rescue StandardError => e
-      Rails.logger.info e.inspect
+      raise e if Rails.env.test?
       response_for("Unable to fetch deployment info for #{application}.")
     end
 

@@ -80,6 +80,11 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
 
     command.run
 
-    expect(command.response).to be_nil
+    message = "<@U123YG08X> is <https://dashboard.heroku.com/apps/hubot" \
+                "/activity/builds/191853f6-0635-44cc-8d97-ef8feae0e178|" \
+                "deploying> atmos/hubot@master(27bd10a8) to production."
+
+    expect(command.response[:response_type]).to eql("in_channel")
+    expect(command.response[:text]).to eql(message)
   end
 end
