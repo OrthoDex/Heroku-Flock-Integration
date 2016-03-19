@@ -1,2 +1,2 @@
 web: bundle exec puma -C config/puma.rb
-worker: bundle exec sidekiq
+worker: /usr/bin/env LIBRATO_AUTORUN=1 bundle exec sidekiq
