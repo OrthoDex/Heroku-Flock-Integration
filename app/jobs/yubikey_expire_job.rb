@@ -21,6 +21,8 @@ class YubikeyExpireJob < ApplicationJob
         Librato.increment "yubikey.expire.used"
       when "token successfully invalidated"
         Librato.increment "yubikey.expire.unused"
+      else
+        Rails.logger.info "Yubikey expire: #{response.body}"
       end
     end
   rescue StandardError => e
