@@ -1,5 +1,7 @@
 # Session controller for authenticating users with GitHub/Heroku/Hipchat
 class SessionsController < ApplicationController
+  include SessionsHelper
+
   def create_github
     user = User.find(session[:user_id])
     user.github_login = omniauth_info["info"]["login"]
@@ -10,7 +12,7 @@ class SessionsController < ApplicationController
     user.save
     redirect_to after_successful_heroku_user_setup_path
   rescue ActiveRecord::RecordNotFound
-    redirect_to "/auth/slack"
+    redirect_to "/auth/slack?origin=#{omniauth_origin}"
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -27,7 +29,7 @@ class SessionsController < ApplicationController
     user.save
     redirect_to after_successful_heroku_user_setup_path
   rescue ActiveRecord::RecordNotFound
-    redirect_to "/auth/slack"
+    redirect_to "/auth/slack?origin=#{omniauth_origin}"
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -43,6 +45,20 @@ class SessionsController < ApplicationController
     redirect_to after_successful_slack_user_setup_path
   end
 
+  def complete
+    @after_success_url = "https://slack.com/messages"
+    if params[:origin]
+      decoded = decoded_params_origin
+
+      @after_success_url = decoded[:uri] if decoded[:uri] =~ /^slack:/
+
+      command = Command.find(decoded[:token])
+      SignupCompleteJob.perform_later(command_id: command.id) if command
+    end
+  rescue StandardError, ActiveRecord::RecordNotFound
+    nil
+  end
+
   def destroy
     session.clear
     redirect_to root_url, notice: "Signed out!"
@@ -51,36 +67,10 @@ class SessionsController < ApplicationController
   private
 
   def after_successful_heroku_user_setup_path
-    if omniauth_origin
-      Base64.decode64(omniauth_origin)
-    else
-      root_url
-    end
-  rescue
-    root_url
+    "/auth/complete?origin=#{omniauth_origin}"
   end
 
   def after_successful_slack_user_setup_path
     "/auth/heroku?origin=#{omniauth_origin}"
-  end
-
-  def omniauth_origin
-    request.env["omniauth.origin"]
-  end
-
-  def omniauth_info_user_id
-    omniauth_info["info"]["user_id"]
-  end
-
-  def omniauth_refresh_token
-    omniauth_info["credentials"]["refresh_token"]
-  end
-
-  def omniauth_expiration
-    Time.at(omniauth_info["credentials"]["expires_at"]).utc
-  end
-
-  def omniauth_info
-    request.env["omniauth.auth"]
   end
 end

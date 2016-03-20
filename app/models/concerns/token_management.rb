@@ -33,6 +33,7 @@ module TokenManagement
 
   def reset_creds
     reset_heroku
+    self.enc_github_token = nil
     self.save
   end
 

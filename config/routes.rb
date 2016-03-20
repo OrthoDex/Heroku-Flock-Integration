@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   # mount ActionCable.server => '/cable'
 
   get  "/auth/failure"         => "sessions#destroy"
+  get  "/auth/complete"        => "sessions#complete"
   get  "/auth/github/callback" => "sessions#create_github"
   get  "/auth/heroku/callback" => "sessions#create_heroku"
   get  "/auth/slack/callback"  => "sessions#create_slack"

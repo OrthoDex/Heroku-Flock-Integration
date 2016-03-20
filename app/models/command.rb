@@ -1,8 +1,21 @@
 # A command a Slack User issued
 class Command < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, required: false
 
   before_validation :extract_cli_args, on: :create
+
+  def self.from_params(params)
+    create(
+      channel_id: params[:channel_id],
+      channel_name: params[:channel_name],
+      command: params[:command],
+      command_text: params[:text],
+      response_url: params[:response_url],
+      slack_user_id: params[:user_id],
+      team_id: params[:team_id],
+      team_domain: params[:team_domain]
+    )
+  end
 
   def run
     handler.run
@@ -34,8 +47,39 @@ class Command < ApplicationRecord
     end
   end
 
+  def notify_user_of_success!
+    user = User.find_by(slack_user_id: slack_user_id)
+    if user
+      name = "<@#{user.slack_user_id}|#{user.slack_user_name}>"
+      postback_message(text_response("#{name} you're all set. :tada:"))
+    end
+  end
+
   def default_response
-    { text: description, response_type: "in_channel" }
+    { response_type: "in_channel" }
+  end
+
+  def text_response(text)
+    { text: text, response_type: "in_channel" }
+  end
+
+  def authenticate_heroku_response(base_uri)
+    url = "#{base_uri}/auth/slack?origin=#{encoded_origin_hash}"
+    {
+      response_type: "in_channel",
+      text: "Please <#{url}|sign in to Heroku>."
+    }
+  end
+
+  def origin_hash
+    {
+      uri: "slack://channel?team=#{team_id}&id=#{channel_id}",
+      token: id
+    }
+  end
+
+  def encoded_origin_hash
+    Base64.encode64(JSON.dump(origin_hash)).split("\n").join("")
   end
 
   private

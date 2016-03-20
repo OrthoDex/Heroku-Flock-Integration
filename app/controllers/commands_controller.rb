@@ -5,10 +5,11 @@ class CommandsController < ApplicationController
   def create
     if slack_token_valid?
       if current_user
-        current_user.create_command_for(params)
-        render json: { response_type: "in_channel" }.to_json
+        command = current_user.create_command_for(params)
+        render json: command.default_response.to_json
       else
-        render json: authenticate_payload.to_json
+        command = Command.from_params(params)
+        render json: command.authenticate_heroku_response(request.base_url)
       end
     else
       render json: {}, status: 404
@@ -28,32 +29,5 @@ class CommandsController < ApplicationController
 
   def slack_token_valid?
     ActiveSupport::SecurityUtils.secure_compare(params[:token], slack_token)
-  end
-
-  def slack_login_uri
-    uri = "slack://channel?team=#{params[:team_id]}&id=#{params[:channel_id]}"
-    "#{request.base_url}/auth/slack?origin=#{Base64.encode64(uri).chomp}"
-  end
-
-  def authenticate_payload
-    {
-      response_type: "in_channel",
-      text: "Please <#{slack_login_uri}|sign in to Heroku>."
-    }
-  end
-
-  def help_payload
-    {
-      response_type: "in_channel",
-      text: "Available heroku commands:",
-      attachments: [
-        {
-          text: "ps <application>"
-        },
-        {
-          text: "restart <application>"
-        }
-      ]
-    }
   end
 end

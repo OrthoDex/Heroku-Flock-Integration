@@ -25,15 +25,12 @@ RSpec.describe "SlashHeroku /commands", type: :request do
 
   it "links to login + origin if you need to authenticate with Heroku" do
     post "/commands", params: default_params(text: "ps")
-
-    origin = "slack://channel?team=T123YG08V&id=C99NNAY74"
-    encoded_origin = Base64.encode64(origin).chomp
-
     expect(status).to eql(200)
     response_body = JSON.parse(body)
     expect(response_body["response_type"]).to eql("in_channel")
+
     link = "Please <http://www.example.com/auth/slack?origin=" \
-           "#{encoded_origin}|sign in to Heroku>."
+           "#{Command.last.encoded_origin_hash}|sign in to Heroku>."
     expect(response_body["text"]).to eql(link)
   end
 
