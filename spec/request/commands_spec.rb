@@ -12,17 +12,6 @@ RSpec.describe "SlashHeroku /commands", type: :request do
     ).merge(options)
   end
 
-  it "returns help on /heroku help" do
-    create_atmos
-
-    post "/commands", params: default_params(text: "help")
-
-    expect(status).to eql(200)
-    response_body = JSON.parse(body)
-    expect(response_body["response_type"]).to eql("in_channel")
-    expect(response_body["text"]).to eql(nil)
-  end
-
   it "links to login + origin if you need to authenticate with Heroku" do
     post "/commands", params: default_params(text: "ps")
     expect(status).to eql(200)
