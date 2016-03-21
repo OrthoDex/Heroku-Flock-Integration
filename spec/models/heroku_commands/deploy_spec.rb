@@ -26,6 +26,7 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
     expect(command.response[:text]).to match(Regexp.new(message))
     expect(command.response[:attachments]).to be_nil
   end
+
   # rubocop:disable Metrics/LineLength
   it "has a deploy command" do
     command = heroku_handler_for("deploy hubot to production")
