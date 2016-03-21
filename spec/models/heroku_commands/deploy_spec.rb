@@ -14,7 +14,7 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
   it "makes you sign up for GitHub OAuth" do
     command = heroku_handler_for("deploy hubot")
     message = "You're not authenticated with GitHub yet. " \
-                "<https://www.example.com/auth/github|Fix that>."
+                "<https://www.example.com/auth/github([^|]+)|Fix that>."
 
     expect(command.task).to eql("deploy")
     expect(command.subtask).to eql("default")
@@ -23,7 +23,7 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
     command.run
 
     expect(command.response[:response_type]).to eql("in_channel")
-    expect(command.response[:text]).to eql(message)
+    expect(command.response[:text]).to match(Regexp.new(message))
     expect(command.response[:attachments]).to be_nil
   end
   # rubocop:disable Metrics/LineLength

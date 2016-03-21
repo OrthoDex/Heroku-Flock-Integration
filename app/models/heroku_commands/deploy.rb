@@ -78,7 +78,7 @@ module HerokuCommands
           deploy_application
         else
           response_for("You're not authenticated with GitHub yet. " \
-                       "<https://#{ENV['HOSTNAME']}/auth/github|Fix that>.")
+                       "<#{command.github_auth_url}|Fix that>.")
         end
       else
         response_for("deploy:#{subtask} is currently unimplemented.")
