@@ -35,7 +35,7 @@ class Command < ApplicationRecord
                    HerokuCommands::Pipelines.new(self)
                  when "releases"
                    HerokuCommands::Releases.new(self)
-                 when "where"
+                 when "where", "wcid"
                    HerokuCommands::Where.new(self)
                  else # when "help"
                    HerokuCommands::Help.new(self)
