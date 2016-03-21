@@ -1,8 +1,15 @@
 module HerokuCommands
   # Class for listing available deployments
   class Where < HerokuCommand
+    include PipelineResponse
+
     def initialize(command)
       super(command)
+
+      pattern = /(where can i deploy|wcid)\s*([-_\.0-9a-z]+)/i
+      matches = pattern.match(command.command_text)
+      return unless matches
+      command.application = matches[2]
     end
 
     def pipelines
@@ -19,9 +26,7 @@ module HerokuCommands
     def self.help_documentation
       [
         "where can i deploy - display the applications you can deploy from chat",
-        "where can i deploy <app> - displays available environments for <app>",
-        "wcid - display the applications you can deploy from chat",
-        "wcid <app> - displays available environments for <app>"
+        "where can i deploy <app> - displays available environments for <app>"
       ]
     end
     # rubocop:enable Metrics/LineLength
@@ -34,18 +39,24 @@ module HerokuCommands
       "https://dashboard.heroku.com/pipelines/new"
     end
 
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/PerceivedComplexity
+    def process_pipelines
+      if pipelines.app_names.any?
+        if application && pipelines[application]
+          pipeline_info
+        else
+          response_for("You can deploy: #{pipelines.app_names.join(', ')}.")
+        end
+      else
+        response_for("You don't have any pipelines yet, " \
+                     "<#{new_pipeline_url}|Create one>.")
+      end
+    end
+
     def run_on_subtask
       case subtask
       when "default"
         if pipelines
-          if pipelines.app_names.any?
-            response_for("You can deploy: #{pipelines.app_names.join(', ')}.")
-          else
-            response_for("You don't have any pipelines yet, " \
-                         "<#{new_pipeline_url}|Create one>.")
-          end
+          process_pipelines
         else
           response_for("You're not authenticated with GitHub yet. " \
                        "<#{command.github_auth_url}|Fix that>.")
@@ -57,7 +68,5 @@ module HerokuCommands
       raise e if Rails.env.test?
       response_for("Unable to fetch deployment info for #{application}.")
     end
-    # rubocop:enable Metrics/PerceivedComplexity
-    # rubocop:enable Metrics/AbcSize
   end
 end

@@ -86,5 +86,65 @@ RSpec.describe HerokuCommands::Where, type: :model do
     expect(command.response[:response_type]).to eql("in_channel")
     expect(command.response[:text]).to eql("You can deploy: hubot, slash-heroku.")
   end
+
+  it "lists available environments for named pipeline" do
+    command = heroku_handler_for("where can i deploy slash-heroku")
+    user = command.user
+    user.github_token = Digest::SHA1.hexdigest(Time.now.utc.to_f.to_s)
+    user.save
+    command.user.reload
+
+    response_info = fixture_data("api.heroku.com/account/info")
+    stub_request(:get, "https://api.heroku.com/account")
+      .with(headers: default_headers(command.user.heroku_token))
+      .to_return(status: 200, body: response_info, headers: {})
+
+    response_info = fixture_data("api.heroku.com/pipelines/info")
+    stub_request(:get, "https://api.heroku.com/pipelines")
+      .with(headers: default_headers(command.user.heroku_token))
+      .to_return(status: 200, body: response_info, headers: {})
+
+    response_info = fixture_data("api.heroku.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc/pipeline-couplings")
+    stub_request(:get, "https://api.heroku.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc/pipeline-couplings")
+      .with(headers: default_headers(command.user.heroku_token))
+      .to_return(status: 200, body: response_info, headers: {})
+
+    response_info = fixture_data("api.heroku.com/apps/b0deddbf-cf56-48e4-8c3a-3ea143be2333")
+    stub_request(:get, "https://api.heroku.com/apps/b0deddbf-cf56-48e4-8c3a-3ea143be2333")
+      .with(headers: default_headers(command.user.heroku_token))
+      .to_return(status: 200, body: response_info, headers: {})
+
+    response_info = fixture_data("api.heroku.com/apps/760bc95e-8780-4c76-a688-3a4af92a3eee")
+    stub_request(:get, "https://api.heroku.com/apps/760bc95e-8780-4c76-a688-3a4af92a3eee")
+      .with(headers: default_headers(command.user.heroku_token))
+      .to_return(status: 200, body: response_info, headers: {})
+
+    response_info = fixture_data("kolkrabbi.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc/repository")
+    stub_request(:get, "https://kolkrabbi.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc/repository")
+      .to_return(status: 200, body: response_info)
+
+    expect(command.task).to eql("where")
+    expect(command.subtask).to eql("default")
+    expect(command.application).to eql("slash-heroku")
+
+    command.run
+
+    expect(command.response[:response_type]).to eql("in_channel")
+    expect(command.response[:attachments].size).to eql(1)
+    attachment = command.response[:attachments].first
+    expect(attachment[:fallback])
+      .to eql("Heroku app slash-heroku (atmos/slash-heroku)")
+    expect(attachment[:pretext]).to eql(nil)
+    expect(attachment[:text].split("\n").size).to eql(2)
+    expect(attachment[:title]).to eql("Application: slash-heroku")
+    expect(attachment[:title_link]).to eql(nil)
+    expect(attachment[:fields].size).to eql(2)
+
+    fields = attachment[:fields]
+    expect(fields.first[:title]).to eql("Heroku")
+    expect(fields.first[:value]).to eql("<https://dashboard.heroku.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc|slash-heroku>")
+    expect(fields.last[:title]).to eql("GitHub")
+    expect(fields.last[:value]).to eql("<https://github.com/atmos/slash-heroku|atmos/slash-heroku>")
+  end
   # rubocop:enable Metrics/LineLength
 end
