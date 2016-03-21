@@ -31,6 +31,9 @@ RSpec.describe "Initial setup & linking with Heroku", type: :request do
 
     # /auth/complete
     expect(status).to eql(302)
+    uri = Addressable::URI.parse(headers["Location"])
+    expect(uri.host).to eql("www.example.com")
+    expect(uri.path).to eql("/auth/complete")
     follow_redirect!
 
     # /auth/complete - thanks & goodbye
@@ -65,6 +68,9 @@ RSpec.describe "Initial setup & linking with Heroku", type: :request do
 
     # /auth/complete
     expect(status).to eql(302)
+    uri = Addressable::URI.parse(headers["Location"])
+    expect(uri.host).to eql("www.example.com")
+    expect(uri.path).to eql("/auth/complete")
     follow_redirect!
 
     # /auth/complete - thanks & goodbye
@@ -99,6 +105,9 @@ RSpec.describe "Initial setup & linking with Heroku", type: :request do
 
     # /auth/complete
     expect(status).to eql(302)
+    uri = Addressable::URI.parse(headers["Location"])
+    expect(uri.host).to eql("www.example.com")
+    expect(uri.path).to eql("/auth/complete")
     follow_redirect!
 
     # /auth/complete - thanks & goodbye

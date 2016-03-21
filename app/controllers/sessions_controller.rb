@@ -71,6 +71,10 @@ class SessionsController < ApplicationController
   end
 
   def after_successful_slack_user_setup_path
-    "/auth/heroku?origin=#{omniauth_origin}"
+    if decoded_omniauth_origin_provider
+      "/auth/#{decoded_omniauth_origin_provider}?origin=#{omniauth_origin}"
+    else
+      "/auth/heroku?origin=#{omniauth_origin}"
+    end
   end
 end

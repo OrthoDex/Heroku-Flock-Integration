@@ -1,5 +1,11 @@
 # Helpers related to session authentication
 module SessionsHelper
+  def decoded_omniauth_origin_provider
+    decoded_omniauth_origin &&
+      %(heroku github).include?(decoded_omniauth_origin[:provider].to_s) &&
+      decoded_omniauth_origin[:provider]
+  end
+
   def decoded_params_origin
     JSON.parse(Base64.decode64(params[:origin])).with_indifferent_access
   rescue

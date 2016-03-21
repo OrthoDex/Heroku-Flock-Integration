@@ -8,18 +8,49 @@ RSpec.describe "Linking with GitHub to create deployments", type: :request do
   end
 
   it "authenticates GitHub after the initial setup" do
-    get "/auth/slack"
+    command = command_for("ps")
+
+    # Calling back from Slack's OAuth handshake
+    get "/auth/github?origin=#{command.encoded_origin_hash(:github)}"
     follow_redirect!
 
-    get "/auth/github"
-    follow_redirect!
-
-    # /auth/complete
+    # 302s to Slack OAuth
     expect(status).to eql(302)
+    uri = Addressable::URI.parse(headers["Location"])
+    expect(uri.host).to eql("www.example.com")
+    expect(uri.path).to eql("/auth/slack")
     follow_redirect!
 
-    # /auth/complete - thanks & goodbye
+    # 302s to Slack OAuth callback
+    expect(status).to eql(302)
+    uri = Addressable::URI.parse(headers["Location"])
+    expect(uri.host).to eql("www.example.com")
+    expect(uri.path).to eql("/auth/slack/callback")
+    follow_redirect!
+
+    # 302s to GitHub OAuth
+    expect(status).to eql(302)
+    uri = Addressable::URI.parse(headers["Location"])
+    expect(uri.host).to eql("www.example.com")
+    expect(uri.path).to eql("/auth/github")
+    follow_redirect!
+
+    # 302s to GitHub OAuth Callback
+    expect(status).to eql(302)
+    uri = Addressable::URI.parse(headers["Location"])
+    expect(uri.host).to eql("www.example.com")
+    expect(uri.path).to eql("/auth/github/callback")
+    follow_redirect!
+
+    ## /auth/complete
+    expect(status).to eql(302)
+    uri = Addressable::URI.parse(headers["Location"])
+    expect(uri.host).to eql("www.example.com")
+    expect(uri.path).to eql("/auth/complete")
+    follow_redirect!
+
+    ## /auth/complete - thanks & goodbye
     expect(status).to eql(200)
-    expect(body).to include("https://slack.com/messages")
+    expect(body).to include("slack://channel?team=T123YG08V&id=C99NNAY74")
   end
 end

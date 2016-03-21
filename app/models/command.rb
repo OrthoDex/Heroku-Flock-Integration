@@ -63,23 +63,36 @@ class Command < ApplicationRecord
     { text: text, response_type: "in_channel" }
   end
 
-  def authenticate_heroku_response(base_uri)
-    url = "#{base_uri}/auth/slack?origin=#{encoded_origin_hash}"
+  def auth_url_prefix
+    "https://#{ENV['HOSTNAME']}/auth"
+  end
+
+  def slack_auth_url
+    "#{auth_url_prefix}/slack?origin=#{encoded_origin_hash(:heroku)}"
+  end
+
+  def github_auth_url
+    "#{auth_url_prefix}/github?origin=#{encoded_origin_hash(:github)}"
+  end
+
+  def authenticate_heroku_response
     {
       response_type: "in_channel",
-      text: "Please <#{url}|sign in to Heroku>."
+      text: "Please <#{slack_auth_url}|sign in to Heroku>."
     }
   end
 
-  def origin_hash
+  def origin_hash(provider_name)
     {
       uri: "slack://channel?team=#{team_id}&id=#{channel_id}",
-      token: id
+      token: id,
+      provider: provider_name
     }
   end
 
-  def encoded_origin_hash
-    Base64.encode64(JSON.dump(origin_hash)).split("\n").join("")
+  def encoded_origin_hash(provider_name = :heroku)
+    data = JSON.dump(origin_hash(provider_name))
+    Base64.encode64(data).split("\n").join("")
   end
 
   private
