@@ -3,7 +3,7 @@ module HerokuCommands
   class Deploy < HerokuCommand
     include ChatOpsPatterns
 
-    attr_reader :info, :pipelines
+    attr_reader :info
     delegate :application, :branch, :environment, :forced, :hosts,
       :second_factor, to: :@info
 
