@@ -12,7 +12,7 @@ module HerokuCommands
 
     def initialize(command)
       @command  = command
-      @client   = ::HerokuApi.new(user.heroku_token)
+      @client   = ::HerokuApi.new(user.heroku_token) if user
 
       @description = command.description.gsub("Running", "Ran")
       @response    = { text: description, response_type: "in_channel" }
