@@ -63,6 +63,14 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
     stub_request(:get, "https://kolkrabbi.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/repository")
       .to_return(status: 200, body: response_info)
 
+    response_info = fixture_data("api.github.com/repos/atmos/hubot/index")
+    stub_request(:get, "https://api.github.com/repos/atmos/hubot")
+      .to_return(status: 200, body: response_info, headers: {})
+
+    response_info = fixture_data("api.github.com/repos/atmos/hubot/branches/production")
+    stub_request(:get, "https://api.github.com/repos/atmos/hubot/branches/production")
+      .to_return(status: 200, body: response_info, headers: {})
+
     sha = "27bd10a885d27ba4db2c82dd34a199b6a0a8149c"
     response_info = fixture_data("api.github.com/repos/atmos/hubot/tarball/#{sha}")
     stub_request(:head, "https://api.github.com/repos/atmos/hubot/tarball/#{sha}")

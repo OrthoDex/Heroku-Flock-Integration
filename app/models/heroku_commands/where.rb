@@ -58,8 +58,8 @@ module HerokuCommands
         if pipelines
           process_pipelines
         else
-          response_for("You're not authenticated with GitHub yet. " \
-                       "<#{command.github_auth_url}|Fix that>.")
+          response_for("You need to authenticate with GitHub in order to " \
+                       "deploy. <#{command.github_auth_url}|Fix that>.")
         end
       else
         response_for("where:#{subtask} is currently unimplemented.")
