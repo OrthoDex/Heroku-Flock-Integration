@@ -22,7 +22,7 @@ RSpec.describe HerokuCommands::Releases, type: :model do
 
     response_info = fixture_data("api.heroku.com/releases/atmos-dot-org/list")
     stub_request(:get, "https://api.heroku.com/apps/atmos-dot-org/releases")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     expect(command.task).to eql("releases")
@@ -74,7 +74,7 @@ RSpec.describe HerokuCommands::Releases, type: :model do
 
       response_info = fixture_data("api.heroku.com/releases/atmos-dot-org/info")
       stub_request(:get, "https://api.heroku.com/apps/atmos-dot-org/releases/9")
-        .with(headers: default_headers(command.user.heroku_token))
+        .with(headers: default_heroku_headers(command.user.heroku_token))
         .to_return(status: 200, body: response_info, headers: {})
 
       expect(command.task).to eql("releases")
@@ -90,7 +90,7 @@ RSpec.describe HerokuCommands::Releases, type: :model do
 
       response_info = fixture_data("api.heroku.com/releases/atmos-dot-org/info")
       stub_request(:get, "https://api.heroku.com/apps/atmos-dot-org/releases/9")
-        .with(headers: default_headers(command.user.heroku_token))
+        .with(headers: default_heroku_headers(command.user.heroku_token))
         .to_return(status: 200, body: response_info, headers: {})
 
       expect(command.task).to eql("releases")

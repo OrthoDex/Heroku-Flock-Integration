@@ -2,6 +2,7 @@ module HerokuCommands
   # Class for handling Deployment requests
   class Deploy < HerokuCommand
     include ChatOpsPatterns
+    include PipelineResponse
 
     attr_reader :info
     delegate :application, :branch, :environment, :forced, :hosts,
@@ -13,26 +14,15 @@ module HerokuCommands
       @info = chat_deployment_request(command.command_text)
     end
 
-    # rubocop:disable Metrics/LineLength
     def self.help_documentation
       [
-        "deploy <app>/<branch> to <env>/<roles> - deploy pipeline <app>'s <branch> to the <env> environment's <roles>"
+        "deploy <pipeline>/<branch> to <env>/<roles> - deploy <pipeline>'s " \
+          "<branch> to the <env> environment's <roles>"
       ]
     end
-    # rubocop:enable Metrics/LineLength
 
     def run
       @response = run_on_subtask
-    end
-
-    def pipelines
-      @pipelines ||= pipelines!
-    end
-
-    def pipelines!
-      if command.user.github_token
-        Escobar::Client.new(command.user.github_token, client.token)
-      end
     end
 
     def custom_payload
@@ -88,17 +78,9 @@ module HerokuCommands
       response_for("Unable to fetch deployment info for #{application}.")
     end
 
-    def pipeline_markup(application, deploy)
-      "<#{pipeline_link(deploy.id)}|#{application}>"
-    end
-
     def repository_markup(deploy)
       name_with_owner = deploy.github_repository
       "<https://github.com/#{name_with_owner}|#{name_with_owner}>"
-    end
-
-    def pipeline_link(id)
-      "https://dashboard.heroku.com/pipelines/#{id}"
     end
   end
 end

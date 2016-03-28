@@ -16,7 +16,7 @@ RSpec.describe HerokuCommands::Auth, type: :model do
 
     response_info = fixture_data("api.heroku.com/account/info")
     stub_request(:get, "https://api.heroku.com/account")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     expect(command.task).to eql("auth")

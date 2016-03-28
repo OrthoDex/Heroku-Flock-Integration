@@ -37,11 +37,11 @@ RSpec.describe HerokuCommands::Where, type: :model do
 
     response_info = fixture_data("api.heroku.com/account/info")
     stub_request(:get, "https://api.heroku.com/account")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     stub_request(:get, "https://api.heroku.com/pipelines")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: [].to_json, headers: {})
 
     expect(command.task).to eql("where")
@@ -64,17 +64,17 @@ RSpec.describe HerokuCommands::Where, type: :model do
 
     response_info = fixture_data("api.heroku.com/account/info")
     stub_request(:get, "https://api.heroku.com/account")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     response_info = fixture_data("api.heroku.com/pipelines/info")
     stub_request(:get, "https://api.heroku.com/pipelines")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     response_info = fixture_data("api.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/pipeline-couplings")
     stub_request(:get, "https://api.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/pipeline-couplings")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     expect(command.task).to eql("where")
@@ -96,32 +96,42 @@ RSpec.describe HerokuCommands::Where, type: :model do
 
     response_info = fixture_data("api.heroku.com/account/info")
     stub_request(:get, "https://api.heroku.com/account")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     response_info = fixture_data("api.heroku.com/pipelines/info")
     stub_request(:get, "https://api.heroku.com/pipelines")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     response_info = fixture_data("api.heroku.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc/pipeline-couplings")
     stub_request(:get, "https://api.heroku.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc/pipeline-couplings")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     response_info = fixture_data("api.heroku.com/apps/b0deddbf-cf56-48e4-8c3a-3ea143be2333")
     stub_request(:get, "https://api.heroku.com/apps/b0deddbf-cf56-48e4-8c3a-3ea143be2333")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     response_info = fixture_data("api.heroku.com/apps/760bc95e-8780-4c76-a688-3a4af92a3eee")
     stub_request(:get, "https://api.heroku.com/apps/760bc95e-8780-4c76-a688-3a4af92a3eee")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     response_info = fixture_data("kolkrabbi.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc/repository")
     stub_request(:get, "https://kolkrabbi.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc/repository")
       .to_return(status: 200, body: response_info)
+
+    response = fixture_data("api.github.com/repos/atmos/slash-heroku/index")
+    stub_request(:get, "https://api.github.com/repos/atmos/slash-heroku")
+      .with(headers: default_github_headers(command.user.github_token))
+      .to_return(status: 200, body: response, headers: {})
+
+    response = fixture_data("api.github.com/repos/atmos/slash-heroku/branches/master")
+    stub_request(:get, "https://api.github.com/repos/atmos/slash-heroku/branches/master")
+      .with(headers: default_github_headers(command.user.github_token))
+      .to_return(status: 200, body: response, headers: {})
 
     expect(command.task).to eql("where")
     expect(command.subtask).to eql("default")
@@ -138,13 +148,28 @@ RSpec.describe HerokuCommands::Where, type: :model do
     expect(attachment[:text].split("\n").size).to eql(2)
     expect(attachment[:title]).to eql("Application: slash-heroku")
     expect(attachment[:title_link]).to eql(nil)
-    expect(attachment[:fields].size).to eql(2)
 
-    fields = attachment[:fields]
-    expect(fields.first[:title]).to eql("Heroku")
-    expect(fields.first[:value]).to eql("<https://dashboard.heroku.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc|slash-heroku>")
-    expect(fields.last[:title]).to eql("GitHub")
-    expect(fields.last[:value]).to eql("<https://github.com/atmos/slash-heroku|atmos/slash-heroku>")
+    expect(attachment[:fields].size).to eql(4)
+
+    heroku_cell = attachment[:fields][0]
+    expect(heroku_cell).to_not be_nil
+    expect(heroku_cell[:title]).to eql("Heroku")
+    expect(heroku_cell[:value]).to eql("<https://dashboard.heroku.com/pipelines/4c18c922-6eee-451c-b7c6-c76278652ccc|slash-heroku>")
+
+    github_cell = attachment[:fields][1]
+    expect(github_cell).to_not be_nil
+    expect(github_cell[:title]).to eql("GitHub")
+    expect(github_cell[:value]).to eql("<https://github.com/atmos/slash-heroku|atmos/slash-heroku>")
+
+    branch_cell = attachment[:fields][2]
+    expect(branch_cell).to_not be_nil
+    expect(branch_cell[:title]).to eql("Default Branch")
+    expect(branch_cell[:value]).to eql("master")
+
+    required_contexts_cell = attachment[:fields][3]
+    expect(required_contexts_cell).to_not be_nil
+    expect(required_contexts_cell[:title]).to eql("Required Contexts")
+    expect(required_contexts_cell[:value]).to eql("continuous-integration/travis-ci/push")
   end
   # rubocop:enable Metrics/LineLength
 end

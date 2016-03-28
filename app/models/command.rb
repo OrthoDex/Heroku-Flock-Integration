@@ -72,7 +72,8 @@ class Command < ApplicationRecord
   end
 
   def slack_auth_url
-    "#{auth_url_prefix}/slack?origin=#{encoded_origin_hash(:heroku)}"
+    "#{auth_url_prefix}/slack?origin=#{encoded_origin_hash(:heroku)}" \
+      "&team=#{team_id}"
   end
 
   def github_auth_url
@@ -89,6 +90,7 @@ class Command < ApplicationRecord
   def origin_hash(provider_name)
     {
       uri: "slack://channel?team=#{team_id}&id=#{channel_id}",
+      team: team_id,
       token: id,
       provider: provider_name
     }

@@ -9,9 +9,23 @@ module PipelineResponse
   module ClassMethods
   end
 
+  def pipelines
+    @pipelines ||= pipelines!
+  end
+
+  def pipelines!
+    if command.user.github_token
+      Escobar::Client.new(command.user.github_token, client.token)
+    end
+  end
+
   def pipeline_info
-    response = @pipelines[application]
+    response = pipelines[application]
     response_for_pipeline(response)
+  end
+
+  def pipeline_link(id)
+    "https://dashboard.heroku.com/pipelines/#{id}"
   end
 
   def pipeline_markup(application, pipeline)
@@ -23,8 +37,13 @@ module PipelineResponse
     "<https://github.com/#{name_with_owner}|#{name_with_owner}>"
   end
 
-  def pipeline_link(id)
-    "https://dashboard.heroku.com/pipelines/#{id}"
+  def required_contexts_markup(pipeline)
+    if pipeline.required_contexts.any?
+      pipeline.required_contexts.join("\n")
+    else
+      "<https://github.com/#{pipeline.github_repository}/settings/branches/" \
+        "#{pipeline.default_branch}|Add Required Contexts>"
+    end
   end
 
   def environment_output_for_pipeline(pipeline)
@@ -35,6 +54,7 @@ module PipelineResponse
     end.join("\n")
   end
 
+  # rubocop:disable Metrics/MethodLength
   def response_for_pipeline(pipeline)
     repo_name = pipeline.github_repository
     {
@@ -55,10 +75,21 @@ module PipelineResponse
               title: "GitHub",
               value: repository_markup(pipeline),
               short: true
+            },
+            {
+              title: "Default Branch",
+              value: pipeline.default_branch,
+              short: true
+            },
+            {
+              title: "Required Contexts",
+              value: required_contexts_markup(pipeline),
+              short: true
             }
           ]
         }
       ]
     }
   end
+  # rubocop:enable Metrics/MethodLength
 end

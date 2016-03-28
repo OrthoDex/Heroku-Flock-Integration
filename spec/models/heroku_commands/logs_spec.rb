@@ -14,7 +14,7 @@ RSpec.describe HerokuCommands::Logs, type: :model do
     logs_api_url = "https://logs-api.heroku.com/sessions/cc3cd8e9-8b2a-49ce-845d-c97ae6d0"
 
     stub_request(:get, "https://api.heroku.com/apps/atmos-dot-org/logs?logplex=true")
-      .with(headers: default_headers(command.user.heroku_token, 2))
+      .with(headers: default_heroku_headers(command.user.heroku_token, 2))
       .to_return(status: 200, body: "#{logs_api_url}?src=1457925552", headers: {})
 
     response_info = fixture_data("api.heroku.com/logs/atmos-dot-org/logs")
