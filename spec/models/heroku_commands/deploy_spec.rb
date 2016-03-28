@@ -37,26 +37,26 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
 
     response_info = fixture_data("api.heroku.com/account/info")
     stub_request(:get, "https://api.heroku.com/account")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     response_info = fixture_data("api.heroku.com/pipelines/info")
     stub_request(:get, "https://api.heroku.com/pipelines")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     response_info = fixture_data("api.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/pipeline-couplings")
     stub_request(:get, "https://api.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/pipeline-couplings")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     response_info = fixture_data("api.heroku.com/apps/27bde4b5-b431-4117-9302-e533b887faaa")
     stub_request(:get, "https://api.heroku.com/apps/27bde4b5-b431-4117-9302-e533b887faaa")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: response_info, headers: {})
 
     stub_request(:post, "https://api.heroku.com/apps/hubot/builds")
-      .with(headers: default_headers(command.user.heroku_token))
+      .with(headers: default_heroku_headers(command.user.heroku_token))
       .to_return(status: 200, body: { id: "191853f6-0635-44cc-8d97-ef8feae0e178" }.to_json, headers: {})
 
     response_info = fixture_data("kolkrabbi.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/repository")

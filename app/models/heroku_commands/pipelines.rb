@@ -6,8 +6,6 @@ module HerokuCommands
 
     def initialize(command)
       super(command)
-
-      @pipelines = Escobar::Client.new(nil, client.token)
     end
 
     def self.help_documentation

@@ -12,24 +12,12 @@ module HerokuCommands
       command.application = matches[2]
     end
 
-    def pipelines
-      @pipelines ||= pipelines!
-    end
-
-    def pipelines!
-      if command.user.github_token
-        Escobar::Client.new(command.user.github_token, client.token)
-      end
-    end
-
-    # rubocop:disable Metrics/LineLength
     def self.help_documentation
       [
-        "where can i deploy - display the applications you can deploy from chat",
+        "where can i deploy - display the apps you can deploy from chat",
         "where can i deploy <app> - displays available environments for <app>"
       ]
     end
-    # rubocop:enable Metrics/LineLength
 
     def run
       @response = run_on_subtask
