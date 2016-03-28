@@ -37,8 +37,8 @@ module PipelineResponse
   end
 
   def required_contexts_markup
-    if pipeline.required_contexts.any?
-      pipeline.required_contexts.map do |context|
+    if pipeline.required_commit_contexts.any?
+      pipeline.required_commit_contexts.map do |context|
         "<#{pipeline.default_branch_settings_uri}|#{context}>"
       end.join("\n")
     else
