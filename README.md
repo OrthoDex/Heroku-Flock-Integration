@@ -10,7 +10,7 @@ Get recent releases for your applications:
 
 Deploy your pipelines:
 
-![pipelines and commit statues](https://cloud.githubusercontent.com/assets/38/14072520/27ef4f6a-f476-11e5-9f78-0c862269d18d.png)
+![pipelines and commit statues](https://cloud.githubusercontent.com/assets/38/14076117/bd2d37c8-f493-11e5-842f-bdb7df606afe.png)
 
 Ideally we can port a lot of useful commands over from the Heroku CLI.
 
