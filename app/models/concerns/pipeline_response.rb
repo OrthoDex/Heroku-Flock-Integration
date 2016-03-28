@@ -27,12 +27,8 @@ module PipelineResponse
     response_for_pipeline(pipeline)
   end
 
-  def pipeline_link(id)
-    "https://dashboard.heroku.com/pipelines/#{id}"
-  end
-
   def pipeline_markup(application, pipeline)
-    "<#{pipeline_link(pipeline.id)}|#{application}>"
+    "<#{pipeline.heroku_permalink}|#{application}>"
   end
 
   def repository_markup(pipeline)
@@ -44,8 +40,7 @@ module PipelineResponse
     if pipeline.required_contexts.any?
       pipeline.required_contexts.join("\n")
     else
-      "<https://github.com/#{pipeline.github_repository}/settings/branches/" \
-        "#{pipeline.default_branch}|Add Required Contexts>"
+      "<#{pipeline.default_branch_settings_uri}|Add Required Contexts>"
     end
   end
 
