@@ -9,6 +9,10 @@ module PipelineResponse
   module ClassMethods
   end
 
+  def pipeline
+    pipelines[application]
+  end
+
   def pipelines
     @pipelines ||= pipelines!
   end
@@ -20,8 +24,7 @@ module PipelineResponse
   end
 
   def pipeline_info
-    response = pipelines[application]
-    response_for_pipeline(response)
+    response_for_pipeline(pipeline)
   end
 
   def pipeline_link(id)

@@ -11,7 +11,7 @@ module ChatOpsPatterns
         @forced        = matches[2] == "!"
         @application   = matches[3]
         @branch        = matches[4] || "master"
-        @environment   = matches[5] || "staging"
+        @environment   = matches[5]
         @hosts         = matches[6]
         @second_factor = matches[7]
       end

@@ -5,8 +5,7 @@ module HerokuCommands
     include PipelineResponse
 
     attr_reader :info
-    delegate :application, :branch, :environment, :forced, :hosts,
-      :second_factor, to: :@info
+    delegate :application, :branch, :forced, :hosts, :second_factor, to: :@info
 
     def initialize(command)
       super(command)
@@ -23,6 +22,10 @@ module HerokuCommands
 
     def run
       @response = run_on_subtask
+    end
+
+    def environment
+      @environment ||= info.environment || pipeline.default_environment
     end
 
     def custom_payload
