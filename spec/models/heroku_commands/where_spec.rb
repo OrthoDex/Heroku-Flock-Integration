@@ -169,7 +169,7 @@ RSpec.describe HerokuCommands::Where, type: :model do
     required_contexts_cell = attachment[:fields][3]
     expect(required_contexts_cell).to_not be_nil
     expect(required_contexts_cell[:title]).to eql("Required Contexts")
-    expect(required_contexts_cell[:value]).to eql("continuous-integration/travis-ci/push")
+    expect(required_contexts_cell[:value]).to eql("<https://github.com/atmos/slash-heroku/settings/branches/master|continuous-integration/travis-ci/push>")
   end
   # rubocop:enable Metrics/LineLength
 end
