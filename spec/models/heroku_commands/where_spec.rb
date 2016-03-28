@@ -161,12 +161,12 @@ RSpec.describe HerokuCommands::Where, type: :model do
 
     production_cell = attachment[:fields][2]
     expect(production_cell).to_not be_nil
-    expect(production_cell[:title]).to eql("Production Environment")
+    expect(production_cell[:title]).to eql("Production Apps")
     expect(production_cell[:value]).to eql("slash-heroku-production")
 
     staging_cell = attachment[:fields][3]
     expect(staging_cell).to_not be_nil
-    expect(staging_cell[:title]).to eql("Staging Environment")
+    expect(staging_cell[:title]).to eql("Staging Apps")
     expect(staging_cell[:value]).to eql("slash-heroku-staging")
 
     required_contexts_cell = attachment[:fields][4]

@@ -78,12 +78,12 @@ RSpec.describe HerokuCommands::Pipelines, type: :model do
 
     production_cell = attachment[:fields][2]
     expect(production_cell).to_not be_nil
-    expect(production_cell[:title]).to eql("Production Environment")
+    expect(production_cell[:title]).to eql("Production Apps")
     expect(production_cell[:value]).to eql("hubot")
 
     staging_cell = attachment[:fields][3]
     expect(staging_cell).to_not be_nil
-    expect(staging_cell[:title]).to eql("Staging Environment")
+    expect(staging_cell[:title]).to eql("Staging Apps")
     expect(staging_cell[:value]).to eql("<https://dashboard.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111|Create One>")
 
     required_contexts_cell = attachment[:fields][4]

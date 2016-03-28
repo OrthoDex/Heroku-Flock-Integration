@@ -77,12 +77,12 @@ module PipelineResponse
               short: true
             },
             {
-              title: "Production Environment",
+              title: "Production Apps",
               value: app_names_for_pipeline_environment("production"),
               short: true
             },
             {
-              title: "Staging Environment",
+              title: "Staging Apps",
               value: app_names_for_pipeline_environment("staging"),
               short: true
             },
