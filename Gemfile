@@ -2,12 +2,12 @@ ruby "2.3.0"
 
 source "https://rubygems.org"
 
-gem "actionpack"
-gem "actionview"
-gem "activejob"
-gem "activemodel"
-gem "activerecord"
-gem "activesupport"
+gem "actionpack", ">= 5.0.0.beta3", "< 5.1"
+gem "actionview", ">= 5.0.0.beta3", "< 5.1"
+gem "activejob", ">= 5.0.0.beta3", "< 5.1"
+gem "activemodel", ">= 5.0.0.beta3", "< 5.1"
+gem "activerecord", ">= 5.0.0.beta3", "< 5.1"
+gem "activesupport", ">= 5.0.0.beta3", "< 5.1"
 gem "addressable"
 gem "bundler", ">= 1.3.0", "< 2.0"
 gem "coffee-rails", "~> 4.1.0"
@@ -37,7 +37,7 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "pry"
-  gem "rspec-rails", "3.5.0.beta1"
+  gem "rspec-rails", "3.5.0.beta2"
   gem "rubocop"
 end
 
