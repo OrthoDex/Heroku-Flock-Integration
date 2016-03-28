@@ -77,6 +77,11 @@ module PipelineResponse
               short: true
             },
             {
+              title: "Default Branch",
+              value: pipeline.default_branch,
+              short: true
+            },
+            {
               title: "Required Contexts",
               value: required_contexts_markup(pipeline),
               short: true

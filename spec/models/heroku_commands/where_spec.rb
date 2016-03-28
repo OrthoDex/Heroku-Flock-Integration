@@ -149,7 +149,7 @@ RSpec.describe HerokuCommands::Where, type: :model do
     expect(attachment[:title]).to eql("Application: slash-heroku")
     expect(attachment[:title_link]).to eql(nil)
 
-    expect(attachment[:fields].size).to eql(3)
+    expect(attachment[:fields].size).to eql(4)
 
     heroku_cell = attachment[:fields][0]
     expect(heroku_cell).to_not be_nil
@@ -161,7 +161,12 @@ RSpec.describe HerokuCommands::Where, type: :model do
     expect(github_cell[:title]).to eql("GitHub")
     expect(github_cell[:value]).to eql("<https://github.com/atmos/slash-heroku|atmos/slash-heroku>")
 
-    required_contexts_cell = attachment[:fields][2]
+    branch_cell = attachment[:fields][2]
+    expect(branch_cell).to_not be_nil
+    expect(branch_cell[:title]).to eql("Default Branch")
+    expect(branch_cell[:value]).to eql("master")
+
+    required_contexts_cell = attachment[:fields][3]
     expect(required_contexts_cell).to_not be_nil
     expect(required_contexts_cell[:title]).to eql("Required Contexts")
     expect(required_contexts_cell[:value]).to eql("continuous-integration/travis-ci/push")
