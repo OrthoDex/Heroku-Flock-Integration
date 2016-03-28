@@ -62,10 +62,9 @@ RSpec.describe HerokuCommands::Pipelines, type: :model do
     expect(attachment[:fallback])
       .to eql("Heroku app hubot (atmos/hubot)")
     expect(attachment[:pretext]).to eql(nil)
-    expect(attachment[:text].split("\n").size).to eql(1)
+    expect(attachment[:text]).to be_nil
     expect(attachment[:title]).to eql("Application: hubot")
     expect(attachment[:title_link]).to eql(nil)
-    expect(attachment[:fields].size).to eql(4)
 
     heroku_cell = attachment[:fields][0]
     expect(heroku_cell).to_not be_nil
@@ -87,6 +86,16 @@ RSpec.describe HerokuCommands::Pipelines, type: :model do
     expect(required_contexts_cell[:title]).to eql("Required Contexts")
     expect(required_contexts_cell[:value])
       .to eql("<https://github.com/atmos/hubot/settings/branches/production|Add Required Contexts>")
+
+    production_cell = attachment[:fields][4]
+    expect(production_cell).to_not be_nil
+    expect(production_cell[:title]).to eql("Production Environment")
+    expect(production_cell[:value]).to eql("hubot")
+
+    staging_cell = attachment[:fields][5]
+    expect(staging_cell).to_not be_nil
+    expect(staging_cell[:title]).to eql("Staging Environment")
+    expect(staging_cell[:value]).to eql("<https://dashboard.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111|Create One>")
   end
   # rubocop:enable Metrics/LineLength
 end

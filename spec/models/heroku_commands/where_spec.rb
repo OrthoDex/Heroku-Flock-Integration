@@ -145,11 +145,9 @@ RSpec.describe HerokuCommands::Where, type: :model do
     expect(attachment[:fallback])
       .to eql("Heroku app slash-heroku (atmos/slash-heroku)")
     expect(attachment[:pretext]).to eql(nil)
-    expect(attachment[:text].split("\n").size).to eql(2)
+    expect(attachment[:text]).to be_nil
     expect(attachment[:title]).to eql("Application: slash-heroku")
     expect(attachment[:title_link]).to eql(nil)
-
-    expect(attachment[:fields].size).to eql(4)
 
     heroku_cell = attachment[:fields][0]
     expect(heroku_cell).to_not be_nil
@@ -170,6 +168,16 @@ RSpec.describe HerokuCommands::Where, type: :model do
     expect(required_contexts_cell).to_not be_nil
     expect(required_contexts_cell[:title]).to eql("Required Contexts")
     expect(required_contexts_cell[:value]).to eql("<https://github.com/atmos/slash-heroku/settings/branches/master|continuous-integration/travis-ci/push>")
+
+    production_cell = attachment[:fields][4]
+    expect(production_cell).to_not be_nil
+    expect(production_cell[:title]).to eql("Production Environment")
+    expect(production_cell[:value]).to eql("slash-heroku-production")
+
+    staging_cell = attachment[:fields][5]
+    expect(staging_cell).to_not be_nil
+    expect(staging_cell[:title]).to eql("Staging Environment")
+    expect(staging_cell[:value]).to eql("slash-heroku-staging")
   end
   # rubocop:enable Metrics/LineLength
 end
