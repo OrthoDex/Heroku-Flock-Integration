@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get  "/auth/heroku/callback" => "sessions#create_heroku"
   get  "/auth/slack/callback"  => "sessions#create_slack"
 
+  get  "/health"   => "application#health"
   get  "/install"  => "pages#install"
   get  "/support"  => "pages#support"
   get  "/boomtown" => "application#boomtown"
