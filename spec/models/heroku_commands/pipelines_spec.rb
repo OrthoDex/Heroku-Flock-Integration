@@ -76,26 +76,31 @@ RSpec.describe HerokuCommands::Pipelines, type: :model do
     expect(github_cell[:title]).to eql("GitHub")
     expect(github_cell[:value]).to eql("<https://github.com/atmos/hubot|atmos/hubot>")
 
-    branch_cell = attachment[:fields][2]
-    expect(branch_cell).to_not be_nil
-    expect(branch_cell[:title]).to eql("Default Branch")
-    expect(branch_cell[:value]).to eql("production")
+    production_cell = attachment[:fields][2]
+    expect(production_cell).to_not be_nil
+    expect(production_cell[:title]).to eql("Production Environment")
+    expect(production_cell[:value]).to eql("hubot")
 
-    required_contexts_cell = attachment[:fields][3]
+    staging_cell = attachment[:fields][3]
+    expect(staging_cell).to_not be_nil
+    expect(staging_cell[:title]).to eql("Staging Environment")
+    expect(staging_cell[:value]).to eql("<https://dashboard.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111|Create One>")
+
+    required_contexts_cell = attachment[:fields][4]
     expect(required_contexts_cell).to_not be_nil
     expect(required_contexts_cell[:title]).to eql("Required Contexts")
     expect(required_contexts_cell[:value])
       .to eql("<https://github.com/atmos/hubot/settings/branches/production|Add Required Contexts>")
 
-    production_cell = attachment[:fields][4]
-    expect(production_cell).to_not be_nil
-    expect(production_cell[:title]).to eql("Production Environment")
-    expect(production_cell[:value]).to eql("hubot")
+    environment_cell = attachment[:fields][5]
+    expect(environment_cell).to_not be_nil
+    expect(environment_cell[:title]).to eql("Default Environment")
+    expect(environment_cell[:value]).to eql("production")
 
-    staging_cell = attachment[:fields][5]
-    expect(staging_cell).to_not be_nil
-    expect(staging_cell[:title]).to eql("Staging Environment")
-    expect(staging_cell[:value]).to eql("<https://dashboard.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111|Create One>")
+    branch_cell = attachment[:fields][6]
+    expect(branch_cell).to_not be_nil
+    expect(branch_cell[:title]).to eql("Default Branch")
+    expect(branch_cell[:value]).to eql("production")
   end
   # rubocop:enable Metrics/LineLength
 end

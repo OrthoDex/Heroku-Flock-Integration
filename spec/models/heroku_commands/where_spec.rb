@@ -159,25 +159,30 @@ RSpec.describe HerokuCommands::Where, type: :model do
     expect(github_cell[:title]).to eql("GitHub")
     expect(github_cell[:value]).to eql("<https://github.com/atmos/slash-heroku|atmos/slash-heroku>")
 
-    branch_cell = attachment[:fields][2]
-    expect(branch_cell).to_not be_nil
-    expect(branch_cell[:title]).to eql("Default Branch")
-    expect(branch_cell[:value]).to eql("master")
-
-    required_contexts_cell = attachment[:fields][3]
-    expect(required_contexts_cell).to_not be_nil
-    expect(required_contexts_cell[:title]).to eql("Required Contexts")
-    expect(required_contexts_cell[:value]).to eql("<https://github.com/atmos/slash-heroku/settings/branches/master|continuous-integration/travis-ci/push>")
-
-    production_cell = attachment[:fields][4]
+    production_cell = attachment[:fields][2]
     expect(production_cell).to_not be_nil
     expect(production_cell[:title]).to eql("Production Environment")
     expect(production_cell[:value]).to eql("slash-heroku-production")
 
-    staging_cell = attachment[:fields][5]
+    staging_cell = attachment[:fields][3]
     expect(staging_cell).to_not be_nil
     expect(staging_cell[:title]).to eql("Staging Environment")
     expect(staging_cell[:value]).to eql("slash-heroku-staging")
+
+    required_contexts_cell = attachment[:fields][4]
+    expect(required_contexts_cell).to_not be_nil
+    expect(required_contexts_cell[:title]).to eql("Required Contexts")
+    expect(required_contexts_cell[:value]).to eql("<https://github.com/atmos/slash-heroku/settings/branches/master|continuous-integration/travis-ci/push>")
+
+    environment_cell = attachment[:fields][5]
+    expect(environment_cell).to_not be_nil
+    expect(environment_cell[:title]).to eql("Default Environment")
+    expect(environment_cell[:value]).to eql("staging")
+
+    branch_cell = attachment[:fields][6]
+    expect(branch_cell).to_not be_nil
+    expect(branch_cell[:title]).to eql("Default Branch")
+    expect(branch_cell[:value]).to eql("master")
   end
   # rubocop:enable Metrics/LineLength
 end

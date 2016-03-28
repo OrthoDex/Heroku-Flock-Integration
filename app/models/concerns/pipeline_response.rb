@@ -77,8 +77,13 @@ module PipelineResponse
               short: true
             },
             {
-              title: "Default Branch",
-              value: pipeline.default_branch,
+              title: "Production Environment",
+              value: app_names_for_pipeline_environment("production"),
+              short: true
+            },
+            {
+              title: "Staging Environment",
+              value: app_names_for_pipeline_environment("staging"),
               short: true
             },
             {
@@ -87,13 +92,13 @@ module PipelineResponse
               short: true
             },
             {
-              title: "Production Environment",
-              value: app_names_for_pipeline_environment("production"),
+              title: "Default Environment",
+              value: pipeline.default_environment,
               short: true
             },
             {
-              title: "Staging Environment",
-              value: app_names_for_pipeline_environment("staging"),
+              title: "Default Branch",
+              value: pipeline.default_branch,
               short: true
             }
           ]
