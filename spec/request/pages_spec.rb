@@ -13,4 +13,11 @@ RSpec.describe "Pages", type: :request do
     get "/install"
     expect(status).to eql(200)
   end
+
+  it "redirects to the configured privacy policy" do
+    get "/privacy"
+    expect(status).to eql(302)
+    expect(headers["Location"])
+      .to eql("https://www.example.com/privacy.html")
+  end
 end

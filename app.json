@@ -45,6 +45,10 @@
     "LIBRATO_USER": {
       "description": "The user email for your librato integration."
     },
+    "PRIVACY_POLICY_URL": {
+      "description": "The url of your privacy policy."
+    },
+
     "RAILS_ENV": {
       "description": "This is what the RAILS_ENV unix environmental variable is set to.",
       "value": "production"
