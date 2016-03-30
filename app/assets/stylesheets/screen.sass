@@ -75,7 +75,6 @@ nav
         display: block
 
       .icon
-        background-image: image-url("/assets/os_logos.png")
         height: 148px
         margin-bottom: .75em
 
@@ -90,38 +89,23 @@ nav
     &:last-child
       margin-right: 0
 
-    &.osx a:hover .icon
-      background-position: 0 -148px
+    &.heroku .icon
+      background-image: image-url("/assets/heroku.png") no-repeat
 
-    &.osx a.selected .icon
-      background-position: 0 -296px
+    &.heroku a:hover .icon
+    &.heroku a.selected .icon
 
-    &.windows .icon
-      background-position: -150px 0
+    &.slack .icon
+      background-image: image-url("/assets/slack.png") no-repeat
 
-    &.windows a:hover .icon
-      background-position: -150px -148px
+    &.slack a:hover .icon
+    &.slack a.selected .icon
 
-    &.windows a.selected .icon
-      background-position: -150px -296px
+    &.github .icon
+      background-image: image-url("/assets/github.png") no-repeat
 
-    &.debian .icon
-      background-position: -300px 0
-
-    &.debian a:hover .icon
-      background-position: -300px -148px
-
-    &.debian a.selected .icon
-      background-position: -300px -296px
-
-    &.standalone .icon
-      background-position: -450px 0
-
-    &.standalone a:hover .icon
-      background-position: -448px -147px
-
-    &.standalone a.selected .icon
-      background-position: -448px -297px
+    &.github a:hover .icon
+    &.github a.selected .icon
 
 #instructions
   margin: 0 auto
