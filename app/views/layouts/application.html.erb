@@ -4,12 +4,24 @@
     <title>Heroku ChatOps for Slack (Beta)</title>
     <%= csrf_meta_tags %>
 
+    <link rel="icon" href="https://nav.heroku.com/images/logos/favicon.ico" type="image/x-icon" >
+
+    <link href="https://nav.heroku.com/v2/header.css" media="all" rel="stylesheet">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-    <link href="https://npmcdn.com/basscss@8.0.1/css/basscss.min.css" rel="stylesheet">
+    <link href="https://statics.herokuapp.com/fonts/fonts.css" rel="stylesheet">
+
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="wrapper">
+      <%= yield %>
+      <footer>
+        <div class="links">
+          <a href="https://www.heroku.com">heroku.com</a>
+          <a class="privacy" href="https://www.heroku.com/policy/privacy">Privacy Policy</a>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>
