@@ -276,7 +276,7 @@ nav
   #instructions
     p.download a:link.button,
     p.download a:visited.button,
-      @include background-image(image-url("/images/download_glyph_2x.png"), linear-gradient(top, #9372F7,#6443C9))
+      @include background-image(url("https://cloud.githubusercontent.com/assets/38/14138334/93712cd4-f621-11e5-8898-513ff219eb2d.png"), linear-gradient(top, #9372F7,#6443C9))
       background-size: 11px 15px, 100%
 
 .no-multiplebgs, .no-cssgradients
@@ -286,5 +286,5 @@ nav
   // * We can't render CSS gradients (IE9)
   #instructions p.download a:link.button,
   #instructions p.download a:visited.button
-    background-image: url("/images/download_glyph.png")
+    background-image(url("https://cloud.githubusercontent.com/assets/38/14138334/93712cd4-f621-11e5-8898-513ff219eb2d.png")
     background-position: 1.71428571em center
