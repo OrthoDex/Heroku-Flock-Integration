@@ -4,13 +4,13 @@ RSpec.describe "Pages", type: :request do
   before do
   end
 
-  it "has a support page" do
-    get "/support"
+  it "has a landing page" do
+    get "/"
     expect(status).to eql(200)
   end
 
-  it "has an install page" do
-    get "/install"
+  it "has a support page" do
+    get "/support"
     expect(status).to eql(200)
   end
 
