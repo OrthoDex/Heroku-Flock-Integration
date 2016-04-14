@@ -79,6 +79,10 @@
     },
     "YUBIEXPIRE_HOSTNAME": {
       "description": "The hostname to post keys to to ensure everything gets invalidated at some point."
+    },
+    "KOLKRABBI_HOSTNAME": {
+      "description": "The hostname for Heroku's kolkrabbi service. Leave this alone.",
+      "value": "kolkrabbi.heroku.com"
     }
   },
   "formation": [
