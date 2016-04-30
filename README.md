@@ -38,7 +38,11 @@ $ ./bin/cibuild
 
 ### Deploying to Heroku
 
-You can run this yourself on heroku.
+* Create a GitHub OAuth app
+* Create a Heroku OAuth app
+* Create a Slack app
+* [Create this app on Heroku](https://heroku.com/deploy?template=https://github.com/atmos/slash-heroku)
+* heroku plugins:install heroku-redis
+* heroku redis:promote HEROKU_REDIS_SOMECOLOR -a heroku app you created
 
-[![Launch on Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/atmos/slash-heroku)
 
