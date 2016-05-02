@@ -33,9 +33,9 @@
       <a href="/auth/slack" class="button">Install Heroku ChatOps (Beta)</a>
     </p>
     <h3>What is it?</h3>
-    <p>slash-heroku is Slack application that provides ChatOps2 functionality for Heroku. Once installed, it provides a slash-command as '/heroku',  '/h' for short. This provides functionality similar to the Heroku Toolbelt with the added functionality of deployments. It achieves this with OAuth and Heroku pipelines.</p>
+    <p>slash-heroku is Slack application that provides ChatOps functionality for Heroku. Once installed, it provides a slash-command as '/heroku' that lets you easily deploy code from GitHub to Heroku.</p>
 
-    <p>With pipelines you can group Heroku applications into environments and give them easy to remember names. Instead of remembering that your production application is "local-co-op-production" and your staging application is "local-co-op-staging", you represent them as one app "co-op" with a staging and production environment. When you deploy with slash-deploy you use the pipeline name.</p>
+    <p>Heroku pipelines allow you to group Heroku applications into environments and give them easy to remember names. When you deploy from chat you use the pipeline name.</p>
 
     <p></p>
     <h3>Getting Started</h3>
@@ -46,6 +46,7 @@
       <li>Insure that you can deploy it '/h where can i deploy &lt;myapp&gt;'.</li>
       <li>Deploy your application. '/h deploy myapp to prod'</li>
     </ul>
+
     <h3>Technical Details</h3>
     <p>Slash-Heroku requires you to authenticate with Heroku and GitHub via OAuth in order to make requests on your behalf. If you want to revoke access at any time you can do this by running "/h auth:logout". I've taken precautions to keep your data safe and take the security of the OAuth tokens seriously.</p>
   </div>
