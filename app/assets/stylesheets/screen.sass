@@ -146,7 +146,7 @@ nav
         background: #FF5809
         background-position: 1.71428571em center, 0 0
         background-repeat: no-repeat
-        // background-image: url("https://cloud.githubusercontent.com/assets/38/14165183/f7584dba-f6ba-11e5-901d-e69c0c6679d0.png"), linear-gradient(top, #A1C22D,#89AC10)
+        background-image: url("https://cloud.githubusercontent.com/assets/38/14165183/f7584dba-f6ba-11e5-901d-e69c0c6679d0.png")
         border: none
         @include box-shadow(0 1px 3px rgba(0,0,0,0.5),0 1px 2px rgba(255,255,255,0.25) inset)
         color: #fff
@@ -205,53 +205,7 @@ nav
       font-weight: bold
       letter-spacing: -0.09em
 
-@media screen and (max-width: 600px)
-  nav
-    li
-      margin-right: 20px
 
-      a
-        width: 75px
-
-        .title
-          display: none
-
-        .icon
-          background-size: 225px 222px
-          height: 74px
-
-      &.osx a:hover .icon
-        background-position: 0 -74px
-
-      &.osx a.selected .icon
-        background-position: 0 -148px
-
-      &.windows .icon
-        background-position: -75px 0
-
-      &.windows a:hover .icon
-        background-position: -75px -74px
-
-      &.windows a.selected .icon
-        background-position: -75px -148px
-
-      &.debian .icon
-        background-position: -150px 0
-
-      &.debian a:hover .icon
-        background-position: -150px -74px
-
-      &.debian a.selected .icon
-        background-position: -150px -148px
-
-      &.standalone .icon
-        background-position: -150px 0
-
-      &.standalone a:hover .icon
-        background-position: -150px -74px
-
-      &.standalone a.selected .icon
-        background-position: -150px -148px
 
   #instructions
     padding: 30px 0
