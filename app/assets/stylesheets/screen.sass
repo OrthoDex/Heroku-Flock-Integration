@@ -8,11 +8,20 @@ html
   -webkit-text-size-adjust: none
 
 body
-  background: #1b1b24
-  color: #8487AF
+  background: #313131
+  color: #b4b4b4
   font:
-    family: "helvetica neue", helvetica, arial, geneva, sans-serif
+    family: 'Roboto Slab', serif
     size: 100%
+
+a:link,
+a:visited
+  color: #b4b4b4
+  text-decoration: none
+
+a:hover,
+a:active
+  text-decoration: underline
 
 .wrapper
   max-width: 960px
@@ -20,37 +29,40 @@ body
   padding: 0 10px
 
 header
-  font-family: "CorbelRegular", "helvetica neue", helvetica, arial, geneva, sans-serif
   -webkit-font-smoothing: antialiased
   font-weight: normal
   padding: 50px 0
   text-align: center
-  text-shadow: 0 1px 1px #000
-  text-transform: lowercase
 
   h1
     color: #fff
-    font-size: 2.1875em
+    font-size: 3em
     margin-bottom: 0.514285714em
 
   h2
-    color: #a292ff
+    // color: #e3e3e3
     font-size: 1.5625em
     line-height: 1.2em
 
+section
+  svg
+    width: 120px
+    height: 120px
+    margin-bottom: .7em
+    fill: red
+
+  .screenshot
+    width: 100%
+    height: auto
+
 footer
-  font-family: "CorbelRegular", "helvetica neue", helvetica, arial, geneva, sans-serif
-  -webkit-font-smoothing: antialiased
-  font-weight: normal
   padding: 30px 0
   text-align: left
   .links
-    border-top: 1px solid #444763
+    border-top: 1px solid #6e6e6e
     margin: 0 auto
     padding: 18px 0
-    a, a:visited
-      color: #5c5f80
-      text-decoration: none
+
     .privacy
       float: right
 
@@ -62,13 +74,11 @@ nav
     margin-right: 30px
 
     a
-      color: #5c5f80
+      color: rgb(230,230,230)
       display: block
       font:
-        family: "CorbelRegular", "helvetica neue", helvetica, arial, geneva, sans-serif
         size: 1.25em
       text-decoration: none
-      text-shadow: 0 0 1px #000
       width: 150px
 
       span
@@ -79,30 +89,37 @@ nav
         margin-bottom: .75em
 
       &:hover
-        color: rgb(166, 166, 255)
-        text-shadow: 0 0 6px rgba(120, 120, 255, .4)
+        color: #fff
 
       &.selected
         color: rgb(143, 191, 255)
-        text-shadow: 0 0 6px rgba(56,187,253,.7)
 
     &:last-child
       margin-right: 0
 
     &.heroku .icon
-      background: url("https://cloud.githubusercontent.com/assets/38/14137500/e638c512-f61c-11e5-94c1-99d865e21310.png")
+      background: url("logo-heroku.svg")
+      background-size: 80%
+      background-position: center
+      background-repeat: no-repeat
 
     &.heroku a:hover .icon
     &.heroku a.selected .icon
 
     &.slack .icon
-      background: url("https://cloud.githubusercontent.com/assets/38/14137503/e9046a30-f61c-11e5-813d-e70b28cf2947.png")
+      background: url("logo-slack.svg")
+      background-size: 80%
+      background-position: center
+      background-repeat: no-repeat
 
     &.slack a:hover .icon
     &.slack a.selected .icon
 
     &.github .icon
-      background: url("https://cloud.githubusercontent.com/assets/38/14137494/e2925ab8-f61c-11e5-8e80-caf4ad96c946.png")
+      background: url("logo-github.svg")
+      background-size: 80%
+      background-position: center
+      background-repeat: no-repeat
 
     &.github a:hover .icon
     &.github a.selected .icon
@@ -111,19 +128,8 @@ nav
   margin: 0 auto
   padding: 50px 0
 
-  a:link,
-  a:visited
-    color: #9782FF
-    text-decoration: none
-
-  a:hover,
-  a:active
-    text-decoration: underline
-
   h3
-    color: #D4D4FF
     font:
-      family: "CorbelRegular", "helvetica neue", helvetica, arial, geneva, sans-serif
       size: 1.25em
     margin-bottom: 1.2em
 
@@ -141,25 +147,31 @@ nav
 
     &.download
       *
-        @include border-radius(41px)
+        @include border-radius(3px)
         display: inline-block
 
       a:link.button,
       a:visited.button
-        background: #7B5AE0
+        background: #F24400
         background-position: 1.71428571em center, 0 0
         background-repeat: no-repeat
-        background-image: url("https://cloud.githubusercontent.com/assets/38/14165183/f7584dba-f6ba-11e5-901d-e69c0c6679d0.png"), linear-gradient(top, #9372F7,#6443C9)
+        background-image: url("arrow.svg")
+        background-size: 11px 15px
         border: none
         @include box-shadow(0 1px 3px rgba(0,0,0,0.5),0 1px 2px rgba(255,255,255,0.25) inset)
-        color: #100F14
-        font-family: "helvetica neue", helvetica, arial, geneva, sans-serif
+        color: #fff
         -webkit-font-smoothing: antialiased
         font-weight: bold
         min-width: 5.71428571em
         padding: .642857143em 1.71428571em .642857143em 3em
         text-decoration: none
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15)
+
+      a:hover.button
+        background: #FF5809
+        background-position: 1.71428571em center, 0 0
+        background-repeat: no-repeat
+        background-image: url("arrow.svg")
+        background-size: 11px 15px
 
       code
         background: #111116
@@ -201,7 +213,7 @@ nav
 
   code
     font:
-      family: "MesloRegular", monaco, monospace
+      family: monaco, monospace
       size: .928571429em
 
   p
@@ -210,53 +222,7 @@ nav
       font-weight: bold
       letter-spacing: -0.09em
 
-@media screen and (max-width: 600px)
-  nav
-    li
-      margin-right: 20px
 
-      a
-        width: 75px
-
-        .title
-          display: none
-
-        .icon
-          background-size: 225px 222px
-          height: 74px
-
-      &.osx a:hover .icon
-        background-position: 0 -74px
-
-      &.osx a.selected .icon
-        background-position: 0 -148px
-
-      &.windows .icon
-        background-position: -75px 0
-
-      &.windows a:hover .icon
-        background-position: -75px -74px
-
-      &.windows a.selected .icon
-        background-position: -75px -148px
-
-      &.debian .icon
-        background-position: -150px 0
-
-      &.debian a:hover .icon
-        background-position: -150px -74px
-
-      &.debian a.selected .icon
-        background-position: -150px -148px
-
-      &.standalone .icon
-        background-position: -150px 0
-
-      &.standalone a:hover .icon
-        background-position: -150px -74px
-
-      &.standalone a.selected .icon
-        background-position: -150px -148px
 
   #instructions
     padding: 30px 0
@@ -276,7 +242,7 @@ nav
   #instructions
     p.download a:link.button,
     p.download a:visited.button,
-      background-image: url("https://cloud.githubusercontent.com/assets/38/14138334/93712cd4-f621-11e5-8898-513ff219eb2d.png"), linear-gradient(top, #9372F7,#6443C9)
+      // background-image: url("https://cloud.githubusercontent.com/assets/38/14138334/93712cd4-f621-11e5-8898-513ff219eb2d.png"), linear-gradient(top, #A1C22D,#89AC10)
       background-size: 11px 15px, 100%
 
 .no-multiplebgs, .no-cssgradients
