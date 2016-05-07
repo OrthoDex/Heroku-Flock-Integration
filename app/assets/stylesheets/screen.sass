@@ -14,6 +14,15 @@ body
     family: 'Roboto Slab', serif
     size: 100%
 
+a:link,
+a:visited
+  color: #b4b4b4
+  text-decoration: none
+
+a:hover,
+a:active
+  text-decoration: underline
+
 .wrapper
   max-width: 960px
   margin: 0 auto
@@ -36,6 +45,12 @@ header
     line-height: 1.2em
 
 section
+  svg
+    width: 120px
+    height: 120px
+    margin-bottom: .7em
+    fill: red
+
   .screenshot
     width: 100%
     height: auto
@@ -47,9 +62,7 @@ footer
     border-top: 1px solid #6e6e6e
     margin: 0 auto
     padding: 18px 0
-    a, a:visited
-      color: #6e6e6e
-      text-decoration: none
+
     .privacy
       float: right
 
@@ -115,15 +128,6 @@ nav
   margin: 0 auto
   padding: 50px 0
 
-  a:link,
-  a:visited
-    color: #9782FF
-    text-decoration: none
-
-  a:hover,
-  a:active
-    text-decoration: underline
-
   h3
     font:
       size: 1.25em
@@ -148,7 +152,7 @@ nav
 
       a:link.button,
       a:visited.button
-        background: #FF5809
+        background: #F24400
         background-position: 1.71428571em center, 0 0
         background-repeat: no-repeat
         background-image: url("https://cloud.githubusercontent.com/assets/38/14165183/f7584dba-f6ba-11e5-901d-e69c0c6679d0.png")
@@ -160,6 +164,12 @@ nav
         min-width: 5.71428571em
         padding: .642857143em 1.71428571em .642857143em 3em
         text-decoration: none
+
+      a:hover.button
+        background: #FF5809
+        background-position: 1.71428571em center, 0 0
+        background-repeat: no-repeat
+        background-image: url("https://cloud.githubusercontent.com/assets/38/14165183/f7584dba-f6ba-11e5-901d-e69c0c6679d0.png")
 
       code
         background: #111116
