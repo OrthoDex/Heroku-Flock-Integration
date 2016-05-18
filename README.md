@@ -8,6 +8,7 @@
 
 ```
 $ ./bin/bootstrap
+$ rails s
 ```
 
 ### Tests
@@ -20,11 +21,11 @@ $ ./bin/cibuild
 
 ### Deploying to Heroku
 
-* Create a GitHub OAuth app
-* Create a Heroku OAuth app
-* Create a Slack app
+* [Create a GitHub OAuth app](https://github.com/settings/applications/new)
+* [Create a Heroku OAuth app](https://dashboard.heroku.com/account/clients/new)
+* [Create a Slack app](https://api.slack.com/apps/new)
 * [Create this app on Heroku](https://heroku.com/deploy?template=https://github.com/atmos/slash-heroku)
 * heroku plugins:install heroku-redis
-* heroku redis:promote HEROKU_REDIS_SOMECOLOR -a heroku app you created
+* heroku redis:promote HEROKU_REDIS_SOMECOLOR -a heroku-app-you-created
 
 
