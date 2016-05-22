@@ -101,8 +101,6 @@ class Command < ApplicationRecord
     Base64.encode64(data).split("\n").join("")
   end
 
-  private
-
   def postback_message(message)
     response = client.post do |request|
       request.url callback_uri.path
@@ -114,6 +112,8 @@ class Command < ApplicationRecord
   rescue StandardError => e
     Rails.logger.info "Unable to post back to slack: '#{e.inspect}'"
   end
+
+  private
 
   def callback_uri
     @callback_uri ||= Addressable::URI.parse(response_url)
