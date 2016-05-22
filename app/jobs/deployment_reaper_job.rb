@@ -35,6 +35,12 @@ class DeploymentReaperJob < ApplicationJob
       payload[:state] = "success" if info["status"] == "succeeded"
 
       pipeline.create_deployment_status(deployment_url, payload)
+
+      handler = command.handler
+      if handler
+        response = handler.deployment_complete_message(payload)
+        command.postback_message(response)
+      end
     elsif command.created_at > 15.minutes.ago
       DeploymentReaperJob.set(wait: 10.seconds).perform_later(args)
     else
@@ -42,7 +48,7 @@ class DeploymentReaperJob < ApplicationJob
       payload = {
         state: "failure",
         target_url:  build_url(app_id, build_id),
-        description: "Heroku build took longer than 5 minutes."
+        description: "Heroku build took longer than 15 minutes."
       }
       pipeline.create_deployment_status(deployment_url, payload)
     end
