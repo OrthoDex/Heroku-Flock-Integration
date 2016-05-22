@@ -66,6 +66,7 @@ module HerokuCommands
     def deployment_complete_message(payload)
       url = payload[:target_url]
       suffix = payload[:state] == "success" ? "was successful" : "failed"
+      user_id = command.user.slack_user_id
 
       response_for("<@#{user_id}>'s <#{url}|#{environment}> deployment of" \
                    "#{pipeline.github_repository}@#{branch}" \
