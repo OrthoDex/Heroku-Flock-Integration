@@ -35,7 +35,7 @@ class DeploymentReaperJob < ApplicationJob
       payload[:state] = "success" if info["status"] == "succeeded"
 
       pipeline.create_deployment_status(deployment_url, payload)
-    elsif command.created_at > 2.minutes.ago
+    elsif command.created_at > 15.minutes.ago
       DeploymentReaperJob.set(wait: 10.seconds).perform_later(args)
     else
       Rails.logger.info "Build expired for command: #{command.id}"
