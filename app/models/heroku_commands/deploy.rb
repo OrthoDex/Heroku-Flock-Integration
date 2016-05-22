@@ -67,10 +67,11 @@ module HerokuCommands
       url = payload[:target_url]
       suffix = payload[:state] == "success" ? "was successful" : "failed"
       user_id = command.user.slack_user_id
+      duration = Time.now - command.created_at
 
-      response_for("<@#{user_id}>'s <#{url}|#{environment}> deployment of" \
+      response_for("<@#{user_id}>'s <#{url}|#{environment}> deployment of " \
                    "#{pipeline.github_repository}@#{branch}" \
-                   "(#{sha[0..7]}) #{suffix}.")
+                   "(#{sha[0..7]}) #{suffix}. #{duration}s")
     end
 
     def run_on_subtask
