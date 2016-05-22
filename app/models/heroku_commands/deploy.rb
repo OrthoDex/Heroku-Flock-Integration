@@ -71,7 +71,7 @@ module HerokuCommands
 
       response_for("<@#{user_id}>'s <#{url}|#{environment}> deployment of " \
                    "#{pipeline.github_repository}@#{branch}" \
-                   "(#{sha[0..7]}) #{suffix}. #{duration}s")
+                   "(#{sha[0..7]}) #{suffix}. #{duration.round}s")
     end
 
     def run_on_subtask
