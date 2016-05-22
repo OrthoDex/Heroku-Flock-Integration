@@ -63,14 +63,14 @@ module HerokuCommands
     end
     # rubocop:enable Metrics/AbcSize
 
-    def deployment_complete_message(payload)
+    def deployment_complete_message(payload, sha)
       url = payload[:target_url]
       suffix = payload[:state] == "success" ? "was successful" : "failed"
       user_id = command.user.slack_user_id
 
       response_for("<@#{user_id}>'s <#{url}|#{environment}> deployment of" \
                    "#{pipeline.github_repository}@#{branch}" \
-                   "(#{deployment[:sha][0..7]}) #{suffix}.")
+                   "(#{sha[0..7]}) #{suffix}.")
     end
 
     def run_on_subtask

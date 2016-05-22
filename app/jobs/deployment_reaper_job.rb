@@ -38,7 +38,7 @@ class DeploymentReaperJob < ApplicationJob
 
       handler = command.handler
       if handler
-        response = handler.deployment_complete_message(payload)
+        response = handler.deployment_complete_message(payload, sha)
         command.postback_message(response)
       end
     elsif command.created_at > 15.minutes.ago
