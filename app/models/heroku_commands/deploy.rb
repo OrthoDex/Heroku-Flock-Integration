@@ -15,8 +15,7 @@ module HerokuCommands
 
     def self.help_documentation
       [
-        "deploy <pipeline>/<branch> to <env>/<roles> - deploy <pipeline>'s " \
-          "<branch> to the <env> environment's <roles>"
+        "deploy <pipeline>/<branch> to <env>/<roles> - deploy <pipeline>"
       ]
     end
 
@@ -61,6 +60,17 @@ module HerokuCommands
                        "(#{deployment[:sha][0..7]}) to #{environment}.")
         end
       end
+    end
+
+    def deployment_complete_message(payload, sha)
+      url = payload[:target_url]
+      suffix = payload[:state] == "success" ? "was successful" : "failed"
+      user_id = command.user.slack_user_id
+      duration = Time.now.utc - command.created_at.utc
+
+      response_for("<@#{user_id}>'s <#{url}|#{environment}> deployment of " \
+                   "#{pipeline.github_repository}@#{branch}" \
+                   "(#{sha[0..7]}) #{suffix}. #{duration.round}s")
     end
     # rubocop:enable Metrics/AbcSize
 

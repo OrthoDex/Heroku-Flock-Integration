@@ -35,14 +35,20 @@ class DeploymentReaperJob < ApplicationJob
       payload[:state] = "success" if info["status"] == "succeeded"
 
       pipeline.create_deployment_status(deployment_url, payload)
-    elsif command.created_at > 2.minutes.ago
+
+      handler = command.handler
+      if handler
+        response = handler.deployment_complete_message(payload, sha)
+        command.postback_message(response)
+      end
+    elsif command.created_at > 15.minutes.ago
       DeploymentReaperJob.set(wait: 10.seconds).perform_later(args)
     else
       Rails.logger.info "Build expired for command: #{command.id}"
       payload = {
         state: "failure",
         target_url:  build_url(app_id, build_id),
-        description: "Heroku build took longer than 5 minutes."
+        description: "Heroku build took longer than 15 minutes."
       }
       pipeline.create_deployment_status(deployment_url, payload)
     end
