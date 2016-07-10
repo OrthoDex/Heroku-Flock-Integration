@@ -19,7 +19,7 @@ module HerokuTokenManagement
   end
 
   def heroku_refresh_token
-    rbnacl_heroku_refresh_token
+    fernet_heroku_refresh_token
   end
 
   def fernet_heroku_refresh_token
@@ -31,8 +31,8 @@ module HerokuTokenManagement
   end
 
   def heroku_refresh_token=(token)
-    self[:enc_heroku_refresh_token] = fernet_encrypt_value(token)
     self[:nacl_enc_heroku_refresh_token] = rbnacl_encrypt_value(token)
+    self[:enc_heroku_refresh_token] = fernet_encrypt_value(token)
   end
 
   def heroku_configured?
@@ -40,8 +40,8 @@ module HerokuTokenManagement
   end
 
   def heroku_token=(token)
-    self[:enc_heroku_token] = fernet_encrypt_value(token)
     self[:nacl_enc_heroku_token] = rbnacl_encrypt_value(token)
+    self[:enc_heroku_token] = fernet_encrypt_value(token)
   end
 
   def fernet_heroku_token

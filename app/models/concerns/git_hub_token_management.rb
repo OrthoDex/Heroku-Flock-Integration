@@ -62,7 +62,7 @@ module GitHubTokenManagement
   end
 
   def github_token
-    rbnacl_github_token
+    fernet_github_token
   end
 
   def fernet_github_token
