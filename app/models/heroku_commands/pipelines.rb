@@ -26,7 +26,7 @@ module HerokuCommands
         response_for("pipeline:#{subtask} is currently unimplemented.")
       end
     rescue StandardError => e
-      raise e if Rails.env.test?
+      Rollbar.report(e) if Rails.env.test?
       response_for("Unable to fetch pipeline info for #{application}.")
     end
   end
