@@ -8,8 +8,8 @@ RSpec.describe HerokuCommands::Pipelines, type: :model do
 
   def not_found_response
     {
-      "message": "Not Found",
-      "documentation_url": "https://developer.github.com/v3"
+      message: "Not Found",
+      documentation_url: "https://developer.github.com/v3"
     }.to_json
   end
 
