@@ -53,7 +53,6 @@ end
 group :development do
   gem "foreman"
   gem "spring"
-  gem "web-console", "~> 3.0"
 end
 
 group :staging, :production do
