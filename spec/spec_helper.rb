@@ -96,6 +96,46 @@ RSpec.configure do |config|
                            credentials: credentials)
   end
 
+  # rubocop:disable Metrics/MethodLength
+  def slack_omniauth_hash_for_non_admin
+    info = {
+      provider: "slack",
+      uid: nil,
+      info: {
+      },
+      credentials: {
+        token: "xoxp-9101111159-5657146422-59735495733-3186a13efg",
+        expires: false
+      },
+      extra: {
+        raw_info: {
+          ok: false,
+          error: "missing_scope",
+          needed: "identify",
+          provided: "identity.basic"
+        },
+        web_hook_info: {
+        },
+        bot_info: {
+        },
+        user_info: {
+          ok: false,
+          error: "missing_scope",
+          needed: "users:read",
+          provided: "identity.basic"
+        },
+        team_info: {
+          ok: false,
+          error: "missing_scope",
+          needed: "team:read",
+          provided: "identity.basic"
+        }
+      }
+    }
+    OmniAuth::AuthHash.new(info)
+  end
+  # rubocop:enable Metrics/MethodLength
+
   def create_atmos
     slack = slack_omniauth_hash_for_atmos
     options = {
