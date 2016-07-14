@@ -20,13 +20,17 @@ module HerokuCommands
 
     def run_on_subtask
       case subtask
-      when "info"
+      when "info", "default"
         pipeline_info
       else
         response_for("pipeline:#{subtask} is currently unimplemented.")
       end
+    rescue Escobar::GitHub::RepoNotFound => e
+      response_for("You're not authenticated with GitHub. " \
+                   "<#{command.github_auth_url}|Fix that>.")
     rescue StandardError => e
       raise e if Rails.env.test?
+      Rollbar.report(e)
       response_for("Unable to fetch pipeline info for #{application}.")
     end
   end

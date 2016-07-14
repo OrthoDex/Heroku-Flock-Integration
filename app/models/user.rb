@@ -1,6 +1,8 @@
 # A user from the Slack API
 class User < ApplicationRecord
   include TokenManagement
+  include GitHubTokenManagement
+  include HerokuTokenManagement
 
   has_many :commands, dependent: :destroy
 

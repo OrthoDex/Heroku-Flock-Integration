@@ -11,81 +11,73 @@ module TokenManagement
       ENV["FERNET_SECRET"] ||
         raise("No FERNET_SECRET environmental variable set")
     end
-  end
 
-  def decrypt_value(value)
+    def fernet_secret_bytes
+      fernet_secret.unpack("m0").first
+    end
+
+    def all_refreshable
+      self.where("updated_at < :updated_at AND credentials_used_at < :used_at",
+                 updated_at: 10.minutes.ago, used_at: 10.minutes.ago)
+    end
+
+    def refresh_all_oauth_tokens
+      users = all_refreshable
+      Rails.logger.info "Refreshing tokens for #{users.length} users..."
+
+      users.each do |user|
+        begin
+          user.refresh_oauth_tokens
+          Rails.logger.info "Tokens refreshed for #{user.heroku_email}"
+        rescue StandardError
+          msg = "Tokens not refreshed for #{user.heroku_email}"
+          Rails.logger.info msg
+          err = UserRefreshFailure.new(msg)
+          Rollbar.info(err)
+        end
+      end
+    end
+  end
+  class UserRefreshFailure < StandardError; end
+
+  def fernet_decrypt_value(value)
     Fernet.verifier(self.class.fernet_secret, value).message
   rescue Fernet::Token::InvalidToken, NoMethodError
     nil
   end
 
-  def encrypt_value(value)
+  def fernet_encrypt_value(value)
     Fernet.generate(self.class.fernet_secret, value)
   end
 
-  def github_token
-    decrypt_value(self[:enc_github_token])
+  def rbnacl_reset
+    @rbnacl_simple_box = nil
   end
 
-  def github_token=(token)
-    self[:enc_github_token] = encrypt_value(token)
+  def rbnacl_simple_box
+    @rbnacl_simple_box ||=
+      RbNaCl::SimpleBox.from_secret_key(self.class.fernet_secret_bytes)
+  end
+
+  def rbnacl_encrypt_value(value)
+    return if value.blank?
+    Base64.encode64(rbnacl_simple_box.encrypt(value)).chomp
+  end
+
+  def rbnacl_decrypt_value(value)
+    rbnacl_simple_box.decrypt(Base64.decode64(value))
+  rescue RbNaCl::CryptoError, NoMethodError
+    nil
+  end
+
+  def refresh_oauth_tokens
+    refresh_heroku_oauth_token
+    refresh_github_oauth_token
   end
 
   def reset_creds
+    reset_github
     reset_heroku
-    self.enc_github_token = nil
-    self.save
-  end
-
-  def reset_heroku
-    self.heroku_email = nil
-    self.enc_heroku_token = nil
-    self.enc_heroku_refresh_token = nil
-    self.heroku_expires_at = nil
-  end
-
-  def heroku_configured?
-    self[:enc_heroku_token] && !self[:enc_heroku_token].empty?
-  end
-
-  def heroku_refresh_token
-    decrypt_value(self[:enc_heroku_refresh_token])
-  end
-
-  def heroku_refresh_token=(token)
-    self[:enc_heroku_refresh_token] = encrypt_value(token)
-  end
-
-  def heroku_token=(token)
-    self[:enc_heroku_token] = encrypt_value(token)
-  end
-
-  # This will refresh the heroku token if expired.
-  def heroku_token
-    unless heroku_refresh_token && heroku_expires_at
-      reset_heroku
-      save
-      return nil
-    end
-    if heroku_expired?
-      refresh_heroku
-    end
-    decrypt_value(self[:enc_heroku_token])
-  end
-
-  def heroku_expired?
-    !heroku_expires_at || heroku_expires_at < Time.now.utc
-  end
-
-  def refresh_heroku
-    body = HerokuApi.new(nil).token_refresh(heroku_refresh_token)
-    if body && body["access_token"] && body["expires_in"]
-      self.heroku_token = body["access_token"]
-      expires_at = Time.at(Time.now.utc.to_i + body["expires_in"]).utc
-      self.heroku_expires_at = expires_at
-    else
-      reset_heroku
-    end
     self.save
   end
 end

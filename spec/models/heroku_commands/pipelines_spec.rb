@@ -6,6 +6,13 @@ RSpec.describe HerokuCommands::Pipelines, type: :model do
   before do
   end
 
+  def not_found_response
+    {
+      message: "Not Found",
+      documentation_url: "https://developer.github.com/v3"
+    }.to_json
+  end
+
   def heroku_handler_for(text)
     command = command_for(text)
     command.handler
@@ -101,6 +108,53 @@ RSpec.describe HerokuCommands::Pipelines, type: :model do
     expect(branch_cell).to_not be_nil
     expect(branch_cell[:title]).to eql("Default Branch")
     expect(branch_cell[:value]).to eql("production")
+  end
+
+  it "tells you to login to GitHub if pipeline:info can't auth" do
+    command = heroku_handler_for("pipelines:info -a hubot")
+    command.user.github_token = SecureRandom.hex(24)
+    command.user.save
+
+    response_info = fixture_data("api.heroku.com/account/info")
+    stub_request(:get, "https://api.heroku.com/account")
+      .with(headers: default_heroku_headers(command.user.heroku_token))
+      .to_return(status: 200, body: response_info, headers: {})
+
+    response_info = fixture_data("api.heroku.com/pipelines/info")
+    stub_request(:get, "https://api.heroku.com/pipelines")
+      .with(headers: default_heroku_headers(command.user.heroku_token))
+      .to_return(status: 200, body: response_info, headers: {})
+
+    response_info = fixture_data("api.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/pipeline-couplings")
+    stub_request(:get, "https://api.heroku.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/pipeline-couplings")
+      .with(headers: default_heroku_headers(command.user.heroku_token))
+      .to_return(status: 200, body: response_info, headers: {})
+
+    response_info = fixture_data("api.heroku.com/apps/27bde4b5-b431-4117-9302-e533b887faaa")
+    stub_request(:get, "https://api.heroku.com/apps/27bde4b5-b431-4117-9302-e533b887faaa")
+      .with(headers: default_heroku_headers(command.user.heroku_token))
+      .to_return(status: 200, body: response_info, headers: {})
+
+    response_info = fixture_data("kolkrabbi.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/repository")
+    stub_request(:get, "https://kolkrabbi.com/pipelines/531a6f90-bd76-4f5c-811f-acc8a9f4c111/repository")
+      .to_return(status: 200, body: response_info)
+
+    stub_request(:get, "https://api.github.com/repos/atmos/hubot")
+      .with(headers: default_github_headers(command.user.github_token))
+      .to_return(status: 404, body: not_found_response, headers: {})
+
+    stub_request(:get, "https://api.github.com/repos/atmos/hubot/branches/master")
+      .to_return(status: 404, body: not_found_response, headers: {})
+
+    expect(command.task).to eql("pipelines")
+    expect(command.subtask).to eql("info")
+    expect(command.application).to eql("hubot")
+
+    command.run
+
+    response = command.response
+    expect(response[:response_type]).to eql("in_channel")
+    expect(response[:text]).to include("You're not authenticated with GitHub.")
   end
   # rubocop:enable Metrics/LineLength
 end

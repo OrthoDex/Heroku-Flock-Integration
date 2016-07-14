@@ -31,7 +31,7 @@ class Command < ApplicationRecord
                    HerokuCommands::Deploy.new(self)
                  when "logs"
                    HerokuCommands::Logs.new(self)
-                 when "pipelines"
+                 when "pipeline", "pipelines"
                    HerokuCommands::Pipelines.new(self)
                  when "releases"
                    HerokuCommands::Releases.new(self)
