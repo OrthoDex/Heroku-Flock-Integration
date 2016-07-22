@@ -1,5 +1,7 @@
 privacy_policy_url = ENV["PRIVACY_POLICY_URL"] || "https://api.slack.com/developer-policy"
 
+require "sidekiq/web"
+
 Rails.application.routes.draw do
   # Serve websocket cable requests in-process
   # mount ActionCable.server => '/cable'
@@ -18,6 +20,8 @@ Rails.application.routes.draw do
 
   post "/commands" => "commands#create"
   post "/signout"  => "sessions#destroy"
+
+  mount Sidekiq::Web => "/sidekiq", constraints: AdminConstraint.new
 
   root to: "pages#install"
 end

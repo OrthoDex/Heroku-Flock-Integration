@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
   def create_github
     user = User.find(session[:user_id])
-    user.github_login = omniauth_info["info"]["login"]
+    user.github_login = omniauth_info["info"]["nickname"]
     user.github_token = omniauth_info["credentials"]["token"]
 
     Librato.increment "auth.create.github"
