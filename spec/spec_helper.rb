@@ -4,7 +4,7 @@ ENV["KOLKRABBI_HOSTNAME"] = "kolkrabbi.com"
 ENV["PRIVACY_POLICY_URL"] = "https://www.example.com/privacy.html"
 ENV["SLACK_SLASH_COMMAND_TOKEN"] = "secret-slack-token"
 ENV["FERNET_SECRET"] = "2bb0Wq1HJDPg2eLRnvTbKh8xPtJzqJnonOi3fDyVIJ8="
-
+ENV["GITHUB_ADMIN_LOGINS"] = "atmos"
 require "webmock/rspec"
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
