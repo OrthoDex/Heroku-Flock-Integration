@@ -7,7 +7,7 @@
 ## Development
 
 ```
-$ ./bin/bootstrap
+$ ./bin/setup
 $ rails s
 ```
 
