@@ -30,7 +30,7 @@ module HerokuCommands
                    "<#{command.github_auth_url}|Fix that>.")
     rescue StandardError => e
       raise e if Rails.env.test?
-      Rollbar.error(e)
+      Raven.capture_exception(e)
       response_for("Unable to fetch pipeline info for #{application}.")
     end
   end
