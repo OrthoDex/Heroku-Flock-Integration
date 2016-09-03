@@ -33,7 +33,7 @@ module TokenManagement
           msg = "Tokens not refreshed for #{user.heroku_email}"
           Rails.logger.info msg
           err = UserRefreshFailure.new(msg)
-          Raven.capture_exception(exception)(err)
+          Raven.capture_exception(err)
         end
       end
     end
