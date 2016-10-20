@@ -5,6 +5,6 @@ RSpec.describe "SlashHeroku /health", type: :request do
     get "/health"
     data = JSON.parse(body)
     expect(status).to eql(200)
-    expect(data["hi"]).to eql("slash-heroku")
+    expect(data["name"]).to eql("slash-heroku")
   end
 end

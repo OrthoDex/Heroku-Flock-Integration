@@ -7,14 +7,13 @@ module ChatOpsPatterns
     attr_reader :application, :branch, :forced, :hosts, :second_factor
     def initialize(string)
       @string = string
-      if matches
-        @forced        = matches[2] == "!"
-        @application   = matches[3]
-        @branch        = matches[4] || "master"
-        @environment   = matches[5]
-        @hosts         = matches[6]
-        @second_factor = matches[7]
-      end
+      return unless matches
+      @forced        = matches[2] == "!"
+      @application   = matches[3]
+      @branch        = matches[4] || "master"
+      @environment   = matches[5]
+      @hosts         = matches[6]
+      @second_factor = matches[7]
     end
 
     def environment
