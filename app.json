@@ -15,6 +15,10 @@
   "success_url": "/install",
   "addons": ["heroku-postgresql", "heroku-redis"],
   "env": {
+    "APP_NAME": {
+      "description": "The application name used by the coal_car gem for identifying this app",
+      "value": "slash-heroku"
+    },
     "FERNET_SECRET": {
       "description": "The secret used for writing encrypted values to the database. Generate with 'dd if=/dev/urandom bs=32 count=1 2>/dev/null | openssl base64'."
     },
