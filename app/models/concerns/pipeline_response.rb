@@ -18,9 +18,8 @@ module PipelineResponse
   end
 
   def pipelines!
-    if command.user.github_token
-      Escobar::Client.new(command.user.github_token, client.token)
-    end
+    return unless command.user.github_token
+    Escobar::Client.new(command.user.github_token, client.token)
   end
 
   def pipeline_info
