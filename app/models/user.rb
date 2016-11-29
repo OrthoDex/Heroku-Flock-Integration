@@ -58,16 +58,19 @@ class User < ApplicationRecord
   end
 
   def create_action_for(params)
+    channel = params[:channel]
+    team = params[:team]
+    button_clicked = params[:actions][0]
     actions.create(
       action_ts: params[:action_ts],
       callback_id: params[:callback_id],
-      channel_id: params[:channel][:id],
-      channel_name: params[:channel][:name],
+      channel_id: channel[:id],
+      channel_name: channel[:name],
       message_ts: params[:message_ts],
       response_url: params[:response_url],
-      team_domain: params[:team][:domain],
-      team_id: params[:team][:id],
-      value: params[:actions][0][:value]
+      team_domain: team[:domain],
+      team_id: team[:id],
+      value: button_clicked[:value]
     )
   end
 end
