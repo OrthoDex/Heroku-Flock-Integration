@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20161129222544) do
     t.string "callback_id",  null: false
     t.string "team_id",      null: false
     t.string "team_domain",  null: false
+    t.string "channel_id",   null: false
+    t.string "channel_name", null: false
     t.uuid   "user_id"
     t.string "message_ts",   null: false
     t.string "action_ts",    null: false
