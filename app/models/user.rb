@@ -5,6 +5,7 @@ class User < ApplicationRecord
   include HerokuTokenManagement
 
   has_many :commands, dependent: :destroy
+  has_many :actions,  dependent: :destroy
 
   def self.omniauth_user_data(omniauth_info)
     token = omniauth_info[:credentials][:token]
