@@ -9,11 +9,9 @@ RSpec.describe "SlashHeroku /actions", type: :request do
     expect(response_body).to eql({})
   end
 
-  it "200s if the incoming action is from slack" do
+  it "204s the incoming action is from slack" do
     post "/actions", params: { payload: JSON.dump({ token: "secret-slack-token" }) }
 
-    expect(status).to eql(200)
-    response_body = JSON.parse(body)
-    expect(response_body).to eql({})
+    expect(status).to eql(204)
   end
 end
