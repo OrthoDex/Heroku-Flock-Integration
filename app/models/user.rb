@@ -56,4 +56,18 @@ class User < ApplicationRecord
     YubikeyExpireJob.set(wait: 10.seconds).perform_later(command_id: command.id)
     command
   end
+
+  def create_action_for(params)
+    actions.create(
+      action_ts: params[:action_ts],
+      callback_id: params[:callback_id],
+      channel_id: params[:channel][:id],
+      channel_name: params[:channel][:name],
+      message_ts: params[:message_ts],
+      response_url: params[:response_url],
+      team_domain: params[:team][:domain],
+      team_id: params[:team][:id],
+      value: params[:actions][0][:value]
+    )
+  end
 end
