@@ -169,6 +169,38 @@ RSpec.configure do |config|
     user.create_command_for(command_params_for(text))
   end
 
+  def action_params
+    {
+      actions: [
+        {
+          name: "staging",
+          value: "staging"
+        }
+      ],
+      callback_id: "environment",
+      team: {
+        id: "T0QQTP89F",
+        domain: "heroku"
+      },
+      channel: {
+        id: "C0QQS2U6B",
+        name: "general"
+      },
+      user: {
+        id: "U0QQTEQ5C",
+        name: "yannick"
+      },
+      action_ts: "1480454458.026997",
+      message_ts: "1480454212.000005",
+      attachment_id: "1",
+      token: "some-secret-slack-token",
+      original_message: {
+      },
+      response_url: "https://hooks.slack.com/actions/some-path"
+    }
+  end
+
+
   def fixture_data(name)
     path = File.join(fixture_path, "#{name}.json")
     File.read(path)
