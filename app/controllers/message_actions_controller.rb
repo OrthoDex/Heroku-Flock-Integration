@@ -5,7 +5,7 @@ class MessageActionsController < ApplicationController
 
   def create
     return render json: {}, status: 404 unless slack_token_valid?
-    current_user.create_action_for(payload)
+    current_user.create_message_action_for(payload)
     render nothing: true, status: 204
   end
 
