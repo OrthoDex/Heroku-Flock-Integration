@@ -11,8 +11,16 @@ RSpec.describe "SlashHeroku /message_actions", type: :request do
   end
 
   it "204s the incoming action is from slack" do
-    post "/message_actions",
-      params: { payload: JSON.dump(token: "secret-slack-token") }
+    u = create_atmos
+    payload = action_params_for("environment", "staging").merge(
+      token: "secret-slack-token",
+      team: { id: u.slack_team_id, domain: "heroku" },
+      user: { id: u.slack_user_id, name: "atmos" }
+    )
+    expect do
+      post "/message_actions",
+        params: { payload: JSON.dump(payload) }
+    end.to change(MessageAction, :count).by(1)
 
     expect(status).to eql(204)
   end

@@ -56,6 +56,7 @@ RSpec.configure do |config|
 
   config.include(WebmockHelpers)
   config.include(SlackHelpers)
+  config.include(SlackActionsHelpers)
   config.include(OmniauthHelpers)
   config.include(FixtureHelpers)
 end
