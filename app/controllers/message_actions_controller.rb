@@ -1,5 +1,5 @@
 # Controller to process interactive messages buttons clicks
-class ActionsController < ApplicationController
+class MessageActionsController < ApplicationController
   instrument_action :create
   protect_from_forgery with: :null_session
 
