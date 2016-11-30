@@ -169,15 +169,15 @@ RSpec.configure do |config|
     user.create_command_for(command_params_for(text))
   end
 
-  def action_params
+  def action_params_for(callback_id = "environment", value = "staging")
     {
       actions: [
         {
-          name: "staging",
-          value: "staging"
+          name: value,
+          value: value
         }
       ],
-      callback_id: "environment",
+      callback_id: callback_id,
       team: {
         id: "T0QQTP89F",
         domain: "heroku"

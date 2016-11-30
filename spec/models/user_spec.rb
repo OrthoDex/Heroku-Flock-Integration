@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
   it "creates action made by the user" do
     user = create_atmos
     expect do
-      user.create_action_for(action_params)
+      user.create_action_for(action_params_for("environment", "staging"))
     end.to change(user.actions, :count).by(1)
     action = Action.last
     expect(action.value).to eql("staging")

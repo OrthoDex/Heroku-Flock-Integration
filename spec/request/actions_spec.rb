@@ -11,7 +11,7 @@ RSpec.describe "SlashHeroku /actions", type: :request do
 
   it "204s the incoming action is from slack" do
     u = create_atmos
-    payload = action_params.merge(
+    payload = action_params_for("environment", "staging").merge(
       token: "secret-slack-token",
       team: { id: u.slack_team_id, domain: "heroku" },
       user: { id: u.slack_user_id, name: "atmos" }
