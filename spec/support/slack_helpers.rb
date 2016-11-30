@@ -14,7 +14,7 @@ module SlackHelpers
       channel_id: "C99NNAY74",
       channel_name: "zf-promo",
       command: "/heroku",
-      response_url: "https://hooks.slack.com/commands/T123YG08V/2459573/mfZPdDq",
+      response_url: "https://hooks.slack.com/commands/T123YG08V/2459573/mPdDq",
       team_id: "T123YG08V",
       team_domain: "zf",
       text: text
