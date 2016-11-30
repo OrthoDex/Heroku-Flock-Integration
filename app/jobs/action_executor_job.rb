@@ -4,6 +4,6 @@ class ActionExecutorJob < ApplicationJob
 
   def perform(*args)
     action_id = args.first.fetch(:action_id)
-    action = Action.find(action_id)
+    Action.find(action_id)
   end
 end

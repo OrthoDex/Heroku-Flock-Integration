@@ -60,8 +60,14 @@ class User < ApplicationRecord
   def create_action_for(params)
     channel = params[:channel]
     team = params[:team]
+    action = create_action_for_team_and_channel(team, channel, params)
+    ActionExecutorJob.perform_later(action_id: action.id)
+    action
+  end
+
+  def create_action_for_team_and_channel(team, channel, params)
     button_clicked = params[:actions][0]
-    action = actions.create(
+    actions.create(
       action_ts: params[:action_ts],
       callback_id: params[:callback_id],
       channel_id: channel[:id],
@@ -72,7 +78,5 @@ class User < ApplicationRecord
       team_id: team[:id],
       value: button_clicked[:value]
     )
-    ActionExecutorJob.perform_later(action_id: action.id)
-    action
   end
 end

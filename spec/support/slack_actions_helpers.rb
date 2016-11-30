@@ -22,10 +22,7 @@ module SlackActionsHelpers
       },
       action_ts: "1480454458.026997",
       message_ts: "1480454212.000005",
-      attachment_id: "1",
       token: "some-secret-slack-token",
-      original_message: {
-      },
       response_url: "https://hooks.slack.com/actions/some-path"
     }
   end
