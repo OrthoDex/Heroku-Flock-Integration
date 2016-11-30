@@ -5,10 +5,16 @@ class ActionsController < ApplicationController
 
   def create
     return render json: {}, status: 404 unless slack_token_valid?
+    current_user.create_action_for(payload)
     render nothing: true, status: 204
   end
 
   private
+
+  def current_user
+    @current_user ||= User.find_by(slack_user_id: payload[:user][:id],
+                                   slack_team_id: payload[:team][:id])
+  end
 
   def slack_token
     ENV["SLACK_SLASH_COMMAND_TOKEN"]
