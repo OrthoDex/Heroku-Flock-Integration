@@ -5,7 +5,7 @@ class User < ApplicationRecord
   include HerokuTokenManagement
 
   has_many :commands, dependent: :destroy
-  has_many :actions,  dependent: :destroy
+  has_many :message_actions,  dependent: :destroy
 
   def self.omniauth_user_data(omniauth_info)
     token = omniauth_info[:credentials][:token]
@@ -67,7 +67,7 @@ class User < ApplicationRecord
 
   def create_action_for_team_and_channel(team, channel, params)
     button_clicked = params[:actions][0]
-    actions.create(
+    message_actions.create(
       action_ts: params[:action_ts],
       callback_id: params[:callback_id],
       channel_id: channel[:id],

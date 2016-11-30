@@ -5,8 +5,8 @@ RSpec.describe User, type: :model do
     user = create_atmos
     expect do
       user.create_action_for(action_params_for("environment", "staging"))
-    end.to change(user.actions, :count).by(1)
-    action = Action.last
+    end.to change(user.message_actions, :count).by(1)
+    action = MessageAction.last
     expect(action.value).to eql("staging")
     expect(action.callback_id).to eql("environment")
     expect(action.team_id).to eql("T0QQTP89F")
