@@ -14,7 +14,7 @@ class DeploymentReaperJob < ApplicationJob
     sha            = args.fetch(:sha)
     repo           = args.fetch(:repo)
     name           = args.fetch(:name)
-    app_id         = args.fetch(:app_id)
+    app_id         = args.fetch(:app_name) # FIXME Should be app_name everywhere?
     build_id       = args.fetch(:build_id)
     command_id     = args.fetch(:command_id)
     deployment_url = args.fetch(:deployment_url)
