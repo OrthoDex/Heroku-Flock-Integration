@@ -54,8 +54,8 @@ module HerokuCommands
 
           url = deployment.dashboard_build_output_url
           response_for("<@#{user_id}> is <#{url}|deploying> " \
-                       "#{pipeline.github_repository}@#{branch}" \
-                       "(#{deployment[:sha][0..7]}) to #{environment}.")
+                       "#{deployment.repository}@#{branch}" \
+                       "(#{deployment.sha[0..7]}) to #{environment}.")
         rescue StandardError => e
           error_response_for(e.message)
         end
