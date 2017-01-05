@@ -45,19 +45,22 @@ module HerokuCommands
       else
         user_id    = command.user.slack_user_id
         pipeline   = pipelines[application]
-        deployment = pipeline.create_deployment(branch, environment,
-                                                forced, custom_payload)
 
-        if deployment[:error]
-          error_response_for(deployment[:error])
-        else
-          deployment[:command_id] = command.id
-          DeploymentReaperJob.set(wait: 10.seconds).perform_later(deployment)
-          url = "https://dashboard.heroku.com/apps/#{deployment[:app_id]}" \
-                  "/activity/builds/#{deployment[:build_id]}"
+        begin
+          deployment = pipeline.create_deployment(branch, environment,
+                                                  forced, custom_payload)
+          deployment.command_id = command.id
+
+          DeploymentReaperJob
+            .set(wait: 10.seconds)
+            .perform_later(deployment.to_job_json)
+
+          url = deployment.dashboard_build_output_url
           response_for("<@#{user_id}> is <#{url}|deploying> " \
-                       "#{pipeline.github_repository}@#{branch}" \
-                       "(#{deployment[:sha][0..7]}) to #{environment}.")
+                       "#{deployment.repository}@#{branch}" \
+                       "(#{deployment.sha[0..7]}) to #{environment}.")
+        rescue StandardError => e
+          error_response_for(e.message)
         end
       end
     end
