@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161130034700) do
+ActiveRecord::Schema.define(version: 20170105191210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,16 +54,13 @@ ActiveRecord::Schema.define(version: 20161130034700) do
     t.string   "heroku_uuid"
     t.string   "heroku_email"
     t.datetime "heroku_expires_at"
-    t.string   "slack_user_id",                 null: false
-    t.string   "slack_user_name",               null: false
-    t.string   "slack_team_id",                 null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.string   "slack_user_id",            null: false
+    t.string   "slack_user_name",          null: false
+    t.string   "slack_team_id",            null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.string   "enc_github_token"
     t.string   "github_login"
-    t.string   "nacl_enc_github_token"
-    t.string   "nacl_enc_heroku_token"
-    t.string   "nacl_enc_heroku_refresh_token"
   end
 
 end
