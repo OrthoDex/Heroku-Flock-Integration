@@ -2,8 +2,8 @@
 class DeploymentReaperJob < ApplicationJob
   queue_as :default
 
-  def build_url(app_id, build_id)
-    "https://dashboard.heroku.com/apps/#{app_id}/activity/builds/#{build_id}"
+  def build_url(app_name, build_id)
+    "https://dashboard.heroku.com/apps/#{app_name}/activity/builds/#{build_id}"
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -14,7 +14,7 @@ class DeploymentReaperJob < ApplicationJob
     sha            = args.fetch(:sha)
     repo           = args.fetch(:repo)
     name           = args.fetch(:name)
-    app_id         = args.fetch(:app_name) # FIXME Should be app_name everywhere?
+    app_name       = args.fetch(:app_name)
     build_id       = args.fetch(:build_id)
     command_id     = args.fetch(:command_id)
     deployment_url = args.fetch(:deployment_url)
@@ -22,14 +22,14 @@ class DeploymentReaperJob < ApplicationJob
     command  = Command.find(command_id)
     pipeline = command.handler.pipelines[name]
 
-    info = pipeline.reap_build(app_id, build_id)
+    info = pipeline.reap_build(app_name, build_id)
     if info
       artifact = { sha: sha, slug: info["slug"]["id"], repo: repo }
       Rails.logger.info "Build Complete: #{artifact.to_json}"
 
       payload = {
         state: "failure",
-        target_url:  build_url(app_id, build_id),
+        target_url:  build_url(app_name, build_id),
         description: "Chat deployment complete. slash-heroku"
       }
       payload[:state] = "success" if info["status"] == "succeeded"
@@ -47,7 +47,7 @@ class DeploymentReaperJob < ApplicationJob
       Rails.logger.info "Build expired for command: #{command.id}"
       payload = {
         state: "failure",
-        target_url:  build_url(app_id, build_id),
+        target_url:  build_url(app_name, build_id),
         description: "Heroku build took longer than 15 minutes."
       }
       pipeline.create_deployment_status(deployment_url, payload)

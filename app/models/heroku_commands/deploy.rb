@@ -50,7 +50,10 @@ module HerokuCommands
           deployment = pipeline.create_deployment(branch, environment,
                                                   forced, custom_payload)
           deployment.command_id = command.id
-          DeploymentReaperJob.set(wait: 10.seconds).perform_later(deployment.to_job_json)
+
+          DeploymentReaperJob
+            .set(wait: 10.seconds)
+            .perform_later(deployment.to_job_json)
 
           url = deployment.dashboard_build_output_url
           response_for("<@#{user_id}> is <#{url}|deploying> " \
