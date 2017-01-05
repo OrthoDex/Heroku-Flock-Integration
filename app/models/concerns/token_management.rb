@@ -40,16 +40,6 @@ module TokenManagement
   end
   class UserRefreshFailure < StandardError; end
 
-  def fernet_decrypt_value(value)
-    Fernet.verifier(self.class.fernet_secret, value).message
-  rescue Fernet::Token::InvalidToken, NoMethodError
-    nil
-  end
-
-  def fernet_encrypt_value(value)
-    Fernet.generate(self.class.fernet_secret, value)
-  end
-
   def rbnacl_reset
     @rbnacl_simple_box = nil
   end

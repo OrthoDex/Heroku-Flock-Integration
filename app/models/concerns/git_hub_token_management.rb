@@ -62,21 +62,15 @@ module GitHubTokenManagement
   end
 
   def github_token
-    fernet_github_token
-  end
-
-  def fernet_github_token
-    fernet_decrypt_value(self[:enc_github_token])
+    rbnacl_github_token
   end
 
   def rbnacl_github_token
-    rbnacl_decrypt_value(self[:nacl_enc_github_token])
+    rbnacl_decrypt_value(self[:enc_github_token])
   end
 
   def github_token=(token)
-    self[:nacl_enc_github_token] = rbnacl_encrypt_value(token)
-
-    self[:enc_github_token] = fernet_encrypt_value(token)
+    self[:enc_github_token] = rbnacl_encrypt_value(token)
   end
 
   def github_configured?
