@@ -66,11 +66,11 @@ module GitHubTokenManagement
   end
 
   def rbnacl_github_token
-    rbnacl_decrypt_value(self[:enc_github_token])
+    decrypt_value(self[:enc_github_token])
   end
 
   def github_token=(token)
-    self[:enc_github_token] = rbnacl_encrypt_value(token)
+    self[:enc_github_token] = encrypt_value(token)
   end
 
   def github_configured?
