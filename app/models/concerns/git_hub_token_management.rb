@@ -22,7 +22,6 @@ module GitHubTokenManagement
   ensure
     self.github_login = nil
     self.enc_github_token = nil
-    self.nacl_enc_github_token = nil
   end
 
   # rubocop:disable Metrics/LineLength

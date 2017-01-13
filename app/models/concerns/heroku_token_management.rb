@@ -13,8 +13,6 @@ module HerokuTokenManagement
     self.heroku_email = nil
     self.enc_heroku_token = nil
     self.enc_heroku_refresh_token = nil
-    self.nacl_enc_heroku_token = nil
-    self.nacl_enc_heroku_refresh_token = nil
     self.heroku_expires_at = nil
   end
 
