@@ -2,12 +2,13 @@ module HerokuCommands
   # Class for handling Deployment requests
   class Deploy < HerokuCommand
     attr_reader :info
-    delegate :application, :branch, :forced, :hosts, :second_factor, to: :@info
+    delegate :pipeline_name, :branch, :forced, :hosts, :second_factor,
+      to: :@info
 
     def initialize(command)
       super(command)
 
-      @info = Deployment.from_text(command.command_text)
+      @info = ChatDeploymentInfo.from_text(command.command_text)
     end
 
     def self.help_documentation
@@ -65,8 +66,8 @@ module HerokuCommands
     end
 
     def deploy_application
-      if application && !pipeline
-        response_for("Unable to find a pipeline called #{application}")
+      if pipeline_name && !pipeline
+        response_for("Unable to find a pipeline called #{pipeline_name}")
       else
         DeploymentRequest.process(self)
       end
@@ -91,7 +92,7 @@ module HerokuCommands
     rescue StandardError => e
       raise e if Rails.env.test?
       Raven.capture_exception(e)
-      response_for("Unable to fetch deployment info for #{application}.")
+      response_for("Unable to fetch deployment info for #{pipeline_name}.")
     end
 
     def repository_markup(deploy)
@@ -100,7 +101,7 @@ module HerokuCommands
     end
 
     def pipeline
-      user.pipeline_for(application)
+      user.pipeline_for(pipeline_name)
     end
   end
 end

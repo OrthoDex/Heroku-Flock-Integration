@@ -48,7 +48,7 @@ class User < ApplicationRecord
 
   def pipelines
     return unless onboarded?
-    Escobar::Client.new(github_token, heroku_token)
+    @pipelines ||= Escobar::Client.new(github_token, heroku_token)
   end
 
   def heroku_user_information

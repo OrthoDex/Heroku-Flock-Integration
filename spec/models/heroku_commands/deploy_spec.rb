@@ -18,7 +18,7 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
 
     expect(command.task).to eql("deploy")
     expect(command.subtask).to eql("default")
-    expect(command.application).to eql("hubot")
+    expect(command.pipeline_name).to eql("hubot")
 
     command.run
 
@@ -89,7 +89,7 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
 
     expect(command.task).to eql("deploy")
     expect(command.subtask).to eql("default")
-    expect(command.application).to eql("hubot")
+    expect(command.pipeline_name).to eql("hubot")
 
     command.run
 
@@ -148,7 +148,7 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
 
     expect(command.task).to eql("deploy")
     expect(command.subtask).to eql("default")
-    expect(command.application).to eql("hubot")
+    expect(command.pipeline_name).to eql("hubot")
 
     command.run
 
@@ -195,7 +195,7 @@ RSpec.describe HerokuCommands::Deploy, type: :model do
 
     expect(command.task).to eql("deploy")
     expect(command.subtask).to eql("default")
-    expect(command.application).to eql("hubot")
+    expect(command.pipeline_name).to eql("hubot")
 
     command.run
 
