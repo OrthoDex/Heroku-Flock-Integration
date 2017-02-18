@@ -6,18 +6,12 @@ module HerokuCommands
     end
 
     def self.help_documentation
-      [
-        "logout - Remove the user's auth information."
-      ]
+      "logout - Remove the user's auth information."
     end
 
     def run
       user.destroy
-      @response = {
-        attachments: [
-          { text: "Successfully removed your user. :wink:" }
-        ]
-      }
+      @response = "Successfully removed your user. :wink:"
     end
   end
 end

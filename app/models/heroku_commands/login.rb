@@ -25,32 +25,16 @@ module HerokuCommands
     end
 
     def authenticated_user_response
-      {
-        attachments: [
-          { text: "You're authenticated as #{email} on Heroku." }
-        ]
-      }
+      "You're authenticated as #{email} on Heroku."
     end
 
     def authenticate_github_response
-      {
-        attachments: [
-          {
-            text: "You're not authenticated with GitHub yet. " \
-            "<#{command.github_auth_url}|Fix that>."
-          }
-        ]
-      }
+        "You're not authenticated with GitHub yet. " \
+        "<#{command.github_auth_url}|Fix that>."
     end
 
     def authenticate_heroku_response
-      {
-        attachments: [
-          {
-            text: "Please <#{command.flock_auth_url}|sign in to Heroku>."
-          }
-        ]
-      }
+      "Please <#{command.flock_auth_url}|sign in to Heroku>."
     end
 
     def user_onboarding_response

@@ -6,10 +6,8 @@ module HerokuCommands
     end
 
     def self.help_documentation
-      [
-        "pipelines - View available pipelines.",
-        "pipelines:info PIPELINE - View detailed information for a pipeline."
-      ]
+        "pipelines - View available pipelines. \
+        pipelines:info PIPELINE - View detailed information for a pipeline."
     end
 
     def run
@@ -22,12 +20,8 @@ module HerokuCommands
 
     def default_pipelines_for_user
       if available_pipelines
-        {
-          attachments: [
-            { text: "You can deploy: #{available_pipelines
-              .app_names.join(', ')}." }
-          ]
-        }
+        "You can deploy: #{available_pipelines
+          .app_names.join(', ')}."
       else
         response_for("No pipelines to deploy")
       end
@@ -37,12 +31,8 @@ module HerokuCommands
       if pipeline.configured?
         pipeline_info
       else
-        {
-          attachments: [
-            { text: "<#{pipeline.heroku_permalink}|" \
-                    "Connect your pipeline to GitHub>" }
-          ]
-        }
+        "<#{pipeline.heroku_permalink}|" \
+                "Connect your pipeline to GitHub>"
       end
     end
 

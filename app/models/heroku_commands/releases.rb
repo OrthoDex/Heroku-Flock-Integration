@@ -8,10 +8,8 @@ module HerokuCommands
     end
 
     def self.help_documentation
-      [
         "releases PIPELINE - " \
           "Display the last 25 releases for apps in the pipeline."
-      ]
     end
 
     def run
