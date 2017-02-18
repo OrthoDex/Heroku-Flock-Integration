@@ -47,7 +47,7 @@ class SessionsController < ApplicationController
         Rails.logger.info "Flock token Valid"
         if current_user && current_user.heroku_uuid
           Rails.logger.info "Current User found"
-          command = current_user.create_command_for(params, current_user)
+          command = current_user.create_command_for(params, current_user, params[:chat])
           render json: command.default_response.to_json
         else
           Rails.logger.info "Not logged in"

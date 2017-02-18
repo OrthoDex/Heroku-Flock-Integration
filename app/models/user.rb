@@ -54,12 +54,12 @@ class User < ApplicationRecord
     pipelines.heroku.user_information
   end
 
-  def create_command_for(params, user)
+  def create_command_for(params, user, group)
     command = commands.create(
       command: params[:command],
       command_text: params[:text]
     )
-    CommandExecutorJob.perform_later(command_id: command.id, user: user)
+    CommandExecutorJob.perform_later(command_id: command.id, user: user, group: group)
     # YubikeyExpireJob.set(wait: 10.seconds).perform_later(command_id: command.id)
     command
   end

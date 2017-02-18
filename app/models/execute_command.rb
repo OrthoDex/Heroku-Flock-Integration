@@ -4,19 +4,20 @@ class ExecuteCommand
 
   REQUIRES_AUTHENTICATION = %w{pipeline pipelines deploy releases}.freeze
 
-  def self.for(command, user)
-    new(command, user).post_to_flock
+  def self.for(command, user, group)
+    new(command, user, group).post_to_flock
   end
 
-  def initialize(command, user)
+  def initialize(command, user, group)
     @command = command
     @task = command.task
     @user = user
+    @group = group
   end
 
   def post_to_flock
     Rails.logger.info "Posting to Flock"
-    FlockPostback.for(response, @user)
+    FlockPostback.for(response, @user, @group)
   end
 
   def response
