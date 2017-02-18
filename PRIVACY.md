@@ -1,14 +1,14 @@
-# Privacy Policy for Heroku ChatOps for Slack
+# Privacy Policy for Heroku ChatOps for Flock
 
-This privacy policy governs your use of the software application Heroku ChatOps for Slack (“Application”) for Slack clients, web browsers, and mobile devices that was created by atmos.org. The Application is a Slack integration to assist in deploying code from GitHub to the Heroku platform.
+This privacy policy governs your use of the software application Heroku ChatOps for Flock (“Application”) for Flock clients, web browsers, and mobile devices that was created by atmos.org. The Application is a Flock integration to assist in deploying code from GitHub to the Heroku platform.
 
 ## What information does the Application obtain and how is it used?
 
 ### User Provided Information
 
-The Application obtains the information you provide when you install the Application to your Slack team.
+The Application obtains the information you provide when you install the Application to your Flock team.
 
-When you install the Application, you provide (a) your name, email address, slack team name, and user name; (b) transaction-related information, such as slash commands that we respond to (c) information you provide us when you contact us for help; (d) information you enter into chat when using the Application, such as contact information, project management information, passwords, API tokens, and yubikeys.
+When you install the Application, you provide (a) your name, email address, flock team name, and user name; (b) transaction-related information, such as slash commands that we respond to (c) information you provide us when you contact us for help; (d) information you enter into chat when using the Application, such as contact information, project management information, passwords, API tokens, and yubikeys.
 
 We will not use the information you provided us to contact you from time to time to provide you with important information, required notices and marketing promotions.
 
@@ -18,7 +18,7 @@ In addition, the Application may collect certain information automatically, incl
 
 ## Does the Application collect precise real time location information of the device?
 
-This Application does not collect precise information about the location of your Slack client.
+This Application does not collect precise information about the location of your Flock client.
 
 ## Do third parties see and/or have access to information obtained by the Application?
 
@@ -26,7 +26,7 @@ This information is not shared with anyone in any form.
 
 ## What are my opt-out rights?
 
-You can stop all collection of information by the Application by uninstalling the Application. You may use the standard uninstall processes via the application marketplace, https://api.slack.com/apps. You can also request to opt-out via email, at atmos+slash-heroku@atmos.org.
+You can stop all collection of information by the Application by uninstalling the Application. You may use the standard uninstall processes via the application marketplace, https://api.flock.com/apps. You can also request to opt-out via email, at atmos+slash-heroku@atmos.org.
 
 ## Data Retention Policy, Managing Your Information
 
@@ -38,7 +38,7 @@ We are concerned about safeguarding the confidentiality of your information. We 
 
 ## Changes
 
-This Privacy Policy may be updated from time to time for any reason. We will notify you of any changes to our Privacy Policy by posting the new Privacy Policy here and informing you via usage in Slack. You are advised to consult this Privacy Policy regularly for any changes, as continued use is deemed approval of all changes. You can check the history of this policy by https://github.com/atmos/slash-heroku/PRIVACY.md.
+This Privacy Policy may be updated from time to time for any reason. We will notify you of any changes to our Privacy Policy by posting the new Privacy Policy here and informing you via usage in Flock. You are advised to consult this Privacy Policy regularly for any changes, as continued use is deemed approval of all changes. You can check the history of this policy by https://github.com/atmos/slash-heroku/PRIVACY.md.
 
 ## Your Consent
 

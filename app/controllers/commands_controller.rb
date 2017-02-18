@@ -1,4 +1,4 @@
-# Endpoint for handling slack postings
+# Endpoint for handling flock postings
 class CommandsController < ApplicationController
   instrument_action :create
   protect_from_forgery with: :null_session
@@ -6,7 +6,7 @@ class CommandsController < ApplicationController
   rescue_from StandardError, with: :say_oops
 
   def create
-    if slack_token_valid?
+    if flock_token_valid?
       if current_user && current_user.heroku_token
         command = current_user.create_command_for(params)
         render json: command.default_response.to_json
@@ -28,15 +28,17 @@ class CommandsController < ApplicationController
   end
 
   def current_user
-    @current_user ||= User.find_by(slack_user_id: params[:user_id],
-                                   slack_team_id: params[:team_id])
+    @current_user ||= User.find_by(flock_user_id: params[:user_id],
+                                   flock_team_id: params[:team_id])
   end
 
-  def slack_token
-    ENV["SLACK_SLASH_COMMAND_TOKEN"]
+  def flock_token
+    ENV["FLOCK_OAUTH_SECRET"]
   end
 
-  def slack_token_valid?
-    ActiveSupport::SecurityUtils.secure_compare(params[:token], slack_token)
+  def flock_token_valid?
+    if params[:name] == "client.slashCommand"
+      ActiveSupport::SecurityUtils.secure_compare(params[:userId], current_user.flock_user_id)
+    end
   end
 end

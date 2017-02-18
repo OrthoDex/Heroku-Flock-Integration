@@ -44,22 +44,6 @@
       "description": "The full hostname that the application is running at.",
       "value": "slash-heroku.atmos.org"
     },
-    "LIBRATO_PASSWORD": {
-      "description": "The password for your librato integration.",
-      "required": false
-    },
-    "LIBRATO_SOURCE": {
-      "description": "The source prefix for your librato integration.",
-      "required": false
-    },
-    "LIBRATO_TOKEN": {
-      "description": "The token for your librato integration.",
-      "required": false
-    },
-    "LIBRATO_USER": {
-      "description": "The user email for your librato integration.",
-      "required": false
-    },
     "PRIVACY_POLICY_URL": {
       "description": "The url of your privacy policy.",
       "value": "https://github.com/atmos/slash-heroku/blob/master/PRIVACY.md"

@@ -1,4 +1,4 @@
-# A command a Slack User issued
+# A command a Flock User issued
 class Command < ApplicationRecord
   belongs_to :user, required: false
 
@@ -11,9 +11,9 @@ class Command < ApplicationRecord
       command: params[:command],
       command_text: params[:text],
       response_url: params[:response_url],
-      slack_user_id: params[:user_id],
-      team_id: params[:team_id],
-      team_domain: params[:team_domain]
+      flock_user_id: params[:userId],
+      chat: params[:chat],
+      chat_name: params[:chatName]
     )
   end
 
@@ -25,8 +25,8 @@ class Command < ApplicationRecord
     "https://#{ENV['HOSTNAME']}/auth"
   end
 
-  def slack_auth_url
-    "#{auth_url_prefix}/slack?origin=#{encoded_origin_hash(:heroku)}" \
+  def flock_auth_url
+    "#{auth_url_prefix}/flock?origin=#{encoded_origin_hash(:heroku)}" \
       "&team=#{team_id}"
   end
 
@@ -37,13 +37,13 @@ class Command < ApplicationRecord
   def authenticate_heroku_response
     {
       response_type: "in_channel",
-      text: "Please <#{slack_auth_url}|sign in to Heroku>."
+      text: "Please <#{flock_auth_url}|sign in to Heroku>."
     }
   end
 
   def origin_hash(provider_name)
     {
-      uri: "slack://channel?team=#{team_id}&id=#{channel_id}",
+      uri: "flock://channel?team=#{team_id}&id=#{channel_id}",
       team: team_id,
       token: id,
       provider: provider_name

@@ -1,4 +1,4 @@
-# A user from the Slack API
+# A user from the Flock API
 class User < ApplicationRecord
   include TokenManagement
   include GitHubTokenManagement
@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   def self.omniauth_user_data(omniauth_info)
     token = omniauth_info[:credentials][:token]
-    response = slack_client.get("/api/users.identity?token=#{token}")
+    response = flock_client.get("/api/users.identity?token=#{token}")
 
     JSON.parse(response.body)
   end
@@ -18,19 +18,19 @@ class User < ApplicationRecord
     body = omniauth_user_data(omniauth_info)
 
     user = find_or_initialize_by(
-      slack_user_id: body["user"]["id"]
+      flock_user_id: body["user"]["id"]
     )
-    user.slack_team_id   = body["team"]["id"]
-    user.slack_user_name = body["user"]["name"]
+    user.flock_team_id   = body["team"]["id"]
+    user.flock_user_name = body["user"]["name"]
     user.save
     user
   end
 
-  def self.slack_client
-    Faraday.new(url: "https://slack.com") do |connection|
+  def self.flock_client
+    Faraday.new(url: "https://api.flock.co/v1/") do |connection|
       connection.headers["Content-Type"] = "application/json"
       connection.use :instrumentation
-      connection.use ZipkinTracer::FaradayHandler, "slack.com"
+      connection.use ZipkinTracer::FaradayHandler, "flock.co"
       connection.adapter Faraday.default_adapter
     end
   end
@@ -59,13 +59,10 @@ class User < ApplicationRecord
       channel_id: params[:channel_id],
       channel_name: params[:channel_name],
       command: params[:command],
-      command_text: params[:text],
-      response_url: params[:response_url],
-      team_id: params[:team_id],
-      team_domain: params[:team_domain]
+      command_text: params[:text]
     )
     CommandExecutorJob.perform_later(command_id: command.id)
-    YubikeyExpireJob.set(wait: 10.seconds).perform_later(command_id: command.id)
+    # YubikeyExpireJob.set(wait: 10.seconds).perform_later(command_id: command.id)
     command
   end
 

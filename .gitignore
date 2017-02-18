@@ -21,7 +21,6 @@
 .byebug_history
 
 # Project specific stuff
-.env
 .ruby-version
 .node-version
 vendor/gems

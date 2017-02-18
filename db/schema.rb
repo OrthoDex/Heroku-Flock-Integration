@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20170105191210) do
     t.datetime "processed_at"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.string   "slack_user_id"
+    t.string   "flock_user_id"
   end
 
   create_table "message_actions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -54,9 +54,9 @@ ActiveRecord::Schema.define(version: 20170105191210) do
     t.string   "heroku_uuid"
     t.string   "heroku_email"
     t.datetime "heroku_expires_at"
-    t.string   "slack_user_id",            null: false
-    t.string   "slack_user_name",          null: false
-    t.string   "slack_team_id",            null: false
+    t.string   "flock_user_id",            null: false
+    t.string   "flock_user_name"
+    t.string   "flock_team_id"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.string   "enc_github_token"

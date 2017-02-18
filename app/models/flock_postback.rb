@@ -1,5 +1,5 @@
-# Sends a Slack message to a given Slack url
-class SlackPostback
+# Sends a Flock message to a given Flock url
+class FlockPostback
   attr_reader :message, :url
 
   def self.for(message, url)
@@ -20,7 +20,7 @@ class SlackPostback
 
     Rails.logger.info action: "command#postback_message", body: response.body
   rescue StandardError => e
-    Rails.logger.info "Unable to post back to slack: '#{e.inspect}'"
+    Rails.logger.info "Unable to post back to flock: '#{e.inspect}'"
   end
 
   def callback_uri
@@ -28,9 +28,9 @@ class SlackPostback
   end
 
   def client
-    @client ||= Faraday.new(url: "https://hooks.slack.com") do |c|
+    @client ||= Faraday.new(url: "https://api.flock.co/v1/") do |c|
       c.use :instrumentation
-      c.use ZipkinTracer::FaradayHandler, "hooks.slack.com"
+      c.use ZipkinTracer::FaradayHandler, "api.flock.co"
       c.adapter Faraday.default_adapter
     end
   end

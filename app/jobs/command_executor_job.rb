@@ -7,7 +7,6 @@ class CommandExecutorJob < ApplicationJob
     command = Command.find(command_id)
     ExecuteCommand.for(command)
     command.processed_at = Time.now.utc
-    Librato.increment "command.runs.total"
     command.save
   end
 end

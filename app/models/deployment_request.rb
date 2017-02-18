@@ -10,7 +10,7 @@ class DeploymentRequest
   delegate :channel_name, :team_id, to: :command
 
   delegate :user, to: :command
-  delegate :slack_user_id, :slack_user_name, to: :user
+  delegate :flock_user_id, :flock_user_name, to: :user
 
   def self.process(command_handler)
     request = new(command_handler)
@@ -68,8 +68,8 @@ class DeploymentRequest
       notify: {
         room: channel_name,
         team_id: team_id,
-        user: slack_user_id,
-        user_name: slack_user_name
+        user: flock_user_id,
+        user_name: flock_user_name
       }
     }
   end

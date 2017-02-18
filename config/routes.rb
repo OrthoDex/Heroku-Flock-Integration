@@ -1,4 +1,4 @@
-privacy_policy_url = ENV["PRIVACY_POLICY_URL"] || "https://api.slack.com/developer-policy"
+privacy_policy_url = ENV["PRIVACY_POLICY_URL"]
 
 require "sidekiq/web"
 
@@ -7,11 +7,11 @@ Rails.application.routes.draw do
   # mount ActionCable.server => '/cable'
 
   get  "/auth/failure"         => "sessions#destroy"
-  get  "/auth/complete"        => "sessions#complete"
+  get  "/auth/complete"       => "sessions#complete"
   get  "/auth/github/callback" => "sessions#create_github"
   get  "/auth/heroku/callback" => "sessions#create_heroku"
-  get  "/auth/slack/callback"  => "sessions#create_slack"
-  get  "/auth/slack_install/callback", to: "sessions#install_slack"
+  post  "/auth/flock/callback"  => "sessions#create_flock"
+  # get  "/auth/flock_install/callback", to: "sessions#install_flock"
 
   get  "/health"   => "application#health"
   get  "/support"  => "pages#support"

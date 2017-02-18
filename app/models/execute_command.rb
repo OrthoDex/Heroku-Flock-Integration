@@ -1,11 +1,11 @@
-# Generates command body and posts it to slack
+# Generates command body and posts it to flock
 class ExecuteCommand
   attr_reader :command, :task
 
   REQUIRES_AUTHENTICATION = %w{pipeline pipelines deploy releases}.freeze
 
   def self.for(command)
-    new(command).post_to_slack
+    new(command).post_to_flock
   end
 
   def initialize(command)
@@ -13,8 +13,8 @@ class ExecuteCommand
     @task = command.task
   end
 
-  def post_to_slack
-    SlackPostback.for(response, command.response_url)
+  def post_to_flock
+    FlockPostback.for(response, command.response_url)
   end
 
   def response

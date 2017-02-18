@@ -15,12 +15,10 @@ class YubikeyExpireJob < ApplicationJob
         request.body = "key=#{matches[1]}"
         request.headers["Content-Type"] = "application/x-www-form-urlencoded"
       end
-      Librato.increment "yubikey.expire.total"
       case response.body
       when "token was already used"
-        Librato.increment "yubikey.expire.used"
       when "token successfully invalidated"
-        Librato.increment "yubikey.expire.unused"
+        Rails.logger.info ""
       else
         Rails.logger.info "Yubikey expire: #{response.body}"
       end

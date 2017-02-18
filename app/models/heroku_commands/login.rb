@@ -47,7 +47,7 @@ module HerokuCommands
       {
         attachments: [
           {
-            text: "Please <#{command.slack_auth_url}|sign in to Heroku>."
+            text: "Please <#{command.flock_auth_url}|sign in to Heroku>."
           }
         ]
       }

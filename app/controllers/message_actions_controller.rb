@@ -4,7 +4,7 @@ class MessageActionsController < ApplicationController
   protect_from_forgery with: :null_session
 
   def create
-    return render json: {}, status: 404 unless slack_token_valid?
+    return render json: {}, status: 404 unless flock_token_valid?
     current_user.create_message_action_for(payload)
     render nothing: true, status: 204
   end
@@ -12,16 +12,16 @@ class MessageActionsController < ApplicationController
   private
 
   def current_user
-    @current_user ||= User.find_by(slack_user_id: payload[:user][:id],
-                                   slack_team_id: payload[:team][:id])
+    @current_user ||= User.find_by(flock_user_id: payload[:user][:id],
+                                   flock_team_id: payload[:team][:id])
   end
 
-  def slack_token
-    ENV["SLACK_SLASH_COMMAND_TOKEN"]
+  def flock_token
+    ENV["FLOCK_OAUTH_SECRET"]
   end
 
-  def slack_token_valid?
-    ActiveSupport::SecurityUtils.secure_compare(payload[:token], slack_token)
+  def flock_token_valid?
+    ActiveSupport::SecurityUtils.secure_compare(payload[:token], flock_token)
   end
 
   def payload

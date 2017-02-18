@@ -1,27 +1,27 @@
 # Notifies the user that they're done signing up
 class SignupComplete
-  attr_reader :slack_user_id, :postback_url
+  attr_reader :flock_user_id, :postback_url
 
-  def self.notify(slack_user_id, postback_url)
-    new(slack_user_id, postback_url).notify_user_of_success
+  def self.notify(flock_user_id, postback_url)
+    new(flock_user_id, postback_url).notify_user_of_success
   end
 
-  def initialize(slack_user_id, postback_url)
-    @slack_user_id = slack_user_id
+  def initialize(flock_user_id, postback_url)
+    @flock_user_id = flock_user_id
     @postback_url = postback_url
   end
 
   def notify_user_of_success
     return unless user
-    SlackPostback.for(message, postback_url)
+    FlockPostback.for(message, postback_url)
   end
 
   def user
-    User.find_by(slack_user_id: slack_user_id)
+    User.find_by(flock_user_id: flock_user_id)
   end
 
   def name
-    "<@#{user.slack_user_id}|#{user.slack_user_name}>"
+    "<@#{user.flock_user_id}|#{user.flock_user_name}>"
   end
 
   def message
