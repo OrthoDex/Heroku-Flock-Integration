@@ -23,7 +23,8 @@ module HerokuCommands
     end
 
     def help_for_task
-      "Run /h help releases for task specific help"
+      "Run /heroku help <task> for task specific help: \n
+      #{self.class.help_documentation.join("\n")}"
     end
 
     def error_response_for(text)
@@ -32,21 +33,11 @@ module HerokuCommands
     end
 
     def error_response_for_escobar_two_factor(error)
-      {
-        attachments: [
-          { text: "<#{error.dashboard_url}|Unlock " \
-                  "#{error.build_request.app.name}>" }
-        ]
-      }
+      "<#{error.dashboard_url}|Unlock \n#{error.build_request.app.name}>"
     end
 
     def error_response_for_escobar_known_exception(error)
-      {
-        response_type: "in_channel",
-        attachments: [
-          { text: error.message }
-        ]
-      }
+      error.message
     end
 
     def error_response_for_escobar(error)
@@ -65,7 +56,7 @@ module HerokuCommands
     end
 
     def response_for(text)
-      { text: text, response_type: "in_channel" }
+      text
     end
   end
 end

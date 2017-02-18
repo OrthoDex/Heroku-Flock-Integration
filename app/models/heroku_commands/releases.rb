@@ -61,18 +61,7 @@ module HerokuCommands
     end
 
     def response_for_releases(releases)
-      {
-        mrkdwn: true,
-        response_type: "in_channel",
-        attachments: [
-          {
-            color: COLOR,
-            text: releases,
-            title: "#{dashboard_markup} - Recent #{environment} releases",
-            fallback: "Latest releases for Heroku pipeline #{pipeline_name}"
-          }
-        ]
-      }
+      "Latest releases for Heroku pipeline #{pipeline_name}\n#{dashboard_markup} - Recent #{environment} releases"
     end
 
     delegate :default_environment, :github_repository, to: :pipeline

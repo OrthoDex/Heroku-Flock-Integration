@@ -4,9 +4,14 @@ class SessionsController < ApplicationController
   # protect_from_forgery with: :null_session
   rescue_from StandardError, with: :say_oops
   skip_before_action :verify_authenticity_token, only: [:create_flock]
+  before_action :set_user, only: [:create_github, :create_heroku]
+
+  def set_user
+    @user = User.last
+  end
 
   def create_github
-    user = User.find(session[:user_id])
+    user = @user
     user.github_login = omniauth_info["info"]["nickname"]
     user.github_token = omniauth_info["credentials"]["token"]
 
@@ -18,7 +23,7 @@ class SessionsController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize
   def create_heroku
-    user = User.find(session[:user_id])
+    user = @user
     user.heroku_uuid  = omniauth_info["uid"]
     user.heroku_email = omniauth_info["info"]["email"]
     user.heroku_token = omniauth_info["credentials"]["token"]
@@ -35,6 +40,7 @@ class SessionsController < ApplicationController
 
   # rubocop:enable Metrics/AbcSize
   def create_flock
+    # force session initialize
     if params[:name] == "app.install"
       user = User.find_or_initialize_by(flock_user_id: params[:userId], flock_auth_token: params[:token])
       user.save
@@ -70,6 +76,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session.clear
+    User.find_by(flock_user_id: params[:userId]).destroy
     redirect_to root_url, notice: "Signed out!"
   end
 
@@ -91,7 +98,7 @@ class SessionsController < ApplicationController
 
   def say_oops(exception)
     Raven.capture_exception(exception)
-    FlockPostback.for("Sorry there was a problem!", current_user)
+    FlockPostback.for("Sorry there was a problem!", current_user, params[:chat])
   end
 
   def after_successful_heroku_user_setup_path

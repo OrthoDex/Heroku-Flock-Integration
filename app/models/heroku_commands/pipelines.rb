@@ -6,8 +6,7 @@ module HerokuCommands
     end
 
     def self.help_documentation
-        "pipelines - View available pipelines. \
-        pipelines:info PIPELINE - View detailed information for a pipeline."
+        "pipelines - View available pipelines.\npipelines:info PIPELINE - View detailed information for a pipeline."
     end
 
     def run
@@ -20,8 +19,7 @@ module HerokuCommands
 
     def default_pipelines_for_user
       if available_pipelines
-        "You can deploy: #{available_pipelines
-          .app_names.join(', ')}."
+        "You can deploy: #{available_pipelines.app_names.join(', ')}."
       else
         response_for("No pipelines to deploy")
       end
@@ -31,8 +29,7 @@ module HerokuCommands
       if pipeline.configured?
         pipeline_info
       else
-        "<#{pipeline.heroku_permalink}|" \
-                "Connect your pipeline to GitHub>"
+        "<#{pipeline.heroku_permalink}|\nConnect your pipeline to GitHub>"
       end
     end
 
@@ -52,8 +49,7 @@ module HerokuCommands
     end
 
     def unable_to_access_repository_response
-      response_for("You're not authenticated with GitHub. " \
-                   "<#{command.github_auth_url}|Fix that>.")
+      response_for("You're not authenticated with GitHub.\n<#{command.github_auth_url}|Fix that>.")
     end
 
     def pipeline_info

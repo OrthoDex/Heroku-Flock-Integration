@@ -6,9 +6,7 @@ module HerokuCommands
     end
 
     def self.help_documentation
-      [
-        "login - Verify the user is authenticated with Heroku and GitHub."
-      ]
+      "login - Verify the user is authenticated with Heroku and GitHub."
     end
 
     def email
@@ -29,8 +27,7 @@ module HerokuCommands
     end
 
     def authenticate_github_response
-        "You're not authenticated with GitHub yet. " \
-        "<#{command.github_auth_url}|Fix that>."
+      "You're not authenticated with GitHub yet.\n<#{command.github_auth_url}|Fix that>."
     end
 
     def authenticate_heroku_response
