@@ -1,6 +1,8 @@
 # Session controller for authenticating users with GitHub/Heroku/Hipchat
 class SessionsController < ApplicationController
   include SessionsHelper
+  # protect_from_forgery with: :null_session
+  rescue_from StandardError, with: :say_oops
   skip_before_action :verify_authenticity_token, only: [:create_flock]
 
   def create_github
@@ -23,38 +25,47 @@ class SessionsController < ApplicationController
     user.heroku_refresh_token = omniauth_refresh_token
     user.heroku_expires_at    = omniauth_expiration
 
+    Rails.logger.info "user: #{user.inspect}"
+
     user.save
+    redirect_to after_successful_heroku_user_setup_path
   rescue ActiveRecord::RecordNotFound
     redirect_to "/?origin=#{omniauth_origin}"
   end
-  # rubocop:enable Metrics/AbcSize
 
+  # rubocop:enable Metrics/AbcSize
   def create_flock
     if params[:name] == "app.install"
-      user = User.find_or_initialize_by(flock_user_id: params[:userId])
+      user = User.find_or_initialize_by(flock_user_id: params[:userId], flock_auth_token: params[:token])
       user.save
       session[:user_id] = user.id
       render nothing: true, status: 200
     elsif params[:name] == "client.slashCommand" && params[:command] == "heroku"
-      redirect_to commands_path
+      Rails.logger.info "Slash Command: Redirected"
+      Rails.logger.info "Creating Command"
+      if flock_token_valid?
+        Rails.logger.info "Flock token Valid"
+        if current_user && current_user.heroku_uuid
+          Rails.logger.info "Current User found"
+          command = current_user.create_command_for(params, current_user)
+          render json: command.default_response.to_json
+        else
+          Rails.logger.info "Not logged in"
+          command = Command.from_params(params)
+          render json: command.authenticate_heroku_response
+        end
+      else
+        Rails.logger.info "Token not valid"
+        render json: {}, status: 404
+      end
+    elsif params[:name] == "app.uninstall"
+      destroy
     end
   end
 
   def complete
-    @after_success_url = "https://flock.com/messages"
-    if params[:origin]
-      decoded = decoded_params_origin
-
-      @after_success_url = decoded[:uri] if decoded[:uri] =~ /^flock:/
-
-      command = Command.find(decoded[:token])
-      if command
-        SignupCompleteJob.perform_later(user_id: session[:user_id],
-                                        command_id: command.id)
-      end
-    end
-  rescue StandardError, ActiveRecord::RecordNotFound
-    nil
+    Rails.logger.info "Completed installation"
+    redirect_to :root
   end
 
   def destroy
@@ -63,6 +74,25 @@ class SessionsController < ApplicationController
   end
 
   private
+
+  def current_user
+    @current_user ||= User.find_by(flock_user_id: params[:userId])
+  end
+
+  def flock_token
+    ENV["FLOCK_OAUTH_SECRET"]
+  end
+
+  def flock_token_valid?
+    if params[:name] == "client.slashCommand"
+      ActiveSupport::SecurityUtils.secure_compare(params[:userId], current_user.flock_user_id)
+    end
+  end
+
+  def say_oops(exception)
+    Raven.capture_exception(exception)
+    FlockPostback.for("Sorry there was a problem!", current_user)
+  end
 
   def after_successful_heroku_user_setup_path
     "/auth/complete?origin=#{omniauth_origin}"

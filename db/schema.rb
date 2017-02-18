@@ -19,33 +19,33 @@ ActiveRecord::Schema.define(version: 20170105191210) do
   create_table "commands", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "args"
     t.string   "application"
-    t.string   "channel_id",    null: false
-    t.string   "channel_name",  null: false
-    t.string   "command",       null: false
+    t.string   "channel_id"    
+    t.string   "channel_name"
+    t.string   "command"
     t.string   "command_text"
-    t.string   "response_url",  null: false
+    t.string   "response_url"
     t.string   "subtask"
     t.string   "task"
-    t.string   "team_id",       null: false
-    t.string   "team_domain",   null: false
+    t.string   "team_id"
+    t.string   "team_domain"
     t.uuid     "user_id"
     t.datetime "processed_at"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "flock_user_id"
   end
 
   create_table "message_actions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "value",        null: false
-    t.string "callback_id",  null: false
-    t.string "team_id",      null: false
-    t.string "team_domain",  null: false
-    t.string "channel_id",   null: false
-    t.string "channel_name", null: false
+    t.string "value"
+    t.string "callback_id"
+    t.string "team_id"
+    t.string "team_domain"
+    t.string "channel_id"
+    t.string "channel_name"
     t.uuid   "user_id"
-    t.string "message_ts",   null: false
-    t.string "action_ts",    null: false
-    t.string "response_url", null: false
+    t.string "message_ts"
+    t.string "action_ts"
+    t.string "response_url"
   end
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -54,11 +54,11 @@ ActiveRecord::Schema.define(version: 20170105191210) do
     t.string   "heroku_uuid"
     t.string   "heroku_email"
     t.datetime "heroku_expires_at"
-    t.string   "flock_user_id",            null: false
+    t.string   "flock_user_id"
     t.string   "flock_user_name"
-    t.string   "flock_team_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.string   "flock_auth_token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "enc_github_token"
     t.string   "github_login"
   end

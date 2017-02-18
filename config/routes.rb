@@ -18,11 +18,11 @@ Rails.application.routes.draw do
   get  "/privacy", to: redirect(privacy_policy_url, status: 302)
   get  "/boomtown" => "application#boomtown"
 
-  post "/commands" => "commands#create"
+  get "/commands" => "commands#create"
   post "/message_actions"  => "message_actions#create"
   post "/signout"  => "sessions#destroy"
 
-  mount Sidekiq::Web => "/sidekiq", constraints: AdminConstraint.new
+  mount Sidekiq::Web => "/sidekiq"
 
   root to: "pages#install"
 end

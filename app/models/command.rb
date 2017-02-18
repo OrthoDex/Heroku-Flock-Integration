@@ -6,14 +6,9 @@ class Command < ApplicationRecord
 
   def self.from_params(params)
     create(
-      channel_id: params[:channel_id],
-      channel_name: params[:channel_name],
       command: params[:command],
       command_text: params[:text],
-      response_url: params[:response_url],
-      flock_user_id: params[:userId],
-      chat: params[:chat],
-      chat_name: params[:chatName]
+      flock_user_id: params[:userId]
     )
   end
 
@@ -37,7 +32,7 @@ class Command < ApplicationRecord
   def authenticate_heroku_response
     {
       response_type: "in_channel",
-      text: "Please <#{flock_auth_url}|sign in to Heroku>."
+      text: "Please sign in to Heroku."
     }
   end
 

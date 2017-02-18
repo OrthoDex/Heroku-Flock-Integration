@@ -1,20 +1,22 @@
 # Sends a Flock message to a given Flock url
 class FlockPostback
+  FLOCK_API_URL="https://api.flock.co/v1/"
   attr_reader :message, :url
 
-  def self.for(message, url)
-    new(message, url).postback_message
+  def self.for(message, user)
+    new(message, FLOCK_API_URL, user).postback_message
   end
 
-  def initialize(message, url)
+  def initialize(message, url, user)
     @message = message
     @url = url
+    @user = user
   end
 
   def postback_message
     response = client.post do |request|
-      request.url callback_uri.path
-      request.body = message.to_json
+      request.url callback_uri.path + "chat.sendMessage?to=#{@user.flock_user_id}&token=#{@user.flock_auth_token}"
+      request.body = {text: @message}
       request.headers["Content-Type"] = "application/json"
     end
 
@@ -24,7 +26,7 @@ class FlockPostback
   end
 
   def callback_uri
-    @callback_uri ||= Addressable::URI.parse(url)
+    @callback_uri ||= Addressable::URI.parse(@url)
   end
 
   def client

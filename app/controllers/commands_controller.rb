@@ -6,6 +6,7 @@ class CommandsController < ApplicationController
   rescue_from StandardError, with: :say_oops
 
   def create
+    Rails.logger.info "Creating Command"
     if flock_token_valid?
       if current_user && current_user.heroku_token
         command = current_user.create_command_for(params)
@@ -28,8 +29,7 @@ class CommandsController < ApplicationController
   end
 
   def current_user
-    @current_user ||= User.find_by(flock_user_id: params[:user_id],
-                                   flock_team_id: params[:team_id])
+    @current_user ||= User.find_by(flock_user_id: params[:userId])
   end
 
   def flock_token
