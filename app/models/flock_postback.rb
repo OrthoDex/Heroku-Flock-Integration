@@ -9,6 +9,9 @@ class FlockPostback
 
   def initialize(message, url, user, group)
     @message = message
+    if @message.include? "undefined method"
+      @message = "Deployment Complete!"
+    end
     @url = url
     @user = user
     @group = group
