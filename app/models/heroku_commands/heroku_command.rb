@@ -23,8 +23,7 @@ module HerokuCommands
     end
 
     def help_for_task
-      "Run /heroku help <task> for task specific help: \n
-      #{self.class.help_documentation.join("\n")}"
+      "Run /heroku help <task> for task specific help:\n#{self.class.help_documentation.join("\n")}"
     end
 
     def error_response_for(text)

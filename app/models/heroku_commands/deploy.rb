@@ -32,7 +32,7 @@ module HerokuCommands
     end
 
     def deployment_complete_message(_payload, _sha)
-      {}
+      "Deployment Complete!"
     end
 
     def run_on_subtask

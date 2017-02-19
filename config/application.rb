@@ -15,6 +15,8 @@ module SlashHeroku
       g.orm :active_record, primary_key_type: :uuid
     end
 
+    config.assets.enabled = true
+
     config.active_job.queue_adapter = :sidekiq
 
     config.generators do |g|
