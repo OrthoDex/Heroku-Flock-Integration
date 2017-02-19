@@ -28,8 +28,7 @@ module HerokuCommands
     end
 
     def error_response_for(text)
-      { response_type: "in_channel",
-        attachments: [{ text: text, color: "#f00" }] }
+      text
     end
 
     def error_response_for_escobar_two_factor(error)

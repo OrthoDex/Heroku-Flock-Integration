@@ -23,7 +23,7 @@ module HerokuCommands
     end
 
     def client
-      @client ||= Escobar::Client.new(user.github_token, user.heroku_token)
+      @client ||= Escobar::Client.new(User.last.github_token, User.last.heroku_token)
     end
 
     def releases_info
@@ -47,8 +47,6 @@ module HerokuCommands
         releases_info
       end
     rescue StandardError
-      raise e if Rails.env.test?
-      Raven.capture_exception(e)
       response_for("Unable to fetch recent releases for #{pipeline_name}.")
     end
 

@@ -65,18 +65,20 @@ module GitHubTokenManagement
   end
 
   def github_token
-    rbnacl_github_token
+    self[:enc_github_token]
   end
 
   def rbnacl_github_token
+    Rails.logger.info "GITHUB: #{self[:enc_github_token]}"
     decrypt_value(self[:enc_github_token])
   end
 
   def github_token=(token)
-    self[:enc_github_token] = encrypt_value(token)
+    self[:enc_github_token] = token
   end
 
   def github_configured?
+    # Rails.logger.info "GITHUB: #{!(github_token && !github_token.empty?).nil?}"
     !(github_token && !github_token.empty?).nil?
   end
 end
